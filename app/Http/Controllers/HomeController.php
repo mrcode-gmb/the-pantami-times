@@ -9,17 +9,28 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $posts = Post::with('category')->where('status', 'published')->latest()->get();
+        $posts = Post::with(['category', 'author'])
+            ->where('status', 'published')
+            ->whereNotNull('published_at')
+            ->orderByDesc('published_at')
+            ->get();
 
         $featuredPost = $posts->first();
         $latestPosts = $posts->skip(1);
 
-        $postsByCategory = $posts->groupBy('category.name');
+        $postsByCategory = $posts->groupBy(function ($post) {
+            return optional($post->category)->name;
+        });
 
-        // Dummy data for trending and most read for now
-        $trendingPosts = $posts->sortByDesc('view_count')->take(5); // Assuming a 'view_count' attribute
-        $mostReadPosts = $posts->sortByDesc('view_count')->take(5);
+        $trendingPosts = $posts->sortByDesc('published_at');
+        $mostReadPosts = $posts->shuffle();
 
-        return view('home', compact('featuredPost', 'latestPosts', 'postsByCategory', 'trendingPosts', 'mostReadPosts'));
+        return view('home', compact(
+            'featuredPost',
+            'latestPosts',
+            'postsByCategory',
+            'trendingPosts',
+            'mostReadPosts'
+        ));
     }
 }
