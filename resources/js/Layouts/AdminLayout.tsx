@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { ThemeProvider } from '@/Components/ThemeProvider';
 import { Link, usePage } from '@inertiajs/react';
-import { Bell, BookOpen, Folder, Home, Moon, Package2, Sun, Users } from 'lucide-react';
+import { Bell, BookOpen, Folder, Home, Moon, Package2, Settings, Sun, Users } from 'lucide-react';
 
 import { Button } from '@/Components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
@@ -83,6 +83,15 @@ function LayoutContent({ children, header }: AdminLayoutProps) {
                             >
                                 <Folder className="h-4 w-4" />
                                 Categories
+                            </Link>
+                            <Link
+                                href={route('admin.settings.index')}
+                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
+                                    route().current('admin.settings.index') ? 'bg-muted text-primary' : ''
+                                }`}
+                            >
+                                <Settings className="h-4 w-4" />
+                                Settings
                             </Link>
                         </nav>
                     </div>

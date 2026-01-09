@@ -4,13 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
-import { Textarea } from '@/Components/ui/textarea';
+import MDEditor from '@uiw/react-md-editor';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import { FormEventHandler } from 'react';
 
 interface Post {
     id: number;
+    uuid: number;
     title: string;
+    image_caption: string;
     content: string;
     status: string;
     category_id: number;
@@ -34,7 +36,7 @@ export default function Edit({ post, categories }: { post: Post, categories: Cat
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        submitForm(route('posts.update', post.id));
+        submitForm(route('posts.update', post.uuid));
     };
 
     return (
@@ -71,12 +73,9 @@ export default function Edit({ post, categories }: { post: Post, categories: Cat
 
                         <div className="grid gap-2">
                             <Label htmlFor="content">Content</Label>
-                            <Textarea
-                                id="content"
+                            <MDEditor
                                 value={data.content}
-                                onChange={(e) => setData('content', e.target.value)}
-                                required
-                                className="min-h-[200px]"
+                                onChange={(value) => setData('content', value || '')}
                             />
                             {errors.content && <p className="text-red-500 text-xs mt-1">{errors.content}</p>}
                         </div>

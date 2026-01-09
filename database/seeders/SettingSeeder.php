@@ -14,6 +14,10 @@ class SettingSeeder extends Seeder
             'tagline' => 'News, Analysis, and Exclusive Stories',
             'accent_color' => '#D4A017',
             'theme_default' => 'light',
+            'allow_editors_to_publish' => 'no',
+            'enable_email_notifications' => 'yes',
+            'homepage_featured_category' => '1',
+            'default_post_status' => 'draft',
         ];
 
         foreach ($pairs as $key => $value) {

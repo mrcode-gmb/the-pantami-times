@@ -4,9 +4,12 @@ import { PageProps } from '@/types';
 import { Header } from '@/Components/Header';
 import { Footer } from '@/Components/Footer';
 import { format } from 'date-fns';
+import MDEditor from '@uiw/react-md-editor';
 
 interface Post {
   id: number;
+  uuid: number;
+  image_caption: string;
   title: string;
   slug: string;
   content: string;
@@ -21,6 +24,7 @@ interface Post {
     id: number;
     name: string;
     avatar?: string;
+    bio: string;
   };
   created_at: string;
   updated_at: string;
@@ -240,9 +244,9 @@ export default function Show({ post: postData }: PageProps<{ post: Post }>) {
                 )}
               </header>
               
-              <div 
-                className="prose dark:prose-invert max-w-none text-foreground"
-                dangerouslySetInnerHTML={parsedContent}
+              <MDEditor.Markdown 
+                source={post.content} 
+                className="prose dark:prose-invert max-w-none text-foreground" 
               />
               
               <footer className="mt-12 pt-6 border-t border-border">

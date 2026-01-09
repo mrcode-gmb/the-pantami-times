@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\EditorController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\SettingController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -22,7 +23,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/posts/full/{post:slug}', [PostController::class, 'show'])->name('posts.show.full');
+Route::get('/posts/full/{post:uuid}', [PostController::class, 'show'])->name('posts.show.full');
 
 Route::get('/dashboard', function () {
     if (auth()->user()->role === 'admin') {
@@ -48,8 +49,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', DashboardController::class)->name('admin.dashboard');
     Route::resource('users', UserController::class);
     Route::resource('editors', EditorController::class);
-    Route::resource('posts', AdminPostController::class);
+    Route::resource('posts', AdminPostController::class)->parameters(['posts' => 'post:uuid']);
     Route::resource('categories', CategoryController::class);
+    Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings.index');
+    Route::post('/settings', [SettingController::class, 'update'])->name('admin.settings.update');
 });
 
 Route::middleware(['auth', 'editor'])->group(function () {
