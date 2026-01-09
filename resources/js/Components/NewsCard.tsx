@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import MDEditor from '@uiw/react-md-editor';
 
 interface NewsCardProps {
   image?: string;
@@ -50,7 +51,7 @@ export const NewsCard = ({
         <span className="category-tag">{category}</span>
         <h3 className={`news-title-sm mt-1 line-clamp-2`}>{title}</h3>
         {excerpt && variant === 'default' && (
-          <p className="text-muted-foreground text-sm mt-2 line-clamp-3">{excerpt}</p>
+          <div className="text-muted-foreground text-sm mt-2 line-clamp-3"><MDEditor.Markdown source={excerpt} /></div>
         )}
         {date && <p className="timestamp mt-2">{date}</p>}
       </div>

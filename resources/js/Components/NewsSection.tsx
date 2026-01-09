@@ -1,5 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { NewsCard } from "./NewsCard";
+import MDEditor from '@uiw/react-md-editor';
 
 interface Category {
   id: number;
@@ -62,9 +63,9 @@ export const NewsSection = ({ title, articles, layout = "grid" }: NewsSectionPro
                     <span className="category-tag">{featured.category?.name || 'News'}</span>
                     <h3 className="news-title-lg mt-2">{featured.title}</h3>
                     {featured.content && (
-                      <p className="text-muted-foreground mt-3 line-clamp-3">
-                        {featured.excerpt || featured.content.substring(0, 150)}...
-                      </p>
+                      <div className="text-muted-foreground mt-3 line-clamp-3">
+                        <MDEditor.Markdown source={featured.excerpt || featured.content.substring(0, 150) + '...'} />
+                      </div>
                     )}
                   </div>
                 </article>
