@@ -1,1 +1,0 @@
-import{j as r}from"./app-CLTY1upf.js";/* empty css            */function s(){return r.jsx("div",{children:r.jsx("h1",{className:"text-2xl font-bold",children:"Editor Dashboard"})})}export{s as default};

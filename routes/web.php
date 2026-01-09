@@ -18,9 +18,11 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'posts' => Post::with('category')->latest()->take(100)->get(), // Pass the latest 20 posts with categories
+        'posts' => Post::with('category')->latest()->take(20)->get(), // Pass the latest 20 posts with categories
     ]);
 });
+
+Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
 
 Route::get('/dashboard', function () {
     if (auth()->user()->role === 'admin') {
@@ -40,7 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
+
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', DashboardController::class)->name('admin.dashboard');
