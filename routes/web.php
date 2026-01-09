@@ -22,7 +22,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/posts/full/{post:slug}', [PostController::class, 'show'])->name('posts.show.full');
 
 Route::get('/dashboard', function () {
     if (auth()->user()->role === 'admin') {

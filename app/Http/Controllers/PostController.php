@@ -35,11 +35,31 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show($post)
     {
+        // Find post by slug or ID, only if published
+        $post = Post::where('slug', $post)
+            ->orWhere('id', $post)
+            ->where('status', 'published')
+            ->whereNotNull('published_at')
+            ->with(['category', 'author'])
+            ->firstOrFail();
+
+        // Increment view count
+        $post->increment('views');
+
+        // Get related posts (posts from the same category, excluding current post)
+        $relatedPosts = Post::where('category_id', $post->category_id)
+            ->where('id', '!=', $post->id)
+            ->where('status', 'published')
+            ->whereNotNull('published_at')
+            ->latest('published_at')
+            ->take(3)
+            ->get();
 
         return Inertia::render('Post/Show', [
             'post' => $post,
+            'relatedPosts' => $relatedPosts,
         ]);
     }
 

@@ -20,7 +20,7 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
         {/* Left Sidebar */}
         <div className="lg:col-span-3 space-y-6">
           {sidebarPosts.map((post) => (
-            <Link href={route('posts.show', post.slug)} key={post.id} className="group cursor-pointer">
+            <Link href={route('posts.show.full', post.slug)} key={post.id} className="group cursor-pointer">
               <div className="aspect-video overflow-hidden rounded">
                 <img 
                   src={post.image} 
@@ -36,7 +36,7 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
         {/* Main Featured Story */}
         <div className="lg:col-span-6">
           {featuredPost && (
-            <Link href={route('posts.show', featuredPost.slug)} className="relative h-[400px] lg:h-[500px] rounded overflow-hidden group cursor-pointer">
+            <Link href={route('posts.show.full', featuredPost.slug)} className="relative h-[400px] lg:h-[500px] rounded overflow-hidden group cursor-pointer">
               <img 
                 src={featuredPost.image}
                 alt={featuredPost.title}
@@ -60,7 +60,7 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
           <h2 className="section-heading mb-4">LATEST NEWS</h2>
           <div className="space-y-4">
             {latestPosts.map((post) => (
-              <Link href={route('posts.show', post.slug)} key={post.id} className="border-b border-border pb-4 last:border-b-0 cursor-pointer group">
+              <Link href={route('posts.show.full', post.slug)} key={post.id} className="border-b border-border pb-4 last:border-b-0 cursor-pointer group">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="category-tag">{post.category?.name || 'News'}</span>
                   <span className="text-muted-foreground">•</span>
