@@ -1,4 +1,4 @@
-import AdminLayout from '@/Layouts/AdminLayout';
+import EditorLayout from '@/Layouts/EditorLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import { Button } from '@/Components/ui/button';
@@ -46,7 +46,7 @@ export default function Edit({ post, categories }: { post: Post, categories: Cat
     };
 
     return (
-        <AdminLayout header="Review Post">
+        <EditorLayout header="Review Post">
             <Head title={`Review Post - ${post.title}`} />
 
             <Card>
@@ -159,6 +159,6 @@ export default function Edit({ post, categories }: { post: Post, categories: Cat
                     </form>
                 </CardContent>
             </Card>
-        </AdminLayout>
+        </EditorLayout>
     );
 }

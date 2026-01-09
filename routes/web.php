@@ -12,6 +12,9 @@ use App\Http\Controllers\Admin\EditorController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\Editor\DashboardController as EditorDashboardController;
+use App\Http\Controllers\Editor\PostController as EditorPostController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -53,12 +56,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('admin.settings.update');
+    Route::get('/reports', [ReportController::class, 'index'])->name('admin.reports.index');
 });
 
 Route::middleware(['auth', 'editor'])->group(function () {
-    Route::get('/editor', function () {
-        return Inertia::render('Editor/Dashboard');
-    })->name('editor.dashboard');
+    Route::get('/editor', [EditorDashboardController::class, 'index'])->name('editor.dashboard');
+    Route::resource('editor/posts', EditorPostController::class)->names('editor.posts');
 });
 
 require __DIR__.'/auth.php';

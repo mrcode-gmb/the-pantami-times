@@ -10,10 +10,18 @@ class Post extends Model
 {
     use HasFactory, HasUuids;
 
+    public function uniqueIds()
+    {
+        return ['uuid'];
+    }
+
     protected $fillable = [
+        'uuid',
         'title',
         'slug',
         'content',
+        'meta_title',
+        'meta_description',
         'image',
         'status',
         'category_id',
@@ -21,11 +29,7 @@ class Post extends Model
         'published_at',
     ];
 
-    public function getRouteKeyName()
-    {
-        return 'uuid';
-    }
-
+    
     public function category()
     {
         return $this->belongsTo(Category::class);

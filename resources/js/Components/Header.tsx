@@ -1,5 +1,5 @@
 import { Facebook, Twitter, Instagram, Linkedin, Search, Menu, Sun, Moon } from "lucide-react";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo__Copy_-removebg-preview.png";
 import { useState } from "react";
 import { useTheme } from "@/Components/ThemeProvider";
 
@@ -33,12 +33,13 @@ export const Header = () => {
           </div>
 
           {/* Logo */}
-          <div className="flex-1 flex justify-center">
+          <div className="flex-1 flex justify-center items-center gap-2 md:gap-4">
             <img 
               src={logo} 
               alt="The Pantami Times" 
-              className="h-16 md:h-20 lg:h-24 object-contain"
+              className="h-16 md:h-16 lg:h-16 object-contain"
             />
+            <h1 className="text-2xl font-bold">The <span className="text-primary">Pantami</span> Times</h1>
           </div>
 
           {/* Search & Theme Toggle */}

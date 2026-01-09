@@ -74,7 +74,10 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:posts,slug,' . $post->id,
             'content' => 'required|string',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'status' => ['required', Rule::in(['draft', 'pending', 'published', 'archived'])],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

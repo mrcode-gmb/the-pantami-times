@@ -10,12 +10,12 @@ import { Sheet, SheetContent, SheetTrigger } from '@/Components/ui/sheet';
 import { CircleUser } from 'lucide-react';
 import { useTheme } from '@/Components/ThemeProvider';
 
-interface AdminLayoutProps {
+interface EditorLayoutProps {
     children: ReactNode;
     header: string;
 }
 
-export default function AdminLayout({ children, header }: AdminLayoutProps) {
+export default function EditorLayout({ children, header }: EditorLayoutProps) {
     return (
         <ThemeProvider defaultTheme="system" storageKey="admin-ui-theme">
             <LayoutContent header={header}>{children}</LayoutContent>
@@ -23,7 +23,7 @@ export default function AdminLayout({ children, header }: AdminLayoutProps) {
     );
 }
 
-function LayoutContent({ children, header }: AdminLayoutProps) {
+function LayoutContent({ children, header }: EditorLayoutProps) {
     const { setTheme } = useTheme();
     const { auth } = usePage().props as any;
 
@@ -40,34 +40,16 @@ function LayoutContent({ children, header }: AdminLayoutProps) {
                     <div className="flex-1">
                         <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
                             <Link
-                                href={route('admin.dashboard')}
+                                href={route('editor.dashboard')}
                                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                                    route().current('admin.dashboard') ? 'bg-muted text-primary' : ''
+                                    route().current('editor.dashboard') ? 'bg-muted text-primary' : ''
                                 }`}
                             >
                                 <Home className="h-4 w-4" />
                                 Dashboard
                             </Link>
                             <Link
-                                href={route('users.index')}
-                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                                    route().current('users.*') ? 'bg-muted text-primary' : ''
-                                }`}
-                            >
-                                <Users className="h-4 w-4" />
-                                Users
-                            </Link>
-                            <Link
-                                href={route('editors.index')}
-                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                                    route().current('editors.*') ? 'bg-muted text-primary' : ''
-                                }`}
-                            >
-                                <Users className="h-4 w-4" />
-                                Editors
-                            </Link>
-                            <Link
-                                href={route('posts.index')}
+                                href={route('editor.posts.index')}
                                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
                                     route().current('posts.*') ? 'bg-muted text-primary' : ''
                                 }`}
@@ -75,34 +57,7 @@ function LayoutContent({ children, header }: AdminLayoutProps) {
                                 <BookOpen className="h-4 w-4" />
                                 Posts
                             </Link>
-                            <Link
-                                href={route('categories.index')}
-                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                                    route().current('categories.*') ? 'bg-muted text-primary' : ''
-                                }`}
-                            >
-                                <Folder className="h-4 w-4" />
-                                Categories
-                            </Link>
-                            <Link
-                                href={route('admin.settings.index')}
-                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                                    route().current('admin.settings.index') ? 'bg-muted text-primary' : ''
-                                }`}
-                            >
-                                <Settings className="h-4 w-4" />
-                                Settings
-                            </Link>
-                            <Link
-                                href={route('admin.reports.index')}
-                                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                                    route().current('admin.reports.index') ? 'bg-muted text-primary' : ''
-                                }`}
-                            >
-                                <LineChart className="h-4 w-4" />
-                                Reports
-                            </Link>
-                        </nav>
+                                                    </nav>
                     </div>
                 </div>
             </div>
