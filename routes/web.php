@@ -6,6 +6,11 @@ use App\Models\Post;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\EditorController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
+use App\Http\Controllers\Admin\CategoryController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -18,6 +23,14 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+    if (auth()->user()->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+
+    if (auth()->user()->role === 'editor') {
+        return redirect()->route('editor.dashboard');
+    }
+
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -28,5 +41,19 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('posts.show');
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', DashboardController::class)->name('admin.dashboard');
+    Route::resource('users', UserController::class);
+    Route::resource('editors', EditorController::class);
+    Route::resource('posts', AdminPostController::class);
+    Route::resource('categories', CategoryController::class);
+});
+
+Route::middleware(['auth', 'editor'])->group(function () {
+    Route::get('/editor', function () {
+        return Inertia::render('Editor/Dashboard');
+    })->name('editor.dashboard');
+});
 
 require __DIR__.'/auth.php';
