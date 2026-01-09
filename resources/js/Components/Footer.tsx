@@ -11,14 +11,14 @@ const footerLinks = {
 
 export const Footer = () => {
   return (
-    <footer className="bg-guardian-navy text-primary-foreground">
+    <footer className="bg-PantamiTimes-navy text-primary-foreground">
       {/* Main Footer */}
       <div className="container py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
           {/* Logo & Social */}
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-serif font-bold mb-2">
-              The<span className="text-primary">Guardian</span>
+              The<span className="text-primary">PantamiTimes</span>
             </h2>
             <p className="text-primary-foreground/60 text-sm mb-6">
               Conscience, Nurtured by Truth
@@ -81,7 +81,7 @@ export const Footer = () => {
       <div className="border-t border-primary-foreground/10">
         <div className="container py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-primary-foreground/60">
-            <p>© 2026 The Guardian Nigeria. All rights reserved.</p>
+            <p>© 2026 The PantamiTimes Nigeria. All rights reserved.</p>
             <div className="flex items-center gap-6">
               <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
               <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>

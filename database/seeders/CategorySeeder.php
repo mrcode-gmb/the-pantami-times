@@ -10,11 +10,21 @@ class CategorySeeder extends Seeder
 {
     public function run(): void
     {
-        $names = ['Politics','Business','Sports','Technology','Features','Opinion'];
+        $names = [
+                ['name' => 'News', 'slug' => 'news'],
+                ['name' => 'Metro', 'slug' => 'metro'],
+                ['name' => 'Technology', 'slug' => 'technology'],
+                ['name' => 'Science', 'slug' => 'science'],
+                ['name' => 'Health', 'slug' => 'health'],
+                ['name' => 'Sports', 'slug' => 'sports'],
+                ['name' => 'Entertainment', 'slug' => 'entertainment'],
+                ['name' => 'Business', 'slug' => 'business'],
+                ['name' => 'Politics', 'slug' => 'politics'],
+        ];
         foreach ($names as $name) {
             Category::firstOrCreate(
-                ['slug' => Str::slug($name)],
-                ['name' => $name]
+                ['slug' => $name['slug']],
+                ['name' => $name['name']]
             );
         }
     }

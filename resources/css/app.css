@@ -36,12 +36,12 @@
     --radius: 0.25rem;
 
     /* Custom tokens */
-    --guardian-blue: 0 0% 10%;
-    --guardian-gold: 43 85% 50%;
-    --guardian-red: 0 85% 50%;
-    --guardian-navy: 220 30% 12%;
-    --guardian-gray: 220 10% 46%;
-    --guardian-light: 220 14% 96%;
+    --PantamiTimes-blue: 0 0% 10%;
+    --PantamiTimes-gold: 43 85% 50%;
+    --PantamiTimes-red: 0 85% 50%;
+    --PantamiTimes-navy: 220 30% 12%;
+    --PantamiTimes-gray: 220 10% 46%;
+    --PantamiTimes-light: 220 14% 96%;
 
     /* Typography */
     --font-serif: 'PT Serif', Georgia, serif;

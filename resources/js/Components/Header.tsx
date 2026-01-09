@@ -1,6 +1,7 @@
-import { Facebook, Twitter, Instagram, Linkedin, Search, Menu } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Search, Menu, Sun, Moon } from "lucide-react";
 import logo from "@/assets/logo.jpeg";
 import { useState } from "react";
+import { useTheme } from "@/Components/ThemeProvider";
 
 const navItems = [
   { label: "NEWS", href: "#" },
@@ -16,9 +17,10 @@ const navItems = [
 
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   return (
-    <header className="bg-background border-b border-border">
+    <header className="bg-background border-b border-border sticky top-0 z-50">
       {/* Top Bar */}
       <div className="container py-4">
         <div className="flex items-center justify-between">
@@ -42,9 +44,9 @@ export const Header = () => {
           {/* Search & Theme Toggle */}
           <div className="hidden md:flex items-center gap-4">
             <Search className="social-icon" size={20} />
-            <div className="w-12 h-6 bg-muted rounded-full relative cursor-pointer">
-              <div className="absolute left-1 top-1 w-4 h-4 bg-foreground/30 rounded-full transition-transform" />
-            </div>
+            <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
           </div>
 
           {/* Mobile Menu Button */}

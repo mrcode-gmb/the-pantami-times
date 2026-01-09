@@ -54,13 +54,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        guardian: {
-          blue: "hsl(var(--guardian-blue))",
-          gold: "hsl(var(--guardian-gold))",
-          red: "hsl(var(--guardian-red))",
-          navy: "hsl(var(--guardian-navy))",
-          gray: "hsl(var(--guardian-gray))",
-          light: "hsl(var(--guardian-light))",
+        PantamiTimes: {
+          blue: "hsl(var(--PantamiTimes-blue))",
+          gold: "hsl(var(--PantamiTimes-gold))",
+          red: "hsl(var(--PantamiTimes-red))",
+          navy: "hsl(var(--PantamiTimes-navy))",
+          gray: "hsl(var(--PantamiTimes-gray))",
+          light: "hsl(var(--PantamiTimes-light))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

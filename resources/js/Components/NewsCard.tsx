@@ -1,10 +1,14 @@
+import { Link } from '@inertiajs/react';
+
 interface NewsCardProps {
   image?: string;
   category: string;
   title: string;
   excerpt?: string;
   date?: string;
+  slug?: string;
   variant?: "default" | "horizontal" | "compact";
+  className?: string;
 }
 
 export const NewsCard = ({ 
@@ -13,58 +17,59 @@ export const NewsCard = ({
   title, 
   excerpt, 
   date,
-  variant = "default" 
+  slug,
+  variant = "default",
+  className = ""
 }: NewsCardProps) => {
-  if (variant === "horizontal") {
-    return (
-      <article className="card-news flex gap-4 cursor-pointer group">
-        {image && (
-          <div className="w-32 h-24 flex-shrink-0 overflow-hidden rounded">
+
+  const CardInnerContent = (
+    <>
+      {image && variant !== "compact" && (
+        <div className={`overflow-hidden rounded ${variant === 'horizontal' ? 'w-32 h-24 flex-shrink-0' : 'aspect-video'}`}>
+          {image ? (
             <img 
-              src={image} 
+              src={image.startsWith('http') ? image : `/storage/${image}`} 
               alt={title}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              onError={(e) => {
+                // Fallback to a placeholder image if the image fails to load
+                const target = e.target as HTMLImageElement;
+                target.src = 'https://via.placeholder.com/800x450?text=No+Image';
+              }}
             />
-          </div>
-        )}
-        <div className="flex-1 min-w-0">
-          <span className="category-tag">{category}</span>
-          <h3 className="news-title-sm mt-1 line-clamp-2">{title}</h3>
-          {date && <p className="timestamp mt-2">{date}</p>}
+          ) : (
+            <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
+              <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+          )}
         </div>
-      </article>
-    );
-  }
-
-  if (variant === "compact") {
-    return (
-      <article className="cursor-pointer group border-b border-border pb-3 last:border-b-0">
+      )}
+      <div className={variant === 'horizontal' ? 'flex-1 min-w-0' : (variant === 'default' ? 'p-4' : '')}>
         <span className="category-tag">{category}</span>
-        <h3 className="news-title-sm mt-1 line-clamp-2">{title}</h3>
+        <h3 className={`news-title-sm mt-1 line-clamp-2`}>{title}</h3>
+        {excerpt && variant === 'default' && (
+          <p className="text-muted-foreground text-sm mt-2 line-clamp-3">{excerpt}</p>
+        )}
         {date && <p className="timestamp mt-2">{date}</p>}
-      </article>
+      </div>
+    </>
+  );
+
+  const articleClasses = `card-news group cursor-pointer ${variant === 'horizontal' ? 'flex gap-4' : ''} ${variant === 'compact' ? 'border-b border-border pb-3 last:border-b-0' : ''} ${className || ''}`;
+
+  if (slug) {
+    return (
+      <Link href={route('posts.show', slug)} className={articleClasses}>
+        {CardInnerContent}
+      </Link>
     );
   }
 
   return (
-    <article className="card-news cursor-pointer group">
-      {image && (
-        <div className="aspect-video overflow-hidden rounded-t">
-          <img 
-            src={image} 
-            alt={title}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-        </div>
-      )}
-      <div className="p-4">
-        <span className="category-tag">{category}</span>
-        <h3 className="news-title-md mt-2">{title}</h3>
-        {excerpt && (
-          <p className="text-muted-foreground text-sm mt-2 line-clamp-3">{excerpt}</p>
-        )}
-        {date && <p className="timestamp mt-3">{date}</p>}
-      </div>
+    <article className={articleClasses}>
+      {CardInnerContent}
     </article>
   );
 };

@@ -175,7 +175,7 @@
             <!-- Main Content Area -->
             <div class="lg:col-span-9">
                 
-                <!-- 5. Section Blocks (Repeated Like Guardian) -->
+                <!-- 5. Section Blocks (Repeated Like PantamiTimes) -->
                 @php
                     $sections = ['Politics', 'Business', 'Sports', 'Technology', 'Features', 'Opinion'];
                 @endphp

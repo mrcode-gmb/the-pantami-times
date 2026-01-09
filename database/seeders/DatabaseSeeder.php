@@ -33,7 +33,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CategorySeeder::class,
             SettingSeeder::class,
-            PostSeeder::class,
+            // Comment out the original PostSeeder if you want to use ImagePostSeeder instead
+            // PostSeeder::class,
+            ImagePostSeeder::class, // Use this to seed with images from public/images
         ]);
     }
 }

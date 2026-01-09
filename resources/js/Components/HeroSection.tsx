@@ -1,42 +1,14 @@
-import { NewsCard } from "./NewsCard";
+import { Link } from '@inertiajs/react';
 
-const sidebarNews = [
-  {
-    image: "https://cdn.guardian.ng/wp-content/uploads/2026/01/Anthony-Joshua-1-300x169.webp",
-    title: "Sagamu crash: Anthony Joshua lauds family, friends for support",
-    category: "Sport"
-  },
-  {
-    image: "https://cdn.guardian.ng/wp-content/uploads/2024/01/Rivers-Assembly-891x598.webp",
-    title: "Rivers residents appeal to political leaders to rethink impeachment move",
-    category: "Politics"
+export const HeroSection = ({ posts }: { posts: any[] }) => {
+  if (!posts || posts.length === 0) {
+    return null; // Or a loading/empty state
   }
-];
 
-const latestNews = [
-  {
-    category: "Love and Relationships",
-    time: "just now",
-    title: "Ned Nwoko responds to Regina Daniels' denial of drug use, stresses court-backed assessments"
-  },
-  {
-    category: "Education",
-    time: "just now",
-    title: "Zulum commissions remodelled school for vulnerable girls"
-  },
-  {
-    category: "World",
-    time: "6 minutes ago",
-    title: "Three ships head to US with Venezuela oil"
-  },
-  {
-    category: "World",
-    time: "18 minutes ago",
-    title: "US Senate rebukes Trump on Venezuela in war powers vote"
-  }
-];
+  const featuredPost = posts[0];
+  const sidebarPosts = posts.slice(1, 3);
+  const latestPosts = posts.slice(3, 7);
 
-export const HeroSection = () => {
   return (
     <section className="container py-6">
       {/* Advertisement placeholder */}
@@ -47,58 +19,57 @@ export const HeroSection = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Sidebar */}
         <div className="lg:col-span-3 space-y-6">
-          {sidebarNews.map((news, index) => (
-            <div key={index} className="group cursor-pointer">
+          {sidebarPosts.map((post) => (
+            <Link href={route('posts.show', post.slug)} key={post.id} className="group cursor-pointer">
               <div className="aspect-video overflow-hidden rounded">
                 <img 
-                  src={news.image} 
-                  alt={news.title}
+                  src={post.image} 
+                  alt={post.title}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
-              <h3 className="news-title-sm mt-3">{news.title}</h3>
-            </div>
+              <h3 className="news-title-sm mt-3">{post.title}</h3>
+            </Link>
           ))}
         </div>
 
         {/* Main Featured Story */}
         <div className="lg:col-span-6">
-          <div className="relative h-[400px] lg:h-[500px] rounded overflow-hidden group cursor-pointer">
-            <img 
-              src="https://cdn.guardian.ng/wp-content/uploads/2026/01/RIVERS-ASSEMBLY-666x400.webp"
-              alt="Rivers Assembly"
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-            <div className="absolute top-4 left-4">
-              <span className="top-news-badge">TOP NEWS</span>
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 p-6">
-              <h2 className="news-title-hero mb-4">
-                Mixed reactions trail Rivers Assembly impeachment move as groups push back
-              </h2>
-              <a href="#" className="text-white text-sm font-medium underline underline-offset-4 hover:text-primary transition-colors">
-                READ MORE
-              </a>
-            </div>
-          </div>
+          {featuredPost && (
+            <Link href={route('posts.show', featuredPost.slug)} className="relative h-[400px] lg:h-[500px] rounded overflow-hidden group cursor-pointer">
+              <img 
+                src={featuredPost.image}
+                alt={featuredPost.title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+              <div className="absolute top-4 left-4">
+                <span className="top-news-badge">TOP NEWS</span>
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <h2 className="news-title-hero mb-4">
+                  {featuredPost.title}
+                </h2>
+              </div>
+            </Link>
+          )}
         </div>
 
         {/* Right Sidebar - Latest News */}
         <div className="lg:col-span-3">
           <h2 className="section-heading mb-4">LATEST NEWS</h2>
           <div className="space-y-4">
-            {latestNews.map((news, index) => (
-              <div key={index} className="border-b border-border pb-4 last:border-b-0 cursor-pointer group">
+            {latestPosts.map((post) => (
+              <Link href={route('posts.show', post.slug)} key={post.id} className="border-b border-border pb-4 last:border-b-0 cursor-pointer group">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="category-tag">{news.category}</span>
+                  <span className="category-tag">{post.category?.name || 'News'}</span>
                   <span className="text-muted-foreground">•</span>
-                  <span className="timestamp">{news.time}</span>
+                  <span className="timestamp">{new Date(post.created_at).toLocaleTimeString()}</span>
                 </div>
                 <h3 className="news-title-sm group-hover:text-primary transition-colors">
-                  {news.title}
+                  {post.title}
                 </h3>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

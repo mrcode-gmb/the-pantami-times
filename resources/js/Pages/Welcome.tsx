@@ -9,7 +9,8 @@ export default function Welcome({
     auth,
     laravelVersion,
     phpVersion,
-}: PageProps<{ laravelVersion: string; phpVersion: string }>) {
+    posts,
+}: PageProps<{ laravelVersion: string; phpVersion: string; posts: any[] }>) {
     const handleImageError = () => {
         document
             .getElementById('screenshot-container')
@@ -26,8 +27,8 @@ export default function Welcome({
             <div className="min-h-screen bg-background">
                 <Header />
                 <main>
-                    <HeroSection />
-                    <MainContent />
+                    <HeroSection posts={posts} />
+                    <MainContent posts={posts} />
                 </main>
                 <Footer />
             </div>

@@ -1,56 +1,85 @@
+import { Link } from '@inertiajs/react';
 import { NewsCard } from "./NewsCard";
+
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+interface Article {
+  id: number;
+  slug: string;
+  image: string;
+  category: Category;
+  title: string;
+  content: string;
+  excerpt?: string;
+  created_at: string;
+  updated_at: string;
+  published_at?: string;
+  status?: string;
+  author_id?: number;
+}
 
 interface NewsSectionProps {
   title: string;
-  articles: Array<{
-    image?: string;
-    category: string;
-    title: string;
-    excerpt?: string;
-    date?: string;
-  }>;
+  articles: Article[];
   layout?: "grid" | "list" | "featured";
 }
 
 export const NewsSection = ({ title, articles, layout = "grid" }: NewsSectionProps) => {
-  if (layout === "featured" && articles.length > 0) {
+  if (!articles || articles.length === 0) {
+    return (
+      <section className="container py-6">
+        <h2 className="section-heading mb-6">{title}</h2>
+        <p className="text-muted-foreground">No articles found in this section.</p>
+      </section>
+    );
+  }
+
+  if (layout === "featured") {
     const [featured, ...rest] = articles;
     
     return (
       <section className="container py-6">
         <h2 className="section-heading mb-6">{title}</h2>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Featured Article */}
           <div className="lg:col-span-7">
-            <article className="cursor-pointer group">
-              {featured.image && (
-                <div className="aspect-video overflow-hidden rounded">
-                  <img 
-                    src={featured.image} 
-                    alt={featured.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-              )}
-              <div className="mt-4">
-                <span className="category-tag">{featured.category}</span>
-                <h3 className="news-title-lg mt-2">{featured.title}</h3>
-                {featured.excerpt && (
-                  <p className="text-muted-foreground mt-3 line-clamp-3">{featured.excerpt}</p>
-                )}
-                <a href="#" className="inline-block mt-3 text-sm font-medium text-primary hover:underline">
-                  Read More
-                </a>
-              </div>
-            </article>
+            {featured && featured.slug && (
+              <Link href={route('posts.show', featured.slug)} className="cursor-pointer group">
+                <article>
+                  {featured.image && (
+                    <div className="aspect-video overflow-hidden rounded">
+                      <img 
+                        src={featured.image} 
+                        alt={featured.title}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+                  )}
+                  <div className="mt-4">
+                    <span className="category-tag">{featured.category?.name || 'News'}</span>
+                    <h3 className="news-title-lg mt-2">{featured.title}</h3>
+                    {featured.content && (
+                      <p className="text-muted-foreground mt-3 line-clamp-3">
+                        {featured.excerpt || featured.content.substring(0, 150)}...
+                      </p>
+                    )}
+                  </div>
+                </article>
+              </Link>
+            )}
           </div>
-
-          {/* Side Articles */}
           <div className="lg:col-span-5 space-y-4">
-            {rest.map((article, index) => (
+            {rest.map((article) => (
               <NewsCard 
-                key={index} 
-                {...article} 
+                key={article.id} 
+                slug={article.slug}
+                category={article.category?.name || 'News'}
+                title={article.title}
+                image={article.image}
+                date={new Date(article.created_at!).toLocaleDateString()}
                 variant="horizontal"
               />
             ))}
@@ -60,25 +89,20 @@ export const NewsSection = ({ title, articles, layout = "grid" }: NewsSectionPro
     );
   }
 
-  if (layout === "list") {
-    return (
-      <section className="py-6">
-        <h2 className="section-heading mb-6">{title}</h2>
-        <div className="space-y-4">
-          {articles.map((article, index) => (
-            <NewsCard key={index} {...article} variant="compact" />
-          ))}
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section className="container py-6">
       <h2 className="section-heading mb-6">{title}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {articles.map((article, index) => (
-          <NewsCard key={index} {...article} />
+        {articles.map((article) => (
+          <NewsCard 
+            key={article.id} 
+            slug={article.slug}
+            category={article.category?.name || 'News'}
+            title={article.title}
+            image={article.image}
+            excerpt={article.excerpt}
+            date={article.published_at ? new Date(article.published_at).toLocaleDateString() : ''}
+          />
         ))}
       </div>
     </section>
