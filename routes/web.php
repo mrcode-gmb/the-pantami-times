@@ -18,7 +18,7 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'posts' => Post::with('category')->latest()->take(20)->get(), // Pass the latest 20 posts with categories
+        'posts' => Post::with('category')->latest()->take(40)->get(), // Pass the latest 20 posts with categories
     ]);
 });
 
