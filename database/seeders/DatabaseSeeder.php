@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
             // Comment out the original PostSeeder if you want to use ImagePostSeeder instead
             // PostSeeder::class,
             ImagePostSeeder::class, // Use this to seed with images from public/images
+            // PostSeeder::class, // Use this to seed with images from public/images
         ]);
     }
 }

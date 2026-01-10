@@ -22,7 +22,7 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'posts' => Post::with('category')->latest()->take(40)->get(), // Pass the latest 20 posts with categories
+        'posts' => Post::with('category')->where("Welcome", "published")->latest()->take(30)->get(), // Pass the latest 20 posts with categories
     ]);
 });
 
@@ -52,7 +52,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', DashboardController::class)->name('admin.dashboard');
     Route::resource('users', UserController::class);
     Route::resource('editors', EditorController::class);
-    Route::resource('posts', AdminPostController::class)->parameters(['posts' => 'post:uuid']);
+    Route::resource('admin/posts', AdminPostController::class)->names("admin.posts");
     Route::resource('categories', CategoryController::class);
     Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('admin.settings.update');

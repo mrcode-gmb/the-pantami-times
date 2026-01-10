@@ -42,7 +42,7 @@ export default function Edit({ post, categories }: { post: Post, categories: Cat
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        submitForm(route('posts.update', post.uuid));
+        submitForm(route('admin.posts.update', post));
     };
 
     return (
@@ -152,7 +152,7 @@ export default function Edit({ post, categories }: { post: Post, categories: Cat
 
                         <div className="flex items-center gap-4">
                             <Button type="submit" disabled={processing}>Update Post</Button>
-                            <Link href={route('posts.index')}>
+                            <Link href={route('admin.posts.index')}>
                                 <Button variant="outline">Cancel</Button>
                             </Link>
                         </div>

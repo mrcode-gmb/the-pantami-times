@@ -48,18 +48,43 @@ class PostController extends Controller
         // Increment view count
         $post->increment('views');
 
-        // Get related posts (posts from the same category, excluding current post)
+        // Get trending posts with full image URLs
+        $trendingPosts = Post::where('status', 'published')
+            ->whereNotNull('published_at')
+            ->where('id', '!=', $post->id)
+            ->orderBy('views', 'desc')
+            ->take(3)
+            ->get(['id', 'title', 'slug', 'image', 'published_at', 'views'])
+            ->map(function ($item) {
+                $item->image = $item->image ? asset($item->image) : null;
+                return $item;
+            });
+
+        // Get related posts with full image URLs
         $relatedPosts = Post::where('category_id', $post->category_id)
             ->where('id', '!=', $post->id)
             ->where('status', 'published')
             ->whereNotNull('published_at')
             ->latest('published_at')
             ->take(3)
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                $item->image = $item->image ? asset($item->image) : null;
+                return $item;
+            });
+
+        // Ensure post image has full URL
+        $post->image = $post->image ? asset($post->image) : null;
+
+        // If author has a profile photo, ensure it has full URL
+        if ($post->author && $post->author->profile_photo_path) {
+            $post->author->profile_photo_url = asset('storage/' . $post->author->profile_photo_path);
+        }
 
         return Inertia::render('Post/Show', [
             'post' => $post,
             'relatedPosts' => $relatedPosts,
+            'trendingPosts' => $trendingPosts,
         ]);
     }
 

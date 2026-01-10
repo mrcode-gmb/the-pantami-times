@@ -62,7 +62,7 @@ export const NewsCard = ({
 
   if (slug) {
     return (
-      <Link href={route('posts.show', slug)} className={articleClasses}>
+      <Link href={route('posts.show.full', slug)} className={articleClasses}>
         {CardInnerContent}
       </Link>
     );

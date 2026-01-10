@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import { Header } from '@/Components/Header';
 import { Footer } from '@/Components/Footer';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/Components/ui/dropdown-menu';
 import { format } from 'date-fns';
-import MDEditor from '@uiw/react-md-editor';
+import MDEditor from '@uiw/react-md-editor';// Add this import at the top of your Show.tsx file
+import { formatDistanceToNow } from 'date-fns';
 
 interface Post {
   id: number;
@@ -29,8 +36,19 @@ interface Post {
   created_at: string;
   updated_at: string;
 }
-
-export default function Show({ post: postData }: PageProps<{ post: Post }>) {
+interface ShowProps {
+  post: Post;
+  relatedPosts: Post[];
+  trendingPosts: Array<{
+    id: number;
+    title: string;
+    slug: string;
+    image: string | null;
+    published_at: string;
+    views: number;
+  }>;
+}
+export default function Show({ post: postData, relatedPosts = [], trendingPosts = [] }: ShowProps) {
   const [post, setPost] = React.useState<Post | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
@@ -210,12 +228,70 @@ export default function Show({ post: postData }: PageProps<{ post: Post }>) {
                   
                   <div className="flex-1"></div>
                   
-                  <div className="flex items-center space-x-3">
-                    <button className="p-2 rounded-full hover:bg-muted">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                      </svg>
-                    </button>
+                  <div className="flex items-center space-x-3 relative">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="p-2 rounded-full hover:bg-muted">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                          </svg>
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-48">
+                        <DropdownMenuItem 
+                          onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank')}
+                          className="cursor-pointer flex items-center space-x-2"
+                        >
+                          <svg className="h-4 w-4 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
+                          </svg>
+                          <span>Share on Facebook</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(post.title)}`)}
+                          className="cursor-pointer flex items-center space-x-2"
+                        >
+                          <svg className="h-4 w-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/>
+                          </svg>
+                          <span>Share on Twitter</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          onClick={() => window.open(`https://www.instagram.com/`)}
+                          className="cursor-pointer flex items-center space-x-2"
+                        >
+                          <svg className="h-4 w-4 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                          </svg>
+                          <span>Share on Instagram</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`${post.title} - ${window.location.href}`)}`)}
+                          className="cursor-pointer flex items-center space-x-2"
+                        >
+                          <svg className="h-4 w-4 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.966-.273-.099-.471-.148-.67.15-.197.297-.767.963-.94 1.16-.175.196-.35.223-.644.075-.3-.15-1.263-.465-2.405-1.485-.888-.795-1.484-1.77-1.66-2.07-.173-.297-.018-.458.13-.606.136-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.611-.916-2.207-.242-.579-.487-.5-.669-.508-.172-.007-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.228 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.345m-5.421 7.403h-.016a9.57 9.57 0 01-5.707-1.903l-.202-.16-3.6-.99 1.21-3.53.137-.203a9.3 9.3 0 01-1.38-4.85c0-5.165 4.208-9.365 9.372-9.365 2.507 0 4.853.975 6.615 2.74a9.26 9.26 0 012.74 6.615c0 5.164-4.2 9.366-9.37 9.366"/>
+                          </svg>
+                          <span>Share on WhatsApp</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem 
+                          onClick={async () => {
+                            try {
+                              await navigator.clipboard.writeText(window.location.href);
+                              alert('Link copied to clipboard!');
+                            } catch (err) {
+                              console.error('Failed to copy: ', err);
+                            }
+                          }}
+                          className="cursor-pointer flex items-center space-x-2"
+                        >
+                          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                          </svg>
+                          <span>Copy link</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                     <button className="p-2 rounded-full hover:bg-muted">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
@@ -344,26 +420,44 @@ export default function Show({ post: postData }: PageProps<{ post: Post }>) {
               </div>
               
               {/* Trending Now */}
-              <div>
-                <h3 className="text-lg font-semibold mb-4">Trending Now</h3>
-                <div className="space-y-4">
-                  {[1, 2, 3].map((item) => (
-                    <div key={item} className="flex items-start space-x-3 group">
-                      <div className="flex-shrink-0 w-16 h-16 bg-muted rounded overflow-hidden">
-                        <div className="w-full h-full bg-muted-foreground/20 animate-pulse"></div>
-                      </div>
-                      <div>
-                        <h4 className="font-medium group-hover:text-primary transition-colors line-clamp-2">
-                          <Link href="#" className="hover:underline">
-                            Trending article title goes here and can span multiple lines
-                          </Link>
-                        </h4>
-                        <span className="text-xs text-muted-foreground">2h ago</span>
-                      </div>
+              {/* // In Show.tsx, update the trending now section */}
+                {trendingPosts && trendingPosts.length > 0 && (
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Trending Now</h3>
+                    <div className="space-y-4">
+                      {trendingPosts.map((post) => (
+                        <div key={post.id} className="flex items-start space-x-3 group">
+                          <div className="flex-shrink-0 w-16 h-16 bg-muted rounded overflow-hidden">
+                            {post.image ? (
+                              <img 
+                                src={post.image} 
+                                alt={post.title}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-muted-foreground/20 animate-pulse"></div>
+                            )}
+                          </div>
+                          <div>
+                            <h4 className="font-medium group-hover:text-primary transition-colors line-clamp-2">
+                              <Link 
+                                href={route('posts.show.full', post.slug)} 
+                                className="hover:underline"
+                              >
+                                {post.title}
+                              </Link>
+                            </h4>
+                            <div className="flex items-center text-xs text-muted-foreground">
+                              <span>{formatDistanceToNow(new Date(post.published_at), { addSuffix: true })}</span>
+                              <span className="mx-2">•</span>
+                              <span>{post.views} {post.views === 1 ? 'view' : 'views'}</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
+                  </div>
+                )}
             </aside>
           </div>
           
@@ -373,26 +467,45 @@ export default function Show({ post: postData }: PageProps<{ post: Post }>) {
               {post.category ? `More from ${post.category.name}` : 'Related Articles'}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3].map((item) => (
-                <div key={item} className="group">
-                  <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-3">
-                    <div className="w-full h-full bg-muted-foreground/20 animate-pulse"></div>
-                  </div>
-                  {post.category && (
-                    <div className="text-sm text-primary font-medium mb-1">
-                      {post.category.name}
+              {relatedPosts && relatedPosts.length > 0 ? (
+                relatedPosts.map((relatedPost) => (
+                  <div key={relatedPost.id} className="group">
+                    <div className="aspect-video bg-muted rounded-lg overflow-hidden mb-3">
+                      {relatedPost.image ? (
+                        <img 
+                          src={relatedPost.image} 
+                          alt={relatedPost.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-muted-foreground/20 animate-pulse"></div>
+                      )}
                     </div>
-                  )}
-                  <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
-                    <Link href="#" className="hover:underline">
-                      Related article title goes here and can span multiple lines if needed
-                    </Link>
-                  </h3>
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    Article excerpt goes here and can span multiple lines if needed to fill the space properly.
-                  </p>
-                </div>
-              ))}
+                    {relatedPost.category && (
+                      <div className="text-sm text-primary font-medium mb-1">
+                        {relatedPost.category.name}
+                      </div>
+                    )}
+                    <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
+                      <Link 
+                        href={route('posts.show.full', relatedPost.slug)} 
+                        className="hover:underline"
+                      >
+                        {relatedPost.title}
+                      </Link>
+                    </h3>
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      
+                      <MDEditor.Markdown 
+                        source={relatedPost.excerpt || relatedPost.content.substring(0, 150) + '...'}
+                        className="prose dark:prose-invert max-w-none text-foreground" 
+                      />
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-muted-foreground">No related articles found.</p>
+              )}
             </div>
           </section>
           

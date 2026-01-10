@@ -42,7 +42,7 @@ export default function Edit({ post, categories }: { post: Post, categories: Cat
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        submitForm(route('posts.update', post.uuid));
+        submitForm(route('editor.posts.update', post));
     };
 
     return (
@@ -79,7 +79,7 @@ export default function Edit({ post, categories }: { post: Post, categories: Cat
 
                         <div className="grid gap-2">
                             <Label htmlFor="image">Featured Image</Label>
-                            {post.image && <img src={post.image} alt={post.title} className="w-full h-auto rounded-lg my-2" />}
+                            {post.image && <img src={post.image} alt={post.title} className="w-full lg:w-[20rem] h-auto rounded-lg my-2" />}
                             <Input
                                 id="image"
                                 type="file"
@@ -134,7 +134,7 @@ export default function Edit({ post, categories }: { post: Post, categories: Cat
                             {errors.category_id && <p className="text-red-500 text-xs mt-1">{errors.category_id}</p>}
                         </div>
 
-                        <div className="grid gap-2">
+                        {/* <div className="grid gap-2">
                             <Label htmlFor="status">Status</Label>
                             <Select value={data.status} onValueChange={(value) => setData('status', value)}>
                                 <SelectTrigger>
@@ -148,11 +148,11 @@ export default function Edit({ post, categories }: { post: Post, categories: Cat
                                 </SelectContent>
                             </Select>
                             {errors.status && <p className="text-red-500 text-xs mt-1">{errors.status}</p>}
-                        </div>
+                        </div> */}
 
                         <div className="flex items-center gap-4">
                             <Button type="submit" disabled={processing}>Update Post</Button>
-                            <Link href={route('posts.index')}>
+                            <Link href={route('editor.posts.index')}>
                                 <Button variant="outline">Cancel</Button>
                             </Link>
                         </div>

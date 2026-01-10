@@ -36,7 +36,7 @@ class PostController extends Controller
     public function create()
     {
         // Posts are created by editors, not admins directly in this workflow.
-        return redirect()->route('posts.index');
+        return redirect()->route('admin.posts.index');
     }
 
     /**
@@ -45,7 +45,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         // Posts are created by editors.
-        return redirect()->route('posts.index');
+        return redirect()->route('admin.posts.index');
     }
 
     /**
@@ -84,7 +84,7 @@ class PostController extends Controller
         ]);
 
         $data = $request->except('image');
-
+        $data += ['published_at' => $request->status === 'published' ? now() : null];
         if ($request->hasFile('image')) {
             // Delete old image
             if ($post->image && file_exists(public_path($post->image))) {
@@ -98,7 +98,7 @@ class PostController extends Controller
 
         $post->update($data);
 
-        return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
+        return redirect()->route('admin.posts.index')->with('success', 'Post updated successfully.');
     }
 
     /**
@@ -108,6 +108,6 @@ class PostController extends Controller
     {
         $post->delete();
 
-        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+        return redirect()->route('admin.posts.index')->with('success', 'Post deleted successfully.');
     }
 }

@@ -8,11 +8,114 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class ImagePostSeeder extends Seeder
 {
     protected $imageDirectory = 'public/images';
     protected $imageUrls = [];
+    
+    protected $newsItems = [
+        [
+            'title' => 'Pantami Advocates Stronger Cybersecurity Framework for Nigeria',
+            'excerpt' => 'Professor Isa Pantami has called for stronger cybersecurity policies to protect Nigeria\'s digital infrastructure.',
+            'content' => '<p>Professor Isa Ali Ibrahim Pantami has emphasized the urgent need for Nigeria to strengthen its cybersecurity framework as digital adoption increases across sectors.</p><p>He noted that investment in skills development, cyber awareness, and regulatory enforcement is critical to safeguarding national digital assets.</p>',
+            'category' => 'technology',
+            'status' => 'published',
+            'published_at' => '2025-12-09',
+            'image' => 'images/Gombe-State-Medical-equipment-Handover.png',
+        ],
+        [
+            'title' => 'Pantami Foundation Sponsors ICT Training for Northern Youths',
+            'excerpt' => 'The Pantami Foundation has sponsored ICT training programs aimed at empowering youths with digital skills.',
+            'content' => '<p>The Professor Isa Pantami Foundation has launched an ICT capacity-building program targeting youths across Northern Nigeria.</p><p>The initiative focuses on software development, networking, and digital entrepreneurship to improve employability.</p>',
+            'category' => 'education',
+            'status' => 'published',
+            'published_at' => '2025-12-08',
+            'image' => 'images/Gombe-State-Medical-equipment-Handover.png',
+        ],
+        [
+            'title' => 'Pantami Calls for Ethical Use of Artificial Intelligence in Africa',
+            'excerpt' => 'Pantami has stressed the importance of ethical considerations in the deployment of AI technologies.',
+            'content' => '<p>Professor Pantami has urged policymakers and developers to prioritize ethics and accountability in artificial intelligence systems.</p><p>He warned that unchecked AI deployment could widen inequality and pose security risks.</p>',
+            'category' => 'technology',
+            'status' => 'published',
+            'published_at' => '2025-12-07',
+            'image' => 'images/DR--010.jpg',
+        ],
+        [
+            'title' => 'Pantami Commends Nigerian Startups Driving Digital Innovation',
+            'excerpt' => 'Former minister Pantami has praised Nigerian startups for advancing innovation in fintech and agritech.',
+            'content' => '<p>Professor Isa Pantami has commended Nigerian startups for their resilience and innovation in addressing local challenges through technology.</p><p>He encouraged government and private investors to continue supporting the startup ecosystem.</p>',
+            'category' => 'innovation',
+            'status' => 'published',
+            'published_at' => '2025-12-06',
+            'image' => 'images/Dr.-Isa-Ali-Ibrahim-Pantami.jpg',
+        ],
+        [
+            'title' => 'Pantami Urges Students to Embrace Digital Skills for Future Careers',
+            'excerpt' => 'Pantami has advised Nigerian students to prioritize digital skills to remain competitive globally.',
+            'content' => '<p>Addressing students at a leadership forum, Professor Pantami encouraged young Nigerians to acquire in-demand digital skills.</p><p>He highlighted cybersecurity, data science, and AI as key areas for future employment.</p>',
+            'category' => 'education',
+            'status' => 'published',
+            'published_at' => '2025-12-05',
+            'image' => 'images/Gombe-State-Medical-equipment-Handover.png',
+        ],
+        [
+            'title' => 'Pantami Speaks on Digital Economy Growth in Nigeria',
+            'excerpt' => 'Pantami has reflected on Nigeria\'s digital economy growth during a policy dialogue.',
+            'content' => '<p>Professor Isa Pantami has stated that Nigeria\'s digital economy has shown significant growth over recent years.</p><p>He attributed the progress to broadband expansion, digital inclusion, and policy reforms.</p>',
+            'category' => 'politics',
+            'status' => 'published',
+            'published_at' => '2025-12-04',
+            'image' => 'images/IMG-20250913-WA0085.jpg',
+        ],
+        [
+            'title' => 'Pantami Encourages Collaboration Between Universities and Industry',
+            'excerpt' => 'Pantami has called for closer collaboration between Nigerian universities and the private sector.',
+            'content' => '<p>Professor Pantami has emphasized the need for Nigerian universities to partner with industry players.</p><p>He said such collaboration would improve research relevance and graduate employability.</p>',
+            'category' => 'education',
+            'status' => 'published',
+            'published_at' => '2025-12-03',
+            'image' => 'images/Pantami-001.jpg',
+        ],
+        [
+            'title' => 'Pantami Warns Against Spread of Fake News Online',
+            'excerpt' => 'Pantami has warned against the dangers of misinformation and fake news on digital platforms.',
+            'content' => '<p>Professor Isa Pantami has cautioned social media users against spreading unverified information.</p><p>He stressed that misinformation poses risks to national unity and public trust.</p>',
+            'category' => 'society',
+            'status' => 'published',
+            'published_at' => '2025-12-02',
+            'image' => 'images/download.jpeg',
+        ],
+        [
+            'title' => 'Pantami Supports Youth Participation in Technology Policy',
+            'excerpt' => 'Pantami has encouraged youth involvement in technology policy discussions.',
+            'content' => '<p>Professor Pantami has called on young professionals to actively engage in technology and digital policy formulation.</p><p>He noted that youth perspectives are critical for sustainable innovation.</p>',
+            'category' => 'technology',
+            'status' => 'published',
+            'published_at' => '2025-12-01',
+            'image' => 'images/Dr.-Isa-Ali-Ibrahim-Pantami.jpg',
+        ],
+        [
+            'title' => 'Pantami Warns Against Spread of Fake News Online',
+            'excerpt' => 'Pantami has warned against the dangers of misinformation and fake news on digital platforms.',
+            'content' => '<p>Professor Isa Pantami has cautioned social media users against spreading unverified information.</p><p>He stressed that misinformation poses risks to national unity and public trust.</p>',
+            'category' => 'society',
+            'status' => 'published',
+            'published_at' => '2025-12-02',
+            'image' => 'images/download.jpeg',
+        ],
+        [
+            'title' => 'Pantami Supports Youth Participation in Technology Policy',
+            'excerpt' => 'Pantami has encouraged youth involvement in technology policy discussions.',
+            'content' => '<p>Professor Pantami has called on young professionals to actively engage in technology and digital policy formulation.</p><p>He noted that youth perspectives are critical for sustainable innovation.</p>',
+            'category' => 'news',
+            'status' => 'published',
+            'published_at' => '2025-12-01',
+            'image' => 'images/Dr.-Isa-Ali-Ibrahim-Pantami.jpg',
+        ],
+    ];
 
     public function run(): void
     {
@@ -25,109 +128,137 @@ class ImagePostSeeder extends Seeder
             ]);
         }
 
-        // Get all categories or create some if none exist
-        $categories = Category::all();
-        if ($categories->isEmpty()) {
-            $categories = collect([
-                ['name' => 'News', 'slug' => 'news'],
-                ['name' => 'Metro', 'slug' => 'metro'],
-                ['name' => 'Technology', 'slug' => 'technology'],
-                ['name' => 'Science', 'slug' => 'science'],
-                ['name' => 'Health', 'slug' => 'health'],
-                ['name' => 'Sports', 'slug' => 'sports'],
-                ['name' => 'Entertainment', 'slug' => 'entertainment'],
-                ['name' => 'Business', 'slug' => 'business'],
-                ['name' => 'Politics', 'slug' => 'politics'],
-            ])->map(function ($category) {
-                return Category::create($category);
-            });
+        // Create categories if they don't exist
+        $categories = [];
+        $categorySlugs = array_unique(array_column($this->newsItems, 'category'));
+        
+        foreach ($categorySlugs as $slug) {
+            $categories[$slug] = Category::firstOrCreate(
+                ['slug' => $slug],
+                ['name' => ucfirst($slug)]
+            );
         }
 
-        // Get all image files from the public/images directory
-        $this->getImageFiles();
-
-        if (empty($this->imageUrls)) {
-            $this->command->warn('No images found in the public/images directory. Using placeholder images.');
-            $this->imageUrls = [
-                'https://picsum.photos/1200/675?random=1',
-                'https://picsum.photos/1200/675?random=2',
-                'https://picsum.photos/1200/675?random=3',
-            ];
+        // Create posts from news items
+        foreach ($this->newsItems as $item) {
+            Post::firstOrCreate(
+                ['title' => $item['title']],
+                [
+                    'slug' => Str::slug($item['title']),
+                    'excerpt' => $item['excerpt'],
+                    'content' => $item['content'],
+                    'category_id' => $categories[$item['category']]->id,
+                    'author_id' => $user->id,
+                    'status' => $item['status'],
+                    'published_at' => $item['published_at'],
+                    'image' => $item['image'] ?? null,
+                    'meta_title' => $item['title'],
+                    'meta_description' => $item['excerpt'],
+                    'created_at' => $item['published_at'],
+                    'updated_at' => now(),
+                ]
+            );
         }
 
-        // Create 50 posts
-        $this->command->info('Creating 50 posts with images...');
+        // Create additional random posts if needed
+    //     $remainingPosts =  count($this->newsItems);
+    //     if ($remainingPosts < 0) {
+    //         $categories = Category::all();
+            
+    //         for ($i = 0; $i < $remainingPosts; $i++) {
+    //             $category = $categories->random();
+                
+    //             Post::factory()->create([
+    //                 'category_id' => $category->id,
+    //                 'author_id' => $user->id,
+    //                 'status' => 'published',
+    //                 'published_at' => now()->subDays(rand(0, 60)),
+    //             ]);
+    //         }
+    //     }
+
+    //     if (empty($this->imageUrls)) {
+    //         $this->command->warn('No images found in the public/images directory. Using placeholder images.');
+    //         $this->imageUrls = [
+    //             'https://picsum.photos/1200/675?random=1',
+    //             'https://picsum.photos/1200/675?random=2',
+    //             'https://picsum.photos/1200/675?random=3',
+    //         ];
+    //     }
+
+    //     // Create 50 posts
+    //     $this->command->info('Creating 50 posts with images...');
         
-        $posts = [];
-        $faker = \Faker\Factory::create();
+    //     $posts = [];
+    //     $faker = \Faker\Factory::create();
         
-        for ($i = 1; $i <= 50; $i++) {
-            $category = $categories->random();
-            $content = $this->generateContent($faker, $category->name);
+    //     for ($i = 1; $i <= 2; $i++) {
+    //         $category = $categories->random();
+    //         $content = $this->generateContent($faker, $category->name);
             
-            // Extract first sentence from content to generate relevant title
-            $firstSentence = trim(explode('.', strip_tags($content))[0]);
-            $words = array_filter(explode(' ', $firstSentence));
-            $title = '';
+    //         // Extract first sentence from content to generate relevant title
+    //         $firstSentence = trim(explode('.', strip_tags($content))[0]);
+    //         $words = array_filter(explode(' ', $firstSentence));
+    //         $title = '';
             
-            // Create a title based on the first sentence
-            if (count($words) > 5) {
-                $title = ucfirst(implode(' ', array_slice($words, 0, 8)));
-                $title = rtrim($title, ',.') . '...';
-            } else {
-                // Fallback to Faker if the first sentence is too short
-                $title = $faker->sentence(rand(4, 8));
-            }
+    //         // Create a title based on the first sentence
+    //         if (count($words) > 5) {
+    //             $title = ucfirst(implode(' ', array_slice($words, 0, 8)));
+    //             $title = rtrim($title, ',.') . '...';
+    //         } else {
+    //             // Fallback to Faker if the first sentence is too short
+    //             $title = $faker->sentence(rand(4, 8));
+    //         }
             
-            $slug = Str::slug($title) . '-' . Str::random(6);
-            $image = $this->imageUrls[array_rand($this->imageUrls)];
+    //         $slug = Str::slug($title) . '-' . Str::random(6);
+    //         $image = $this->imageUrls[array_rand($this->imageUrls)];
             
-            $posts[] = [
-                'title' => $title,
-                'slug' => $slug,
-                'content' => $content,
-                'image' => $image,
-                'status' => 'published',
-                'category_id' => $category->id,
-                'author_id' => $user->id,
-                'published_at' => now()->subDays(rand(0, 30)),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
+    //         $posts[] = [
+    //             'title' => $title,
+    //             'slug' => $slug,
+    //             'content' => $content,
+    //             'image' => $image,
+    //             'status' => 'published',
+    //             'category_id' => $category->id,
+    //             'author_id' => $user->id,
+    //             'published_at' => now()->subDays(rand(0, 30)),
+    //             'created_at' => now(),
+    //             'updated_at' => now(),
+    //         ];
             
-            // Show progress
-            if ($i % 10 === 0) {
-                $this->command->info("Created {$i} posts...");
-            }
-        }
+    //         // Show progress
+    //         if ($i % 10 === 0) {
+    //             $this->command->info("Created {$i} posts...");
+    //         }
+    //     }
         
-        // Insert all posts in chunks for better performance
-        foreach (array_chunk($posts, 25) as $chunk) {
-            Post::insert($chunk);
-        }
+    //     // Insert all posts in chunks for better performance
+    //     foreach (array_chunk($posts, 5) as $chunk) {
+    //         Post::insert($chunk);
+    //     }
         
-        $this->command->info('Successfully created 50 posts with images!');
-    }
+    //     $this->command->info('Successfully created 50 posts with images!');
+    // }
     
-    protected function getImageFiles(): void
-    {
-        $imagesPath = base_path($this->imageDirectory);
+    // protected function getImageFiles(): void
+    // {
+    //     $imagesPath = base_path($this->imageDirectory);
         
-        if (!File::exists($imagesPath)) {
-            $this->command->warn("Directory {$imagesPath} does not exist.");
-            return;
-        }
+    //     if (!File::exists($imagesPath)) {
+    //         $this->command->warn("Directory {$imagesPath} does not exist.");
+    //         return;
+    //     }
         
-        $files = File::files($imagesPath);
+    //     $files = File::files($imagesPath);
         
-        foreach ($files as $file) {
-            $extension = strtolower($file->getExtension());
+    //     foreach ($files as $file) {
+    //         $extension = strtolower($file->getExtension());
             
-            // Only include image files
-            if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
-                $this->imageUrls[] = '/images/' . $file->getRelativePathname();
-            }
-        }
+    //         // Only include image files
+    //         if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+    //             $this->imageUrls[] = '/images/' . $file->getRelativePathname();
+    //         }
+    //     }
     }
     
     protected function generateContent($faker, string $category): string

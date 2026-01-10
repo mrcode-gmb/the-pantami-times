@@ -48,7 +48,7 @@ export const NewsSection = ({ title, articles, layout = "grid" }: NewsSectionPro
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-7">
             {featured && featured.slug && (
-              <Link href={route('posts.show', featured.slug)} className="cursor-pointer group">
+              <Link href={route('posts.show.full', featured.slug)} className="cursor-pointer group">
                 <article>
                   {featured.image && (
                     <div className="aspect-video overflow-hidden rounded">

@@ -2,8 +2,9 @@ import EditorLayout from '@/Layouts/EditorLayout';
 import { Head, Link } from '@inertiajs/react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
 import { Button } from '@/Components/ui/button';
+import { ChevronRight } from 'lucide-react';
 
-export default function Dashboard({ stats }: { stats: any }) {
+export default function Dashboard({ stats, recentPosts }: { stats: any, recentPosts: any }) {
     return (
         <EditorLayout header="Editor Dashboard">
             <Head title="Editor Dashboard" />
@@ -63,14 +64,42 @@ export default function Dashboard({ stats }: { stats: any }) {
                     </Link>
                 </div>
 
-                {/* Recent Posts Card */}
                 <Card>
                     <CardHeader>
                         <CardTitle>Recent Posts</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {/* Add a list of recent posts here */}
+                        {recentPosts.length > 0 ? (
+                        <div className="space-y-4">
+                            {recentPosts.map((post:any) => (
+                            <div key={post.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50">
+                                <div>
+                                <Link 
+                                    href={route('editor.posts.edit', post.id)} 
+                                    className="font-medium hover:underline"
+                                >
+                                    {post.title}
+                                </Link>
+                                <div className="text-sm text-muted-foreground">
+                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                    post.status === 'published' ? 'bg-green-100 text-green-800' :
+                                    post.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                    'bg-gray-100 text-gray-800'
+                                    }`}>
+                                    {post.status.charAt(0).toUpperCase() + post.status.slice(1)}
+                                    </span>
+                                    <span className="ml-2">
+                                    {new Date(post.created_at).toLocaleDateString()}
+                                    </span>
+                                </div>
+                                </div>
+                                <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                            </div>
+                            ))}
+                        </div>
+                        ) : (
                         <p className="text-muted-foreground">You have no recent posts.</p>
+                        )}
                     </CardContent>
                 </Card>
             </div>

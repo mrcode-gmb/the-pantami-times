@@ -11,8 +11,12 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
         $posts = Post::where('author_id', auth()->id())->get();
-
+         $recentPosts = $user->posts()
+        ->latest()
+        ->take(5)
+        ->get(['id', 'title', 'slug', 'status', 'created_at']);
         $stats = [
             'total' => $posts->count(),
             'draft' => $posts->where('status', 'draft')->count(),
@@ -23,6 +27,8 @@ class DashboardController extends Controller
 
         return Inertia::render('Editor/Dashboard', [
             'stats' => $stats,
+            'recentPosts' => $recentPosts,
+
         ]);
     }
 }

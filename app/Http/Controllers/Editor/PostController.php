@@ -8,6 +8,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
@@ -39,14 +40,17 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:posts,slug',
             'content' => 'required|string',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $data = $request->except('image');
         $data['author_id'] = auth()->id();
-        $data['status'] = 'draft';
+        $data['status'] = 'pending';
         $data['slug'] = Str::slug($request->title);
         $data['uuid'] = Str::uuid();
 
@@ -59,5 +63,47 @@ class PostController extends Controller
         Post::create($data);
 
         return redirect()->route('editor.dashboard')->with('success', 'Post created successfully.');
+    }
+
+    public function edit(Post $post)
+    {
+        return Inertia::render('Editor/Posts/Edit', [
+            'post' => $post,
+            'categories' => Category::all(),
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Post $post)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:posts,slug,' . $post->id,
+            'content' => 'required|string',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
+            'status' => ['required', Rule::in(['draft', 'pending', 'published', 'archived'])],
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $data = $request->except('image');
+        $data += ['published_at' => $request->status === 'published' ? now() : null];
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($post->image && file_exists(public_path($post->image))) {
+                unlink(public_path($post->image));
+            }
+
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $data['image'] = '/images/'.$imageName;
+        }
+
+        $post->update($data);
+
+        return redirect()->route('editor.posts.index')->with('success', 'Post updated successfully.');
     }
 }

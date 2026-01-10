@@ -67,9 +67,9 @@ function LayoutContent({ children, header }: AdminLayoutProps) {
                                 Editors
                             </Link>
                             <Link
-                                href={route('posts.index')}
+                                href={route('admin.posts.index')}
                                 className={`flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary ${
-                                    route().current('posts.*') ? 'bg-muted text-primary' : ''
+                                    route().current('admin.posts.*') ? 'bg-muted text-primary' : ''
                                 }`}
                             >
                                 <BookOpen className="h-4 w-4" />

@@ -6,7 +6,7 @@ import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import MDEditor from '@uiw/react-md-editor';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useEffect } from 'react';
 
 interface Category {
     id: number;
@@ -16,10 +16,21 @@ interface Category {
 export default function Create({ categories }: { categories: Category[] }) {
     const { data, setData, post, processing, errors } = useForm({
         title: '',
+        slug: '',
         content: '',
+        meta_title: '',
+        meta_description: '',
         category_id: '',
         image: null as File | null,
     });
+
+    useEffect(() => {
+        const slug = data.title
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^\w\-]+/g, '');
+        setData('slug', slug);
+    }, [data.title]);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -48,6 +59,17 @@ export default function Create({ categories }: { categories: Category[] }) {
                         </div>
 
                         <div className="grid gap-2">
+                            <Label htmlFor="slug">Slug</Label>
+                            <Input
+                                id="slug"
+                                value={data.slug}
+                                onChange={(e) => setData('slug', e.target.value)}
+                                required
+                            />
+                            {errors.slug && <p className="text-red-500 text-xs mt-1">{errors.slug}</p>}
+                        </div>
+
+                        <div className="grid gap-2">
                             <Label htmlFor="image">Featured Image</Label>
                             <Input
                                 id="image"
@@ -64,6 +86,26 @@ export default function Create({ categories }: { categories: Category[] }) {
                                 onChange={(value) => setData('content', value || '')}
                             />
                             {errors.content && <p className="text-red-500 text-xs mt-1">{errors.content}</p>}
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="meta_title">Meta Title</Label>
+                            <Input
+                                id="meta_title"
+                                value={data.meta_title}
+                                onChange={(e) => setData('meta_title', e.target.value)}
+                            />
+                            {errors.meta_title && <p className="text-red-500 text-xs mt-1">{errors.meta_title}</p>}
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="meta_description">Meta Description</Label>
+                            <Input
+                                id="meta_description"
+                                value={data.meta_description}
+                                onChange={(e) => setData('meta_description', e.target.value)}
+                            />
+                            {errors.meta_description && <p className="text-red-500 text-xs mt-1">{errors.meta_description}</p>}
                         </div>
 
                         <div className="grid gap-2">
@@ -84,7 +126,7 @@ export default function Create({ categories }: { categories: Category[] }) {
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <Button type="submit" disabled={processing}>Save as Draft</Button>
+                            <Button type="submit" disabled={processing}>Submit for Review</Button>
                             <Link href={route('editor.dashboard')}>
                                 <Button variant="outline">Cancel</Button>
                             </Link>
