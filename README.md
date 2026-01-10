@@ -79,7 +79,7 @@ Hello world and this pantamin gombe
 
 Hello by today prof is bean a leader of tommory in chd 
 
-![image](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyHNngCtnvk9gGEAVPqaiKymx9QnMak2NThg&s)
+
 
 
 # Prof. Isa Ali Pantami  
@@ -99,6 +99,10 @@ Prof. Pantami is a professor of Computer Science with strong expertise in:
 He has taught, mentored, and supervised many students across Nigerian universities, contributing significantly to research and innovation.
 
 ---
+
+
+![image](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyHNngCtnvk9gGEAVPqaiKymx9QnMak2NThg&s)
+
 
 ## 🏛️ Public Service & Leadership
 Prof. Pantami served as:
