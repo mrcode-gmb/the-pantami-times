@@ -93,7 +93,7 @@ export default function Index({ posts, filters }: { posts: PaginatedPosts, filte
                                     <TableCell>{post.category?.name || 'N/A'}</TableCell>
                                     <TableCell>{post.published_at ? new Date(post.published_at).toLocaleString() : 'N/A'}</TableCell>
                                     <TableCell>
-                                        <Link href={route('posts.edit', post.uuid)} className="mr-2">
+                                        <Link href={route('editor.posts.edit', post)} className="mr-2">
                                             <Button variant="outline">Review/Edit</Button>
                                         </Link>
                                         <Button variant="destructive" onClick={() => deletePost(post.id)}>
