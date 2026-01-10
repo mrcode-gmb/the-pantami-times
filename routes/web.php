@@ -22,7 +22,7 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'posts' => Post::with('category')->where("Welcome", "published")->latest()->take(30)->get(), // Pass the latest 20 posts with categories
+        'posts' => Post::with('category')->where("status", "published")->latest()->take(30)->get(), // Pass the latest 20 posts with categories
     ]);
 });
 
