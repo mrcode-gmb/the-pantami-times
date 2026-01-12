@@ -45,8 +45,16 @@ class PostController extends Controller
             ->with(['category', 'author'])
             ->firstOrFail();
 
-        // Increment view count
-        $post->increment('views');
+        // Increment view count only once per IP address (forever)
+        $ipAddress = request()->ip();
+        $cacheKey = 'post_view_' . $post->id . '_' . $ipAddress;
+        
+        // Check if this IP has already viewed this post
+        if (!\Illuminate\Support\Facades\Cache::has($cacheKey)) {
+            $post->increment('views');
+            // Store in cache forever - this IP will never increment this post again
+            \Illuminate\Support\Facades\Cache::forever($cacheKey, true);
+        }
 
         // Get trending posts with full image URLs
         $trendingPosts = Post::where('status', 'published')

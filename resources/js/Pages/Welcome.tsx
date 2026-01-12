@@ -10,22 +10,18 @@ export default function Welcome({
     laravelVersion,
     phpVersion,
     posts,
-}: PageProps<{ laravelVersion: string; phpVersion: string; posts: any[] }>) {
-    const handleImageError = () => {
-        document
-            .getElementById('screenshot-container')
-            ?.classList.add('!hidden');
-        document.getElementById('docs-card')?.classList.add('!row-span-1');
-        document
-            .getElementById('docs-card-content')
-            ?.classList.add('!flex-row');
-        document.getElementById('background')?.classList.add('!hidden');
-    };
-
+    categories,
+}: PageProps<{ 
+    laravelVersion: string; 
+    phpVersion: string; 
+    posts: any[]; 
+    categories: Array<{ id: number; name: string; slug: string; posts_count?: number }>;
+}>) {
     return (
         <>
+            <Head title='Pantami Times - Truth, Humanity, & Progress'/>
             <div className="min-h-screen bg-background">
-                <Header />
+                <Header categories={categories} />
                 <main>
                     <HeroSection posts={posts} />
                     <MainContent posts={posts} />

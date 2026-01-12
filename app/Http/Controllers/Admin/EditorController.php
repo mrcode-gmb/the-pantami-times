@@ -39,14 +39,20 @@ class EditorController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
         ]);
 
-        User::create([
+        // Generate a random password
+        $password = \Illuminate\Support\Str::random(12);
+
+        $editor = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make('12345678'),
+            'password' => Hash::make($password),
             'role' => 'editor',
         ]);
 
-        return redirect()->route('editors.index')->with('success', 'Editor created successfully.');
+        // Send welcome email with login credentials
+        $editor->notify(new \App\Notifications\WelcomeUserNotification($editor, $password, auth()->user()));
+
+        return redirect()->route('editors.index')->with('success', 'Editor created successfully. Welcome email sent with login credentials.');
     }
 
     /**

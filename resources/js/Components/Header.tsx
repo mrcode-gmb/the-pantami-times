@@ -1,102 +1,190 @@
-import { Facebook, Twitter, Instagram, Linkedin, Search, Menu, Sun, Moon } from "lucide-react";
-import logo from "@/assets/logo__Copy_-removebg-preview.png";
-import { useState } from "react";
+import { Facebook, Twitter, Instagram, Linkedin, Search, Menu, Sun, Moon, X, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useTheme } from "@/Components/ThemeProvider";
+import { PantamiLogoCompact } from "@/Components/PantamiLogo";
+import { Link } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 
-const navItems = [
-  { label: "NEWS", href: "#" },
-  { label: "METRO", href: "#" },
-  { label: "SPORT", href: "#" },
-  { label: "LIFE", href: "#" },
-  { label: "TECH", href: "#" },
-  { label: "GTV", href: "#" },
-  { label: "OPINION", href: "#" },
-  { label: "WOMAN", href: "#" },
-  { label: "REVIEWED", href: "#" },
+// Navigation items - will be populated from categories
+interface NavItem {
+  label: string;
+  href: string;
+  slug?: string;
+}
+
+const staticNavItems: NavItem[] = [
+  { label: "HOME", href: "/" },
+  { label: "CATEGORIES", href: "/categories" },
 ];
 
-export const Header = () => {
+interface HeaderProps {
+  categories?: Array<{ id: number; name: string; slug: string; posts_count?: number }>;
+}
+
+export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { theme, setTheme } = useTheme();
 
+  // Create navigation items from categories
+  const navItems: NavItem[] = [
+    ...staticNavItems,
+    ...categories.slice(0, 8).map(cat => ({
+      label: cat.name.toUpperCase(),
+      href: `/category/${cat.slug}`,
+      slug: cat.slug
+    }))
+  ];
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.get(`/search?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
   return (
-    <header className="bg-background border-b border-border sticky top-0 z-50">
-      {/* Top Bar */}
-      <div className="container py-4">
-        <div className="flex items-center justify-between">
-          {/* Social Icons */}
-          <div className="hidden md:flex items-center gap-4">
-            <Facebook className="social-icon" size={18} />
-            <Twitter className="social-icon" size={18} />
-            <Instagram className="social-icon" size={18} />
-            <Linkedin className="social-icon" size={18} />
-          </div>
+    <header className="bg-background border-b-2 border-[#f0a500] sticky top-0 z-50 shadow-sm">
+      {/* Top Bar - Guardian Style */}
+      <div className="bg-[#1a1f2e] text-white">
+        <div className="container">
+          <div className="flex items-center justify-between py-2">
+            {/* Social Icons */}
+            <div className="flex items-center gap-3">
+              <a href="#" className="hover:text-[#f0a500] transition-colors">
+                <Facebook size={16} />
+              </a>
+              <a href="#" className="hover:text-[#f0a500] transition-colors">
+                <Twitter size={16} />
+              </a>
+              <a href="#" className="hover:text-[#f0a500] transition-colors">
+                <Instagram size={16} />
+              </a>
+              <a href="#" className="hover:text-[#f0a500] transition-colors">
+                <Linkedin size={16} />
+              </a>
+            </div>
 
-          {/* Logo */}
-          <div className="flex-1 flex justify-center items-center gap-2 md:gap-4">
-            <img 
-              src={logo} 
-              alt="The Pantami Times" 
-              className="h-16 md:h-16 lg:h-16 object-contain"
-            />
-            <h1 className="text-2xl font-bold">The <span className="text-primary">Pantami</span> Times</h1>
+            {/* Date & Theme */}
+            <div className="flex items-center gap-4 text-xs md:text-sm">
+              <span className="hidden md:block">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+              <button 
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="hover:text-[#f0a500] transition-colors"
+              >
+                {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+              </button>
+            </div>
           </div>
-
-          {/* Search & Theme Toggle */}
-          <div className="hidden md:flex items-center gap-4">
-            <Search className="social-icon" size={20} />
-            <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button 
-            className="md:hidden p-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <Menu size={24} />
-          </button>
         </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="border-t border-border bg-background">
-        <div className="container">
-          <div className="hidden md:flex items-center justify-between py-3">
-            <div className="flex items-center gap-1">
-              <button className="p-2 hover:bg-muted rounded transition-colors">
-                <Menu size={20} />
-              </button>
-              <div className="flex items-center gap-6 ml-4">
-                {navItems.map((item) => (
-                  <a key={item.label} href={item.href} className="nav-link">
-                    {item.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-            <button className="epaper-btn">
-              e-Paper
+      {/* Logo Bar */}
+      <div className="container py-3 md:py-4">
+        <div className="flex items-center justify-between">
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden p-2 hover:bg-muted rounded transition-colors"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          {/* Logo - Centered on mobile, left on desktop */}
+          <div className="flex-1 md:flex-none flex justify-center md:justify-start">
+            <Link href="/">
+              <PantamiLogoCompact />
+            </Link>
+          </div>
+
+          {/* Search Icon - Desktop */}
+          <div className="hidden md:flex items-center gap-2">
+            <button 
+              onClick={() => setSearchOpen(!searchOpen)}
+              className="p-2 hover:bg-muted rounded transition-colors"
+            >
+              <Search size={20} />
             </button>
+          </div>
+
+          {/* Mobile Search */}
+          <button 
+            className="md:hidden p-2 hover:bg-muted rounded transition-colors"
+            onClick={() => setSearchOpen(!searchOpen)}
+          >
+            <Search size={20} />
+          </button>
+        </div>
+
+        {/* Search Bar */}
+        {searchOpen && (
+          <div className="mt-3 animate-in slide-in-from-top">
+            <form onSubmit={handleSearch} className="flex gap-2">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search news..."
+                className="flex-1 px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#f0a500] bg-background text-foreground"
+                autoFocus
+              />
+              <button
+                type="submit"
+                className="px-6 py-2 bg-[#f0a500] text-white rounded-lg hover:bg-[#d99200] transition-colors font-semibold"
+              >
+                Search
+              </button>
+            </form>
+          </div>
+        )}
+      </div>
+
+      {/* Navigation - Guardian Style */}
+      <nav className="bg-[#f0a500] border-t-2 border-[#d99200]">
+        <div className="container">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center justify-between">
+            <div className="flex items-center gap-1 overflow-x-auto">
+              {navItems.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="px-4 py-3 text-sm font-bold text-white hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+            <Link
+              href="/e-paper"
+              className="px-6 py-2 bg-[#1a1f2e] text-white rounded font-semibold text-sm hover:bg-[#2d3748] transition-colors whitespace-nowrap"
+            >
+              e-Paper
+            </Link>
           </div>
 
           {/* Mobile Navigation */}
           {mobileMenuOpen && (
-            <div className="md:hidden py-4 border-t border-border">
-              <div className="flex flex-col gap-3">
+            <div className="md:hidden py-2 animate-in slide-in-from-top">
+              <div className="flex flex-col">
                 {navItems.map((item) => (
-                  <a 
-                    key={item.label} 
-                    href={item.href} 
-                    className="nav-link py-2 px-4 hover:bg-muted rounded"
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="px-4 py-3 text-sm font-bold text-white hover:bg-[#d99200] transition-colors border-b border-[#d99200]/30 uppercase tracking-wide"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 ))}
-                <button className="epaper-btn mx-4 mt-2">
+                <Link
+                  href="/e-paper"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="mx-4 my-3 px-6 py-2 bg-[#1a1f2e] text-white rounded font-semibold text-sm hover:bg-[#2d3748] transition-colors text-center"
+                >
                   e-Paper
-                </button>
+                </Link>
               </div>
             </div>
           )}

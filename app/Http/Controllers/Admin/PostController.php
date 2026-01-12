@@ -81,7 +81,11 @@ class PostController extends Controller
             'category_id' => 'required|exists:categories,id',
             'status' => ['required', Rule::in(['draft', 'pending', 'published', 'archived'])],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'rejection_reason' => 'nullable|string',
         ]);
+
+        // Store the old status to check if it changed
+        $oldStatus = $post->status;
 
         $data = $request->except('image');
         $data += ['published_at' => $request->status === 'published' ? now() : null];
@@ -97,6 +101,20 @@ class PostController extends Controller
         }
 
         $post->update($data);
+
+        // Send notification to the author if status changed from pending
+        if ($oldStatus === 'pending' && $request->status !== 'pending') {
+            $author = $post->author;
+            
+            if ($request->status === 'published') {
+                // Notify author that post was approved
+                $author->notify(new \App\Notifications\PostApproved($post, auth()->user()));
+            } elseif ($request->status === 'archived') {
+                // Notify author that post was rejected
+                $rejectionReason = $request->input('rejection_reason', 'No specific reason provided.');
+                $author->notify(new \App\Notifications\PostRejected($post, auth()->user(), $rejectionReason));
+            }
+        }
 
         return redirect()->route('admin.posts.index')->with('success', 'Post updated successfully.');
     }

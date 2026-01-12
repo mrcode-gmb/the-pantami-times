@@ -40,18 +40,20 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:posts,slug',
             'content' => 'required|string',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
+        
         $data = $request->except('image');
         $data['author_id'] = auth()->id();
         $data['status'] = 'pending';
-        $data['slug'] = Str::slug($request->title);
+        
+        // Generate unique slug by combining title slug with timestamp
+        $baseSlug = Str::slug($request->title);
+        $data['slug'] = $baseSlug . '-' . time();
         $data['uuid'] = Str::uuid();
 
         if ($request->hasFile('image')) {
@@ -60,9 +62,17 @@ class PostController extends Controller
             $data['image'] = '/images/'.$imageName;
         }
 
-        Post::create($data);
+        // First, create the post
+        $post = Post::create($data);
 
-        return redirect()->route('editor.dashboard')->with('success', 'Post created successfully.');
+        // Then get all admins and send notifications
+        $admins = \App\Models\User::where('role', 'admin')->get();
+        
+        foreach ($admins as $admin) {
+            $admin->notify(new \App\Notifications\NewPostPendingReview($post, auth()->user()));
+        }
+
+        return redirect()->route('editor.dashboard')->with('success', 'Post created successfully and sent for review.');
     }
 
     public function edit(Post $post)

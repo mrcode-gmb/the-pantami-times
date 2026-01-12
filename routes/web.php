@@ -15,6 +15,16 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Editor\DashboardController as EditorDashboardController;
 use App\Http\Controllers\Editor\PostController as EditorPostController;
+use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\CategoryController as OutCategoryController;
+
+// SEO Routes
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.index');
+Route::get('/sitemap-posts.xml', [SitemapController::class, 'posts'])->name('sitemap.posts');
+
+// Category Routes
+Route::get('/category/{slug}', [OutCategoryController::class, 'show'])->name('category.show');
+Route::get('/categories', [OutCategoryController::class, 'index'])->name('categories.index');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -22,7 +32,8 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'posts' => Post::with('category')->where("status", "published")->latest()->take(30)->get(), // Pass the latest 20 posts with categories
+        'posts' => Post::with('category')->where("status", "published")->latest()->take(30)->get(),
+        'categories' => \App\Models\Category::withCount('posts')->orderBy('name')->get(),
     ]);
 });
 

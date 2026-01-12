@@ -2,40 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of all categories.
      */
     public function index()
     {
-        //
+        $categories = Category::withCount('posts')->get();
+        
+        return Inertia::render('Categories/Index', [
+            'categories' => $categories,
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show posts for a specific category.
      */
-    public function create()
+    public function show($slug)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        $category = Category::where('slug', $slug)->firstOrFail();
+        
+        $posts = Post::where('category_id', $category->id)
+            ->where('status', 'published')
+            ->whereNotNull('published_at')
+            ->with(['author', 'category'])
+            ->latest('published_at')
+            ->paginate(20);
+        
+        return Inertia::render('Categories/Show', [
+            'category' => $category,
+            'posts' => $posts,
+        ]);
     }
 
     /**

@@ -44,14 +44,20 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'You are not authorized to create admin or editor accounts.');
         }
 
-        User::create([
+        // Generate a random password
+        $password = \Illuminate\Support\Str::random(12);
+
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make('12345678'),
+            'password' => Hash::make($password),
             'role' => $request->role,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+        // Send welcome email with login credentials
+        $user->notify(new \App\Notifications\WelcomeUserNotification($user, $password, auth()->user()));
+
+        return redirect()->route('users.index')->with('success', 'User created successfully. Welcome email sent with login credentials.');
     }
 
     /**
