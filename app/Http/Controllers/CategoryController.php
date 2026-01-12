@@ -53,6 +53,12 @@ class CategoryController extends Controller
             ->latest('published_at')
             ->paginate(20);
         
+        // Transform image URLs for paginated results
+        $posts->getCollection()->transform(function($post) {
+            $post->image = $post->image ? asset($post->image) : null;
+            return $post;
+        });
+        
         // Get all categories for navigation
         $categories = \Illuminate\Support\Facades\Cache::remember('nav_categories', 3600, function () {
             return Category::select('id', 'name', 'slug')
