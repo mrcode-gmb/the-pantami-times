@@ -21,10 +21,11 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
         <div className="lg:col-span-3 space-y-6">
           {sidebarPosts.map((post) => (
             <Link href={route('posts.show.full', post.slug)} key={post.id} className="group cursor-pointer">
-              <div className="aspect-video overflow-hidden rounded">
+              <div className="aspect-video overflow-hidden rounded bg-muted">
                 <img 
                   src={post.image} 
                   alt={post.title}
+                  loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
@@ -36,10 +37,11 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
         {/* Main Featured Story */}
         <div className="lg:col-span-6">
           {featuredPost && (
-            <Link href={route('posts.show.full', featuredPost.slug)} className="relative h-[400px] lg:h-[500px] rounded overflow-hidden group cursor-pointer">
+            <Link href={route('posts.show.full', featuredPost.slug)} className="relative h-[400px] lg:h-[500px] rounded overflow-hidden group cursor-pointer bg-muted">
               <img 
                 src={featuredPost.image}
                 alt={featuredPost.title}
+                fetchPriority="high"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />

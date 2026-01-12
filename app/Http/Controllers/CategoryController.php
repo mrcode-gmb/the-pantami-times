@@ -26,18 +26,45 @@ class CategoryController extends Controller
      */
     public function show($slug)
     {
-        $category = Category::where('slug', $slug)->firstOrFail();
+        $category = Category::select('id', 'name', 'slug')
+            ->where('slug', $slug)
+            ->firstOrFail();
         
-        $posts = Post::where('category_id', $category->id)
+        $posts = Post::select([
+                'id',
+                'uuid',
+                'title',
+                'slug',
+                'image',
+                'excerpt',
+                'category_id',
+                'author_id',
+                'created_at',
+                'published_at',
+                'views'
+            ])
+            ->where('category_id', $category->id)
             ->where('status', 'published')
             ->whereNotNull('published_at')
-            ->with(['author', 'category'])
+            ->with([
+                'author:id,name',
+                'category:id,name,slug'
+            ])
             ->latest('published_at')
             ->paginate(20);
+        
+        // Get all categories for navigation
+        $categories = \Illuminate\Support\Facades\Cache::remember('nav_categories', 3600, function () {
+            return Category::select('id', 'name', 'slug')
+                ->withCount('posts')
+                ->orderBy('name')
+                ->get();
+        });
         
         return Inertia::render('Categories/Show', [
             'category' => $category,
             'posts' => $posts,
+            'categories' => $categories,
         ]);
     }
 

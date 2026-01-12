@@ -17,6 +17,7 @@ use App\Http\Controllers\Editor\DashboardController as EditorDashboardController
 use App\Http\Controllers\Editor\PostController as EditorPostController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\CategoryController as OutCategoryController;
+use App\Http\Controllers\WelcomeController;
 
 // SEO Routes
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.index');
@@ -26,16 +27,8 @@ Route::get('/sitemap-posts.xml', [SitemapController::class, 'posts'])->name('sit
 Route::get('/category/{slug}', [OutCategoryController::class, 'show'])->name('category.show');
 Route::get('/categories', [OutCategoryController::class, 'index'])->name('categories.index');
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-        'posts' => Post::with('category')->where("status", "published")->latest()->take(30)->get(),
-        'categories' => \App\Models\Category::withCount('posts')->orderBy('name')->get(),
-    ]);
-});
+
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 Route::get('/posts/full/{post:uuid}', [PostController::class, 'show'])->name('posts.show.full');
 
@@ -64,7 +57,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('editors', EditorController::class);
     Route::resource('admin/posts', AdminPostController::class)->names("admin.posts");
-    Route::resource('categories', CategoryController::class);
+    Route::resource('admin/categories', CategoryController::class)->names('admin.categories');
     Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('admin.settings.update');
     Route::get('/reports', [ReportController::class, 'index'])->name('admin.reports.index');

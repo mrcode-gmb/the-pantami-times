@@ -37,12 +37,30 @@ class PostController extends Controller
      */
     public function show($post)
     {
-        // Find post by slug or ID, only if published
-        $post = Post::where('slug', $post)
+        // Find post by slug or ID, only if published - optimized query
+        $post = Post::select([
+                'id',
+                'uuid',
+                'title',
+                'slug',
+                'content',
+                'image',
+                'excerpt',
+                'category_id',
+                'author_id',
+                'created_at',
+                'published_at',
+                'views',
+                'status'
+            ])
+            ->where('slug', $post)
             ->orWhere('id', $post)
             ->where('status', 'published')
             ->whereNotNull('published_at')
-            ->with(['category', 'author'])
+            ->with([
+                'category:id,name,slug',
+                'author:id,name'
+            ])
             ->firstOrFail();
 
         // Increment view count only once per IP address (forever)
@@ -56,25 +74,29 @@ class PostController extends Controller
             \Illuminate\Support\Facades\Cache::forever($cacheKey, true);
         }
 
-        // Get trending posts with full image URLs
-        $trendingPosts = Post::where('status', 'published')
+        // Get trending posts with full image URLs - optimized
+        $trendingPosts = Post::select(['id', 'uuid', 'title', 'slug', 'image', 'published_at', 'views', 'category_id'])
+            ->where('status', 'published')
             ->whereNotNull('published_at')
             ->where('id', '!=', $post->id)
+            ->with('category:id,name,slug')
             ->orderBy('views', 'desc')
-            ->take(3)
-            ->get(['id', 'title', 'slug', 'image', 'published_at', 'views'])
+            ->limit(3)
+            ->get()
             ->map(function ($item) {
                 $item->image = $item->image ? asset($item->image) : null;
                 return $item;
             });
 
-        // Get related posts with full image URLs
-        $relatedPosts = Post::where('category_id', $post->category_id)
+        // Get related posts with full image URLs - optimized
+        $relatedPosts = Post::select(['id', 'uuid', 'title', 'slug', 'image', 'excerpt', 'published_at', 'category_id'])
+            ->where('category_id', $post->category_id)
             ->where('id', '!=', $post->id)
             ->where('status', 'published')
             ->whereNotNull('published_at')
+            ->with('category:id,name,slug')
             ->latest('published_at')
-            ->take(3)
+            ->limit(3)
             ->get()
             ->map(function ($item) {
                 $item->image = $item->image ? asset($item->image) : null;
