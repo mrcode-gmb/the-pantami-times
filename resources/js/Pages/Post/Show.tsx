@@ -353,7 +353,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                   
                   <div className="flex items-center space-x-4">
                     <span className="text-sm text-muted-foreground">
-                      Updated {format(new Date(post.updated_at), 'MMMM d, yyyy')}
+                      {post.updated_at && format(new Date(post.updated_at), 'MMMM d, yyyy')}
                     </span>
                   </div>
                 </div>
@@ -497,7 +497,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                     <p className="text-sm text-muted-foreground line-clamp-2">
                       
                       <MDEditor.Markdown 
-                        source={relatedPost.excerpt || relatedPost.content.substring(0, 150) + '...'}
+                        source={relatedPost.excerpt || (relatedPost.content ? relatedPost.content.substring(0, 150) + '...' : '')}
                         className="prose dark:prose-invert max-w-none text-foreground" 
                       />
                     </p>
