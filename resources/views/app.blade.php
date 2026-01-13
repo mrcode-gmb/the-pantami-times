@@ -72,7 +72,7 @@
     "height": 60
   },
   "sameAs": [
-    "https://www.facebook.com/PantamiTimes",
+    "https://web.facebook.com/people/The-Pantami-Times-TPT/61582441495025/",
     "https://twitter.com/PantamiTimes",
     "https://www.instagram.com/PantamiTimes",
     "https://www.linkedin.com/company/PantamiTimes"

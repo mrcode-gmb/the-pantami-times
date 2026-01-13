@@ -10,7 +10,7 @@ class SettingSeeder extends Seeder
     public function run(): void
     {
         $pairs = [
-            'site_name' => 'ThePantamiTimes',
+            'site_name' => 'PantamiTimess',
             'tagline' => 'News, Analysis, and Exclusive Stories',
             'accent_color' => '#D4A017',
             'theme_default' => 'light',

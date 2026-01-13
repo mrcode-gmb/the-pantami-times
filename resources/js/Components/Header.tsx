@@ -1,5 +1,5 @@
-import { Facebook, Twitter, Instagram, Linkedin, Search, Menu, Sun, Moon, X, ChevronDown } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Facebook, Twitter, Instagram, Linkedin, Search, Sun, Moon } from "lucide-react";
+import { useState } from "react";
 import { useTheme } from "@/Components/ThemeProvider";
 import { PantamiLogoCompact } from "@/Components/PantamiLogo";
 import { Link } from "@inertiajs/react";
@@ -22,7 +22,6 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { theme, setTheme } = useTheme();
@@ -52,16 +51,40 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
           <div className="flex items-center justify-between py-2">
             {/* Social Icons */}
             <div className="flex items-center gap-3">
-              <a href="#" className="hover:text-[#f0a500] transition-colors">
+              <a 
+                href="https://web.facebook.com/people/The-Pantami-Times-TPT/61582441495025/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-[#f0a500] transition-colors"
+                aria-label="Follow us on Facebook"
+              >
                 <Facebook size={16} />
               </a>
-              <a href="#" className="hover:text-[#f0a500] transition-colors">
+              <a 
+                href="https://twitter.com/PantamiTimes" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-[#f0a500] transition-colors"
+                aria-label="Follow us on Twitter"
+              >
                 <Twitter size={16} />
               </a>
-              <a href="#" className="hover:text-[#f0a500] transition-colors">
+              <a 
+                href="https://www.instagram.com/PantamiTimes" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-[#f0a500] transition-colors"
+                aria-label="Follow us on Instagram"
+              >
                 <Instagram size={16} />
               </a>
-              <a href="#" className="hover:text-[#f0a500] transition-colors">
+              <a 
+                href="https://www.linkedin.com/company/PantamiTimes" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-[#f0a500] transition-colors"
+                aria-label="Follow us on LinkedIn"
+              >
                 <Linkedin size={16} />
               </a>
             </div>
@@ -83,23 +106,15 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
       {/* Logo Bar */}
       <div className="container py-3 md:py-4">
         <div className="flex items-center justify-between">
-          {/* Mobile Menu Button */}
-          <button 
-            className="md:hidden p-2 hover:bg-muted rounded transition-colors"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-
-          {/* Logo - Centered on mobile, left on desktop */}
-          <div className="flex-1 md:flex-none flex justify-center md:justify-start">
+          {/* Logo */}
+          <div className="flex-1 md:flex-none flex justify-start">
             <Link href="/">
               <PantamiLogoCompact />
             </Link>
           </div>
 
-          {/* Search Icon - Desktop */}
-          <div className="hidden md:flex items-center gap-2">
+          {/* Search Icon */}
+          <div className="flex items-center gap-2">
             <button 
               onClick={() => setSearchOpen(!searchOpen)}
               className="p-2 hover:bg-muted rounded transition-colors"
@@ -107,14 +122,6 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
               <Search size={20} />
             </button>
           </div>
-
-          {/* Mobile Search */}
-          <button 
-            className="md:hidden p-2 hover:bg-muted rounded transition-colors"
-            onClick={() => setSearchOpen(!searchOpen)}
-          >
-            <Search size={20} />
-          </button>
         </div>
 
         {/* Search Bar */}
@@ -164,30 +171,26 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
             </Link>
           </div>
 
-          {/* Mobile Navigation */}
-          {mobileMenuOpen && (
-            <div className="md:hidden py-2 animate-in slide-in-from-top">
-              <div className="flex flex-col">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="px-4 py-3 text-sm font-bold text-white hover:bg-[#d99200] transition-colors border-b border-[#d99200]/30 uppercase tracking-wide"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+          {/* Mobile Navigation - Horizontal Scrollable */}
+          <div className="md:hidden overflow-x-auto scrollbar-hide">
+            <div className="flex items-center gap-1 min-w-max py-1">
+              {navItems.map((item) => (
                 <Link
-                  href="/e-paper"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="mx-4 my-3 px-6 py-2 bg-[#1a1f2e] text-white rounded font-semibold text-sm hover:bg-[#2d3748] transition-colors text-center"
+                  key={item.label}
+                  href={item.href}
+                  className="px-3 py-2 text-xs font-bold text-white hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide rounded"
                 >
-                  e-Paper
+                  {item.label}
                 </Link>
-              </div>
+              ))}
+              <Link
+                href="/e-paper"
+                className="px-4 py-2 bg-[#1a1f2e] text-white rounded font-semibold text-xs hover:bg-[#2d3748] transition-colors whitespace-nowrap ml-2"
+              >
+                e-Paper
+              </Link>
             </div>
-          )}
+          </div>
         </div>
       </nav>
     </header>

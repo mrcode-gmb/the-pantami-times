@@ -24,11 +24,46 @@ export const Footer = () => {
               Conscience, Nurtured by Truth
             </p>
             <div className="flex items-center gap-4">
-              <Facebook className="w-5 h-5 hover:text-primary transition-colors cursor-pointer" />
-              <Twitter className="w-5 h-5 hover:text-primary transition-colors cursor-pointer" />
-              <Instagram className="w-5 h-5 hover:text-primary transition-colors cursor-pointer" />
-              <Linkedin className="w-5 h-5 hover:text-primary transition-colors cursor-pointer" />
-              <Youtube className="w-5 h-5 hover:text-primary transition-colors cursor-pointer" />
+              <a 
+                href="https://web.facebook.com/people/The-Pantami-Times-TPT/61582441495025/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Follow us on Facebook"
+              >
+                <Facebook className="w-5 h-5 hover:text-primary transition-colors cursor-pointer" />
+              </a>
+              <a 
+                href="https://twitter.com/PantamiTimes" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Follow us on Twitter"
+              >
+                <Twitter className="w-5 h-5 hover:text-primary transition-colors cursor-pointer" />
+              </a>
+              <a 
+                href="https://www.instagram.com/PantamiTimes" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Follow us on Instagram"
+              >
+                <Instagram className="w-5 h-5 hover:text-primary transition-colors cursor-pointer" />
+              </a>
+              <a 
+                href="https://www.linkedin.com/company/PantamiTimes" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Follow us on LinkedIn"
+              >
+                <Linkedin className="w-5 h-5 hover:text-primary transition-colors cursor-pointer" />
+              </a>
+              <a 
+                href="https://www.youtube.com/@PantamiTimes" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="Subscribe on YouTube"
+              >
+                <Youtube className="w-5 h-5 hover:text-primary transition-colors cursor-pointer" />
+              </a>
             </div>
           </div>
 

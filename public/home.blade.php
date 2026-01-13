@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ThePantamiTimes | Newsroom</title>
+    <title>PantamiTimess | Newsroom</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -318,7 +318,7 @@
 
     <footer class="bg-black text-white py-8">
         <div class="container mx-auto px-4 text-center">
-            <p class="text-xs text-gray-500">&copy; {{ date('Y') }} ThePantamiTimes. All rights reserved.</p>
+            <p class="text-xs text-gray-500">&copy; {{ date('Y') }} PantamiTimess. All rights reserved.</p>
         </div>
     </footer>
 
