@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\EditorController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Editor\DashboardController as EditorDashboardController;
@@ -24,6 +25,7 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.i
 Route::get('/sitemap-posts.xml', [SitemapController::class, 'posts'])->name('sitemap.posts');
 
 // Category Routes
+Route::get('/category/{categorySlug}/{subcategorySlug}', [OutCategoryController::class, 'showSubcategory'])->name('subcategory.show');
 Route::get('/category/{slug}', [OutCategoryController::class, 'show'])->name('category.show');
 Route::get('/categories', [OutCategoryController::class, 'index'])->name('categories.index');
 
@@ -58,6 +60,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('editors', EditorController::class);
     Route::resource('admin/posts', AdminPostController::class)->names("admin.posts");
     Route::resource('admin/categories', CategoryController::class)->names('admin.categories');
+    Route::resource('admin/subcategories', SubCategoryController::class)->names('admin.subcategories');
     Route::get('/settings', [SettingController::class, 'index'])->name('admin.settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('admin.settings.update');
     Route::get('/reports', [ReportController::class, 'index'])->name('admin.reports.index');

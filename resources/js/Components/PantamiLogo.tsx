@@ -46,7 +46,7 @@ export const PantamiLogoCompact: React.FC<{ className?: string }> = ({ className
       />
 
       {/* Text */}
-      <div className="border-2 border-[#f0a500] rounded px-2 py-1 md:px-4 md:py-1.5">
+      <div className="rounded px-2 py-1 md:px-4 md:py-1.5">
         <h1 className="font-serif text-sm md:text-xl lg:text-2xl font-bold tracking-wide text-foreground transition-colors whitespace-nowrap">
           Pantami Times
         </h1>

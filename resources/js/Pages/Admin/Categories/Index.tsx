@@ -23,7 +23,7 @@ interface PaginatedCategories {
 export default function Index({ categories }: { categories: PaginatedCategories }) {
     const deleteCategory = (id: number) => {
         if (confirm('Are you sure you want to delete this category?')) {
-            router.delete(route('categories.destroy', id));
+            router.delete(route('admin.categories.destroy', id));
         }
     };
 
@@ -33,7 +33,7 @@ export default function Index({ categories }: { categories: PaginatedCategories 
 
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold">Category Management</h1>
-                <Link href={route('categories.create')}>
+                <Link href={route('admin.categories.create')}>
                     <Button>Add Category</Button>
                 </Link>
             </div>
@@ -57,7 +57,7 @@ export default function Index({ categories }: { categories: PaginatedCategories 
                                     <TableCell>{category.name}</TableCell>
                                     <TableCell>{category.posts_count}</TableCell>
                                     <TableCell>
-                                        <Link href={route('categories.edit', category.id)} className="mr-2">
+                                        <Link href={route('admin.categories.edit', category.id)} className="mr-2">
                                             <Button variant="outline">Edit</Button>
                                         </Link>
                                         <Button variant="destructive" onClick={() => deleteCategory(category.id)}>

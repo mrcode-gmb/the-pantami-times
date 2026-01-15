@@ -1,15 +1,31 @@
-import { Facebook, Twitter, Instagram, Linkedin, Search, Sun, Moon } from "lucide-react";
-import { useState } from "react";
+import { Facebook, Twitter, Instagram, Linkedin, Search, Sun, Moon, ChevronDown } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
 import { useTheme } from "@/Components/ThemeProvider";
 import { PantamiLogoCompact } from "@/Components/PantamiLogo";
 import { Link } from "@inertiajs/react";
 import { router } from "@inertiajs/react";
 
 // Navigation items - will be populated from categories
+interface SubCategory {
+  id: number;
+  name: string;
+  slug: string;
+  posts_count?: number;
+}
+
+interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  posts_count?: number;
+  subcategories?: SubCategory[];
+}
+
 interface NavItem {
   label: string;
   href: string;
   slug?: string;
+  subcategories?: SubCategory[];
 }
 
 const staticNavItems: NavItem[] = [
@@ -18,13 +34,39 @@ const staticNavItems: NavItem[] = [
 ];
 
 interface HeaderProps {
-  categories?: Array<{ id: number; name: string; slug: string; posts_count?: number }>;
+  categories?: Category[];
 }
 
 export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showScrollShadow, setShowScrollShadow] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const navRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const { theme, setTheme } = useTheme();
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpenDropdown(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Toggle dropdown on click
+  const toggleDropdown = (label: string, hasSubcategories: boolean, href: string) => {
+    if (hasSubcategories) {
+      setOpenDropdown(openDropdown === label ? null : label);
+    } else {
+      // Navigate directly if no subcategories
+      router.get(href);
+    }
+  };
 
   // Create navigation items from categories
   const navItems: NavItem[] = [
@@ -32,9 +74,24 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
     ...categories.slice(0, 8).map(cat => ({
       label: cat.name.toUpperCase(),
       href: `/category/${cat.slug}`,
-      slug: cat.slug
+      slug: cat.slug,
+      subcategories: cat.subcategories || []
     }))
   ];
+
+  // Check if navigation is scrollable and show shadow
+  useEffect(() => {
+    const checkScroll = () => {
+      if (navRef.current) {
+        const { scrollWidth, clientWidth } = navRef.current;
+        setShowScrollShadow(scrollWidth > clientWidth);
+      }
+    };
+
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [navItems]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -148,41 +205,113 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
       </div>
 
       {/* Navigation - Guardian Style */}
-      <nav className="bg-[#f0a500] border-t-2 border-[#d99200]">
+      <nav className="bg-[#f0a500] border-t-2 border-[#d99200] relative" ref={dropdownRef}>
         <div className="container">
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center justify-between">
-            <div className="flex items-center gap-1 overflow-x-auto">
-              {navItems.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="px-4 py-3 text-sm font-bold text-white hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide"
-                >
-                  {item.label}
-                </Link>
-              ))}
+            <div 
+              ref={navRef}
+              className="flex items-center gap-1 overflow-x-auto scrollbar-hide relative"
+            >
+              {navItems.map((item) => {
+                const hasSubcategories = item.subcategories && item.subcategories.length > 0;
+                const isActive = openDropdown === item.label;
+                
+                return (
+                  <div key={item.label} className="relative">
+                    <button
+                      onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
+                      className={`px-4 py-3 text-sm font-bold text-white hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${
+                        isActive ? 'bg-[#d99200]' : ''
+                      }`}
+                    >
+                      {item.label}
+                      {hasSubcategories && (
+                        <ChevronDown 
+                          size={14} 
+                          className={`transition-transform ${isActive ? 'rotate-180' : ''}`}
+                        />
+                      )}
+                    </button>
+                  </div>
+                );
+              })}
+              
+              {/* Scroll Shadow Indicator */}
+              {showScrollShadow && (
+                <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#f0a500] to-transparent pointer-events-none" />
+              )}
             </div>
             <Link
               href="/e-paper"
-              className="px-6 py-2 bg-[#1a1f2e] text-white rounded font-semibold text-sm hover:bg-[#2d3748] transition-colors whitespace-nowrap"
+              className="px-6 py-2 bg-[#1a1f2e] text-white rounded font-semibold text-sm hover:bg-[#2d3748] transition-colors whitespace-nowrap ml-2"
             >
               e-Paper
             </Link>
           </div>
+        </div>
 
+        {/* Dropdown Panel - Below Navigation */}
+        {openDropdown && (
+          <div className="absolute hidden lg:block top-full left-0 right-0 bg-white dark:bg-[#1a1f2e] shadow-lg border-t-2 border-[#f0a500] z-50 animate-in slide-in-from-top duration-200">
+            <div className="container py-4">
+              {navItems
+                .filter(item => item.label === openDropdown)
+                .map((item) => (
+                  <div key={item.label}>
+                    {item.subcategories && item.subcategories.length > 0 && (
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {item.subcategories.map((sub) => (
+                          <Link
+                            key={sub.id}
+                            href={`/category/${item.slug}/${sub.slug}`}
+                            className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors"
+                            onClick={() => setOpenDropdown(null)}
+                          >
+                            <div className="font-semibold text-foreground group-hover:text-[#f0a500] transition-colors">
+                              {sub.name}
+                            </div>
+                            {sub.posts_count !== undefined && (
+                              <div className="text-xs text-muted-foreground mt-1">
+                                {sub.posts_count} {sub.posts_count === 1 ? 'post' : 'posts'}
+                              </div>
+                            )}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
+        <div className="container">
           {/* Mobile Navigation - Horizontal Scrollable */}
-          <div className="md:hidden overflow-x-auto scrollbar-hide">
+          <div className="md:hidden overflow-x-auto scrollbar-hide relative">
             <div className="flex items-center gap-1 min-w-max py-1">
-              {navItems.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="px-3 py-2 text-xs font-bold text-white hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide rounded"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                const hasSubcategories = item.subcategories && item.subcategories.length > 0;
+                const isActive = openDropdown === item.label;
+                
+                return (
+                  <button
+                    key={item.label}
+                    onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
+                    className={`px-3 py-2 text-xs font-bold text-white hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide rounded flex items-center gap-1 ${
+                      isActive ? 'bg-[#d99200]' : ''
+                    }`}
+                  >
+                    {item.label}
+                    {hasSubcategories && (
+                      <ChevronDown 
+                        size={12} 
+                        className={`transition-transform ${isActive ? 'rotate-180' : ''}`}
+                      />
+                    )}
+                  </button>
+                );
+              })}
               <Link
                 href="/e-paper"
                 className="px-4 py-2 bg-[#1a1f2e] text-white rounded font-semibold text-xs hover:bg-[#2d3748] transition-colors whitespace-nowrap ml-2"
@@ -190,8 +319,46 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
                 e-Paper
               </Link>
             </div>
+            
+            {/* Scroll Shadow Indicator for Mobile */}
+            <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#f0a500] to-transparent pointer-events-none" />
           </div>
         </div>
+        
+        {/* Mobile Dropdown Panel - Outside container to prevent duplication */}
+        {openDropdown && (
+          <div className="md:hidden bg-white dark:bg-[#1a1f2e] border-t-2 border-[#d99200] py-3 animate-in slide-in-from-top duration-200">
+            <div className="container">
+              {navItems
+                .filter(item => item.label === openDropdown)
+                .map((item) => (
+                  <div key={item.label}>
+                    {item.subcategories && item.subcategories.length > 0 && (
+                      <div className="grid grid-cols-2 gap-2">
+                        {item.subcategories.map((sub) => (
+                          <Link
+                            key={sub.id}
+                            href={`/category/${item.slug}/${sub.slug}`}
+                            className="p-2 rounded-lg hover:bg-[#f0a500]/10 transition-colors"
+                            onClick={() => setOpenDropdown(null)}
+                          >
+                            <div className="text-xs font-semibold text-foreground">
+                              {sub.name}
+                            </div>
+                            {sub.posts_count !== undefined && (
+                              <div className="text-[10px] text-muted-foreground mt-0.5">
+                                {sub.posts_count} {sub.posts_count === 1 ? 'post' : 'posts'}
+                              </div>
+                            )}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
       </nav>
     </header>
   );

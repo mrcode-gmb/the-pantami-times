@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { ThemeProvider } from '@/Components/ThemeProvider';
 import { Link, usePage } from '@inertiajs/react';
-import { Bell, BookOpen, Folder, Home, LineChart, Moon, Package2, Settings, Sun, Users, Menu } from 'lucide-react';
+import { Bell, BookOpen, Folder, FolderTree, Home, LineChart, Moon, Package2, Settings, Sun, Users, Menu } from 'lucide-react';
 
 import { Button } from '@/Components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
@@ -54,10 +54,16 @@ function LayoutContent({ children, header }: AdminLayoutProps) {
             active: route().current('admin.posts.*')
         },
         {
-            href: route('categories.index'),
+            href: route('admin.categories.index'),
             icon: <Folder className="h-4 w-4" />,
             label: 'Categories',
-            active: route().current('categories.*')
+            active: route().current('admin.categories.*')
+        },
+        {
+            href: route('admin.subcategories.index'),
+            icon: <FolderTree className="h-4 w-4" />,
+            label: 'Sub Categories',
+            active: route().current('admin.subcategories.*')
         },
         {
             href: route('admin.settings.index'),

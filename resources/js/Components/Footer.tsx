@@ -18,7 +18,7 @@ export const Footer = () => {
           {/* Logo & Social */}
           <div className="lg:col-span-2">
             <h2 className="text-2xl font-serif font-bold mb-2">
-              The<span className="text-primary">PantamiTimes</span>
+              Pantami<span className="text-primary"> Times</span>
             </h2>
             <p className="text-primary-foreground/60 text-sm mb-6">
               Conscience, Nurtured by Truth

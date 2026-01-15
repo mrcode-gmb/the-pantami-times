@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\SubCategory;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -59,9 +60,14 @@ class CategoryController extends Controller
             return $post;
         });
         
-        // Get all categories for navigation
+        // Get all categories with subcategories for navigation
         $categories = \Illuminate\Support\Facades\Cache::remember('nav_categories', 3600, function () {
             return Category::select('id', 'name', 'slug')
+                ->with(['subcategories' => function($query) {
+                    $query->select('id', 'category_id', 'name', 'slug')
+                        ->withCount('posts')
+                        ->orderBy('name');
+                }])
                 ->withCount('posts')
                 ->orderBy('name')
                 ->get();
@@ -69,6 +75,75 @@ class CategoryController extends Controller
         
         return Inertia::render('Categories/Show', [
             'category' => $category,
+            'posts' => $posts,
+            'categories' => $categories,
+        ]);
+    }
+
+    /**
+     * Show posts for a specific subcategory.
+     */
+    public function showSubcategory($categorySlug, $subcategorySlug)
+    {
+        // Find the category
+        $category = Category::select('id', 'name', 'slug')
+            ->where('slug', $categorySlug)
+            ->firstOrFail();
+
+        // Find the subcategory
+        $subcategory = SubCategory::select('id', 'category_id', 'name', 'slug', 'description')
+            ->where('slug', $subcategorySlug)
+            ->where('category_id', $category->id)
+            ->firstOrFail();
+
+        // Get posts for this subcategory
+        $posts = Post::select([
+                'id',
+                'uuid',
+                'title',
+                'slug',
+                'image',
+                'excerpt',
+                'category_id',
+                'subcategory_id',
+                'author_id',
+                'created_at',
+                'published_at',
+                'views'
+            ])
+            ->where('subcategory_id', $subcategory->id)
+            ->where('status', 'published')
+            ->whereNotNull('published_at')
+            ->with([
+                'author:id,name',
+                'category:id,name,slug',
+                'subcategory:id,name,slug'
+            ])
+            ->latest('published_at')
+            ->paginate(20);
+
+        // Transform image URLs for paginated results
+        $posts->getCollection()->transform(function($post) {
+            $post->image = $post->image ? asset($post->image) : null;
+            return $post;
+        });
+
+        // Get all categories with subcategories for navigation
+        $categories = \Illuminate\Support\Facades\Cache::remember('nav_categories', 3600, function () {
+            return Category::select('id', 'name', 'slug')
+                ->with(['subcategories' => function($query) {
+                    $query->select('id', 'category_id', 'name', 'slug')
+                        ->withCount('posts')
+                        ->orderBy('name');
+                }])
+                ->withCount('posts')
+                ->orderBy('name')
+                ->get();
+        });
+
+        return Inertia::render('SubCategories/Show', [
+            'category' => $category,
+            'subcategory' => $subcategory,
             'posts' => $posts,
             'categories' => $categories,
         ]);

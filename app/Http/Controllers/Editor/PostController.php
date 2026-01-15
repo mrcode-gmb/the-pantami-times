@@ -31,8 +31,13 @@ class PostController extends Controller
 
     public function create()
     {
+        $categories = Category::with(['subcategories' => function($query) {
+            $query->select('id', 'category_id', 'name', 'slug')
+                ->orderBy('name');
+        }])->get();
+
         return Inertia::render('Editor/Posts/Create', [
-            'categories' => Category::all(),
+            'categories' => $categories,
         ]);
     }
 
@@ -44,6 +49,7 @@ class PostController extends Controller
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
+            'subcategory_id' => 'nullable|exists:subcategories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         
@@ -77,9 +83,14 @@ class PostController extends Controller
 
     public function edit(Post $post)
     {
+        $categories = Category::with(['subcategories' => function($query) {
+            $query->select('id', 'category_id', 'name', 'slug')
+                ->orderBy('name');
+        }])->get();
+
         return Inertia::render('Editor/Posts/Edit', [
             'post' => $post,
-            'categories' => Category::all(),
+            'categories' => $categories,
         ]);
     }
 
@@ -95,6 +106,7 @@ class PostController extends Controller
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
+            'subcategory_id' => 'nullable|exists:subcategories,id',
             'status' => ['required', Rule::in(['draft', 'pending', 'published', 'archived'])],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);

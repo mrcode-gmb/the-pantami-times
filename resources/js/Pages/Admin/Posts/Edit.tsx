@@ -6,7 +6,14 @@ import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import MDEditor from '@uiw/react-md-editor';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useEffect, useState } from 'react';
+
+interface SubCategory {
+    id: number;
+    category_id: number;
+    name: string;
+    slug: string;
+}
 
 interface Post {
     id: number;
@@ -19,15 +26,19 @@ interface Post {
     meta_description: string;
     status: string;
     category_id: number;
+    subcategory_id?: number | null;
     image: string | null;
 }
 
 interface Category {
     id: number;
     name: string;
+    subcategories?: SubCategory[];
 }
 
 export default function Edit({ post, categories }: { post: Post, categories: Category[] }) {
+    const [availableSubcategories, setAvailableSubcategories] = useState<SubCategory[]>([]);
+    
     const { data, setData, post: submitForm, processing, errors } = useForm({
         title: post.title,
         slug: post.slug,
@@ -35,10 +46,31 @@ export default function Edit({ post, categories }: { post: Post, categories: Cat
         meta_title: post.meta_title,
         meta_description: post.meta_description,
         category_id: post.category_id,
+        subcategory_id: post.subcategory_id || '',
         status: post.status,
         image: null as File | null,
         _method: 'PUT',
     });
+
+    // Initialize subcategories on mount
+    useEffect(() => {
+        const selectedCategory = categories.find(cat => cat.id === post.category_id);
+        setAvailableSubcategories(selectedCategory?.subcategories || []);
+    }, []);
+
+    // Update available subcategories when category changes
+    useEffect(() => {
+        if (data.category_id) {
+            const selectedCategory = categories.find(cat => cat.id === data.category_id);
+            setAvailableSubcategories(selectedCategory?.subcategories || []);
+        } else {
+            setAvailableSubcategories([]);
+        }
+        // Reset subcategory when category changes (except on initial load)
+        if (data.category_id !== post.category_id) {
+            setData('subcategory_id', '');
+        }
+    }, [data.category_id]);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -133,6 +165,30 @@ export default function Edit({ post, categories }: { post: Post, categories: Cat
                             </Select>
                             {errors.category_id && <p className="text-red-500 text-xs mt-1">{errors.category_id}</p>}
                         </div>
+
+                        {/* Subcategory field - only show if category has subcategories */}
+                        {availableSubcategories.length > 0 && (
+                            <div className="grid gap-2">
+                                <Label htmlFor="subcategory_id">Sub Category (Optional)</Label>
+                                <Select 
+                                    value={data.subcategory_id ? String(data.subcategory_id) : 'none'} 
+                                    onValueChange={(value) => setData('subcategory_id', value === 'none' ? '' : Number(value))}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select a subcategory (optional)" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="none">None</SelectItem>
+                                        {availableSubcategories.map((subcategory) => (
+                                            <SelectItem key={subcategory.id} value={String(subcategory.id)}>
+                                                {subcategory.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                {errors.subcategory_id && <p className="text-red-500 text-xs mt-1">{errors.subcategory_id}</p>}
+                            </div>
+                        )}
 
                         <div className="grid gap-2">
                             <Label htmlFor="status">Status</Label>

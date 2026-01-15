@@ -11,9 +11,14 @@ class WelcomeController extends Controller
 {
     public function index()
     {
-        // Cache categories for 1 hour (they don't change often)
+        // Cache categories with subcategories for 1 hour (they don't change often)
         $categories = Cache::remember('nav_categories', 3600, function () {
             return Category::select('id', 'name', 'slug')
+                ->with(['subcategories' => function($query) {
+                    $query->select('id', 'category_id', 'name', 'slug')
+                        ->withCount('posts')
+                        ->orderBy('name');
+                }])
                 ->withCount('posts')
                 ->orderBy('name')
                 ->get();
