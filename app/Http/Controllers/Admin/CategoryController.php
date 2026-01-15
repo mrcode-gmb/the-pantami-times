@@ -43,7 +43,7 @@ class CategoryController extends Controller
             'slug' => Str::slug($request->name),
         ]);
 
-        return redirect()->route('categories.index')->with('success', 'Category created successfully.');
+        return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
     }
 
     /**
@@ -51,7 +51,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return redirect()->route('categories.edit', $category);
+        return redirect()->route('admin.categories.edit', $category);
     }
 
     /**
@@ -78,7 +78,7 @@ class CategoryController extends Controller
             'slug' => Str::slug($request->name),
         ]);
 
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
+        return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully.');
     }
 
     /**
@@ -87,11 +87,11 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         if ($category->posts()->count() > 0) {
-            return redirect()->route('categories.index')->with('error', 'Cannot delete a category that has posts associated with it.');
+            return redirect()->route('admin.categories.index')->with('error', 'Cannot delete a category that has posts associated with it.');
         }
 
         $category->delete();
 
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+        return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully.');
     }
 }

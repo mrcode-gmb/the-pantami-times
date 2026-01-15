@@ -253,13 +253,13 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
         {/* Dropdown Panel - Below Navigation */}
         {openDropdown && (
           <div className="absolute hidden lg:block top-full left-0 right-0 bg-white dark:bg-[#1a1f2e] shadow-lg border-t-2 border-[#f0a500] z-50 animate-in slide-in-from-top duration-200">
-            <div className="container py-4">
+            <div className="container scrollbar-hide">
               {navItems
                 .filter(item => item.label === openDropdown)
                 .map((item) => (
                   <div key={item.label}>
                     {item.subcategories && item.subcategories.length > 0 && (
-                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                      <div className="gap-4 flex flex-row">
                         <Link
                           key={item.label}
                           href={`/category/${item.slug}`}
@@ -281,11 +281,11 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
                               <div className="font-semibold text-foreground group-hover:text-[#f0a500] transition-colors">
                                 {sub.name}
                               </div>
-                              {sub.posts_count !== undefined && (
+                              {/* {sub.posts_count !== undefined && (
                                 <div className="text-xs text-muted-foreground mt-1">
                                   {sub.posts_count} {sub.posts_count === 1 ? 'post' : 'posts'}
                                 </div>
-                              )}
+                              )} */}
                             </Link>
                           </>
                         ))}
@@ -297,9 +297,9 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
           </div>
         )}
 
-        <div className="container">
+        <div className="container relative">
           {/* Mobile Navigation - Horizontal Scrollable */}
-          <div className="md:hidden overflow-x-auto scrollbar-hide relative">
+          <div className="md:hidden overflow-x-auto scrollbar-hide">
             <div className="flex items-center gap-1 min-w-max py-1">
               {navItems.map((item) => {
                 const hasSubcategories = item.subcategories && item.subcategories.length > 0;
@@ -331,26 +331,27 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
             </div>
 
             {/* Scroll Shadow Indicator for Mobile */}
-            <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#f0a500] to-transparent pointer-events-none" />
+            {/* <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#f0a500] to-transparent pointer-events-none" /> */}
           </div>
+            <div className="pointer-events-none absolute right-0 bottom-0 h-full w-8 bg-white opacity-50 " />
         </div>
 
         {/* Mobile Dropdown Panel - Outside container to prevent duplication */}
         {openDropdown && (
-          <div className="md:hidden bg-white dark:bg-[#1a1f2e] border-t-2 border-[#d99200] py-3 animate-in slide-in-from-top duration-200">
-            <div className="container">
+          <div className="md:hidden relative bg-white dark:bg-[#1a1f2e] border-t-2 border-[#d99200] animate-in slide-in-from-top duration-200">
+            <div className="container overflow-x-auto scrollbar-hide">
               {navItems
                 .filter(item => item.label === openDropdown)
                 .map((item) => (
                   <div key={item.label}>
                     {item.subcategories && item.subcategories.length > 0 && (
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="gap-4 flex flex-row">
                         <Link
                           key={item.label}
                           href={`/category/${item.slug}`}
                           className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors"
                         >
-                          <div className="font-semibold text-foreground group-hover:text-[#f0a500] transition-colors">
+                          <div className="font-semibold capitalize text-foreground group-hover:text-[#f0a500] transition-colors">
                             {item.label}
                           </div>
                         </Link>
@@ -358,17 +359,17 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
                           <Link
                             key={sub.id}
                             href={`/category/${item.slug}/${sub.slug}`}
-                            className="p-2 rounded-lg hover:bg-[#f0a500]/10 transition-colors"
+                            className="p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors"
                             onClick={() => setOpenDropdown(null)}
                           >
-                            <div className="text-xs font-semibold text-foreground">
+                            <div className="font-semibold text-nowrap text-foreground">
                               {sub.name}
                             </div>
-                            {sub.posts_count !== undefined && (
+                            {/* {sub.posts_count !== undefined && (
                               <div className="text-[10px] text-muted-foreground mt-0.5">
                                 {sub.posts_count} {sub.posts_count === 1 ? 'post' : 'posts'}
                               </div>
-                            )}
+                            )} */}
                           </Link>
                         ))}
                       </div>
@@ -376,6 +377,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
                   </div>
                 ))}
             </div>
+            <div className="pointer-events-none absolute right-0 bottom-0 h-full w-8 bg-white opacity-50" />
           </div>
         )}
       </nav>

@@ -13,7 +13,7 @@ export default function Create() {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('categories.store'));
+        post(route('admin.categories.store'));
     };
 
     return (

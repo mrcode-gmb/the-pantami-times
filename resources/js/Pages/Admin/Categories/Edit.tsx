@@ -18,7 +18,7 @@ export default function Edit({ category }: { category: Category }) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        put(route('categories.update', category.id));
+        put(route('admin.categories.update', category.id));
     };
 
     return (
