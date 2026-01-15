@@ -1,4 +1,4 @@
-import { Facebook, Twitter, Instagram, Linkedin, Search, Sun, Moon, ChevronDown } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Search, Sun, Moon, ChevronDown, Menu } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useTheme } from "@/Components/ThemeProvider";
 import { PantamiLogoCompact } from "@/Components/PantamiLogo";
@@ -163,8 +163,11 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
       {/* Logo Bar */}
       <div className="container py-3 md:py-4">
         <div className="flex items-center justify-between">
+          <div>
+            <Menu/>
+          </div>
           {/* Logo */}
-          <div className="flex-1 md:flex-none flex justify-start">
+          <div className="flex-1 md:flex-none flex justify-center">
             <Link href="/">
               <PantamiLogoCompact />
             </Link>
@@ -331,9 +334,9 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
             </div>
 
             {/* Scroll Shadow Indicator for Mobile */}
-            {/* <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#f0a500] to-transparent pointer-events-none" /> */}
           </div>
-            <div className="pointer-events-none absolute right-0 bottom-0 h-full w-8 bg-white opacity-50 " />
+            {/* <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#f0a500] to-transparent pointer-events-none" /> */}
+            <div className="pointer-events-none absolute right-0 bottom-0 h-full w-10 bg-gray-400 opacity-50" />
         </div>
 
         {/* Mobile Dropdown Panel - Outside container to prevent duplication */}
@@ -377,7 +380,8 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
                   </div>
                 ))}
             </div>
-            <div className="pointer-events-none absolute right-0 bottom-0 h-full w-8 bg-white opacity-50" />
+            <div className="pointer-events-none absolute right-0 bottom-0 h-full w-10 bg-gray-600 opacity-50" />
+            {/* Right shadow */}
           </div>
         )}
       </nav>
