@@ -51,6 +51,7 @@ class PostController extends Controller
             'category_id' => 'required|exists:categories,id',
             'subcategory_id' => 'nullable|exists:subcategories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'video_url' => 'nullable|url',
         ]);
         
         $data = $request->except('image');
@@ -109,6 +110,7 @@ class PostController extends Controller
             'subcategory_id' => 'nullable|exists:subcategories,id',
             'status' => ['required', Rule::in(['draft', 'pending', 'published', 'archived'])],
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'video_url' => 'nullable|url',
         ]);
 
         $data = $request->except('image');

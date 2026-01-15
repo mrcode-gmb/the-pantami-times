@@ -23,6 +23,7 @@ class Post extends Model
         'meta_title',
         'meta_description',
         'image',
+        'video_url',
         'status',
         'category_id',
         'subcategory_id',

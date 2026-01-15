@@ -33,6 +33,7 @@ export default function Create({ categories }: { categories: Category[] }) {
         category_id: '',
         subcategory_id: '',
         image: null as File | null,
+        video_url: '',
     });
 
     useEffect(() => {
@@ -100,6 +101,21 @@ export default function Create({ categories }: { categories: Category[] }) {
                                 onChange={(e) => setData('image', e.target.files ? e.target.files[0] : null)}
                             />
                             {errors.image && <p className="text-red-500 text-xs mt-1">{errors.image}</p>}
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="video_url">YouTube Video URL (Optional)</Label>
+                            <Input
+                                id="video_url"
+                                type="url"
+                                value={data.video_url}
+                                onChange={(e) => setData('video_url', e.target.value)}
+                                placeholder="https://www.youtube.com/watch?v=..."
+                            />
+                            <p className="text-xs text-muted-foreground">
+                                If provided, this video will be used as the cover instead of the image
+                            </p>
+                            {errors.video_url && <p className="text-red-500 text-xs mt-1">{errors.video_url}</p>}
                         </div>
 
                         <div className="grid gap-2">

@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import { Header } from '@/Components/Header';
 import { Footer } from '@/Components/Footer';
+import { getYouTubeVideoId } from '@/utils/youtube';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +23,7 @@ interface Post {
   content: string;
   excerpt: string;
   image: string;
+  video_url?: string;
   category: {
     id: number;
     name: string;
@@ -300,7 +302,25 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                   </div>
                 </div>
                 
-                {post?.image && (
+                {/* Video or Image Display */}
+                {post?.video_url ? (
+                  <div className="w-full rounded-lg overflow-hidden mb-6">
+                    <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                      <iframe
+                        src={`https://www.youtube.com/embed/${getYouTubeVideoId(post.video_url)}`}
+                        title={post.title}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        className="absolute top-0 left-0 w-full h-full rounded-lg"
+                      />
+                    </div>
+                    {post.image_caption && (
+                      <p className="text-sm text-muted-foreground mt-2">
+                        {post.image_caption}
+                      </p>
+                    )}
+                  </div>
+                ) : post?.image ? (
                   <div className="w-full h-[500px] rounded-lg overflow-hidden mb-6">
                     <img 
                       src={post.image} 
@@ -317,7 +337,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                       {post.image_caption || 'Image caption goes here'}
                     </p>
                   </div>
-                )}
+                ) : null}
               </header>
               
               <MDEditor.Markdown 

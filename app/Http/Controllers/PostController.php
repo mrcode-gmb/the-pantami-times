@@ -45,6 +45,7 @@ class PostController extends Controller
                 'slug',
                 'content',
                 'image',
+                'video_url',
                 'excerpt',
                 'category_id',
                 'author_id',
@@ -76,7 +77,7 @@ class PostController extends Controller
         }
 
         // Get trending posts with full image URLs - optimized
-        $trendingPosts = Post::select(['id', 'uuid', 'title', 'slug', 'image', 'published_at', 'views', 'category_id'])
+        $trendingPosts = Post::select(['id', 'uuid', 'title', 'slug', 'image', 'video_url', 'published_at', 'views', 'category_id'])
             ->where('status', 'published')
             ->whereNotNull('published_at')
             ->where('id', '!=', $post->id)
@@ -90,7 +91,7 @@ class PostController extends Controller
             });
 
         // Get related posts with full image URLs - optimized
-        $relatedPosts = Post::select(['id', 'uuid', 'title', 'slug', 'image', 'excerpt', 'published_at', 'category_id'])
+        $relatedPosts = Post::select(['id', 'uuid', 'title', 'slug', 'image', 'video_url', 'excerpt', 'published_at', 'category_id'])
             ->where('category_id', $post->category_id)
             ->where('id', '!=', $post->id)
             ->where('status', 'published')

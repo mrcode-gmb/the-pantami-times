@@ -31,6 +31,7 @@ class WelcomeController extends Controller
                 'title',
                 'slug',
                 'image',
+                'video_url',
                 'excerpt',
                 'category_id',
                 'author_id',

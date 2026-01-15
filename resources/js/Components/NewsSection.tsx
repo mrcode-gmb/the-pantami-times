@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { NewsCard } from "./NewsCard";
 import MDEditor from '@uiw/react-md-editor';
+import { MediaDisplay } from './MediaDisplay';
 
 interface Category {
   id: number;
@@ -12,6 +13,7 @@ interface Article {
   id: number;
   slug: string;
   image: string;
+  video_url?: string;
   category: Category;
   title: string;
   content: string;
@@ -50,12 +52,14 @@ export const NewsSection = ({ title, articles, layout = "grid" }: NewsSectionPro
             {featured && featured.slug && (
               <Link href={route('posts.show.full', featured.slug)} className="cursor-pointer group">
                 <article>
-                  {featured.image && (
+                  {(featured.image || featured.video_url) && (
                     <div className="aspect-video overflow-hidden rounded">
-                      <img 
-                        src={featured.image} 
-                        alt={featured.title}
+                      <MediaDisplay
+                        image={featured.image}
+                        videoUrl={featured.video_url}
+                        title={featured.title}
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
                       />
                     </div>
                   )}
@@ -80,6 +84,7 @@ export const NewsSection = ({ title, articles, layout = "grid" }: NewsSectionPro
                 category={article.category?.name || 'News'}
                 title={article.title}
                 image={article.image}
+                videoUrl={article.video_url}
                 date={new Date(article.created_at!).toLocaleDateString()}
                 variant="horizontal"
               />
@@ -101,6 +106,7 @@ export const NewsSection = ({ title, articles, layout = "grid" }: NewsSectionPro
             category={article.category?.name || 'News'}
             title={article.title}
             image={article.image}
+            videoUrl={article.video_url}
             excerpt={article.excerpt}
             date={article.published_at ? new Date(article.published_at).toLocaleDateString() : ''}
           />
