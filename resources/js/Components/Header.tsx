@@ -108,36 +108,36 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
           <div className="flex items-center justify-between py-2">
             {/* Social Icons */}
             <div className="flex items-center gap-3">
-              <a 
-                href="https://web.facebook.com/people/The-Pantami-Times-TPT/61582441495025/" 
-                target="_blank" 
+              <a
+                href="https://web.facebook.com/people/The-Pantami-Times-TPT/61582441495025/"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[#f0a500] transition-colors"
                 aria-label="Follow us on Facebook"
               >
                 <Facebook size={16} />
               </a>
-              <a 
-                href="https://twitter.com/PantamiTimes" 
-                target="_blank" 
+              <a
+                href="https://twitter.com/PantamiTimes"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[#f0a500] transition-colors"
                 aria-label="Follow us on Twitter"
               >
                 <Twitter size={16} />
               </a>
-              <a 
-                href="https://www.instagram.com/PantamiTimes" 
-                target="_blank" 
+              <a
+                href="https://www.instagram.com/PantamiTimes"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[#f0a500] transition-colors"
                 aria-label="Follow us on Instagram"
               >
                 <Instagram size={16} />
               </a>
-              <a 
-                href="https://www.linkedin.com/company/PantamiTimes" 
-                target="_blank" 
+              <a
+                href="https://www.linkedin.com/company/PantamiTimes"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-[#f0a500] transition-colors"
                 aria-label="Follow us on LinkedIn"
@@ -149,7 +149,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
             {/* Date & Theme */}
             <div className="flex items-center gap-4 text-xs md:text-sm">
               <span className="hidden md:block">{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
-              <button 
+              <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                 className="hover:text-[#f0a500] transition-colors"
               >
@@ -172,7 +172,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
 
           {/* Search Icon */}
           <div className="flex items-center gap-2">
-            <button 
+            <button
               onClick={() => setSearchOpen(!searchOpen)}
               className="p-2 hover:bg-muted rounded transition-colors"
             >
@@ -209,26 +209,25 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
         <div className="container">
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center justify-between">
-            <div 
+            <div
               ref={navRef}
               className="flex items-center gap-1 overflow-x-auto scrollbar-hide relative"
             >
               {navItems.map((item) => {
                 const hasSubcategories = item.subcategories && item.subcategories.length > 0;
                 const isActive = openDropdown === item.label;
-                
+
                 return (
                   <div key={item.label} className="relative">
                     <button
                       onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
-                      className={`px-4 py-3 text-sm font-bold text-white hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${
-                        isActive ? 'bg-[#d99200]' : ''
-                      }`}
+                      className={`px-4 py-3 text-sm font-bold text-white hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${isActive ? 'bg-[#d99200]' : ''
+                        }`}
                     >
                       {item.label}
                       {hasSubcategories && (
-                        <ChevronDown 
-                          size={14} 
+                        <ChevronDown
+                          size={14}
                           className={`transition-transform ${isActive ? 'rotate-180' : ''}`}
                         />
                       )}
@@ -236,7 +235,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
                   </div>
                 );
               })}
-              
+
               {/* Scroll Shadow Indicator */}
               {showScrollShadow && (
                 <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#f0a500] to-transparent pointer-events-none" />
@@ -261,22 +260,34 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
                   <div key={item.label}>
                     {item.subcategories && item.subcategories.length > 0 && (
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <Link
+                          key={item.label}
+                          href={`/category/${item.slug}`}
+                          className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors"
+                        >
+                          <div className="font-semibold text-foreground group-hover:text-[#f0a500] transition-colors">
+                            {item.label}
+                          </div>
+                        </Link>
                         {item.subcategories.map((sub) => (
-                          <Link
-                            key={sub.id}
-                            href={`/category/${item.slug}/${sub.slug}`}
-                            className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors"
-                            onClick={() => setOpenDropdown(null)}
-                          >
-                            <div className="font-semibold text-foreground group-hover:text-[#f0a500] transition-colors">
-                              {sub.name}
-                            </div>
-                            {sub.posts_count !== undefined && (
-                              <div className="text-xs text-muted-foreground mt-1">
-                                {sub.posts_count} {sub.posts_count === 1 ? 'post' : 'posts'}
+                          <>
+
+                            <Link
+                              key={sub.id}
+                              href={`/category/${item.slug}/${sub.slug}`}
+                              className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors"
+                              onClick={() => setOpenDropdown(null)}
+                            >
+                              <div className="font-semibold text-foreground group-hover:text-[#f0a500] transition-colors">
+                                {sub.name}
                               </div>
-                            )}
-                          </Link>
+                              {sub.posts_count !== undefined && (
+                                <div className="text-xs text-muted-foreground mt-1">
+                                  {sub.posts_count} {sub.posts_count === 1 ? 'post' : 'posts'}
+                                </div>
+                              )}
+                            </Link>
+                          </>
                         ))}
                       </div>
                     )}
@@ -293,19 +304,18 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
               {navItems.map((item) => {
                 const hasSubcategories = item.subcategories && item.subcategories.length > 0;
                 const isActive = openDropdown === item.label;
-                
+
                 return (
                   <button
                     key={item.label}
                     onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
-                    className={`px-3 py-2 text-xs font-bold text-white hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide rounded flex items-center gap-1 ${
-                      isActive ? 'bg-[#d99200]' : ''
-                    }`}
+                    className={`px-3 py-2 text-xs font-bold text-white hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide rounded flex items-center gap-1 ${isActive ? 'bg-[#d99200]' : ''
+                      }`}
                   >
                     {item.label}
                     {hasSubcategories && (
-                      <ChevronDown 
-                        size={12} 
+                      <ChevronDown
+                        size={12}
                         className={`transition-transform ${isActive ? 'rotate-180' : ''}`}
                       />
                     )}
@@ -319,12 +329,12 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
                 e-Paper
               </Link>
             </div>
-            
+
             {/* Scroll Shadow Indicator for Mobile */}
             <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#f0a500] to-transparent pointer-events-none" />
           </div>
         </div>
-        
+
         {/* Mobile Dropdown Panel - Outside container to prevent duplication */}
         {openDropdown && (
           <div className="md:hidden bg-white dark:bg-[#1a1f2e] border-t-2 border-[#d99200] py-3 animate-in slide-in-from-top duration-200">
@@ -335,6 +345,15 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
                   <div key={item.label}>
                     {item.subcategories && item.subcategories.length > 0 && (
                       <div className="grid grid-cols-2 gap-2">
+                        <Link
+                          key={item.label}
+                          href={`/category/${item.slug}`}
+                          className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors"
+                        >
+                          <div className="font-semibold text-foreground group-hover:text-[#f0a500] transition-colors">
+                            {item.label}
+                          </div>
+                        </Link>
                         {item.subcategories.map((sub) => (
                           <Link
                             key={sub.id}
