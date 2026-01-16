@@ -107,7 +107,8 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      router.get(`/search?q=${encodeURIComponent(searchQuery)}`);
+      router.get(route('search.index', { q: searchQuery }));
+      setSearchOpen(false);
     }
   };
 

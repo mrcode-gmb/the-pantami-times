@@ -19,6 +19,7 @@ use App\Http\Controllers\Editor\PostController as EditorPostController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\CategoryController as OutCategoryController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\SearchController;
 
 // SEO Routes
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.index');
@@ -29,6 +30,8 @@ Route::get('/category/{categorySlug}/{subcategorySlug}', [OutCategoryController:
 Route::get('/category/{slug}', [OutCategoryController::class, 'show'])->name('category.show');
 Route::get('/categories', [OutCategoryController::class, 'index'])->name('categories.index');
 
+// Search Route
+Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
