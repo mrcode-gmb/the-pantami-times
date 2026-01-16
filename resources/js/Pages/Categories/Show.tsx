@@ -2,12 +2,23 @@ import { PageProps } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Header } from '@/Components/Header';
 import { Footer } from '@/Components/Footer';
+import { MediaDisplay } from '@/Components/MediaDisplay';
 import { Calendar, Eye, User } from 'lucide-react';
+import { useState, useEffect } from 'react';
+
+interface SubCategory {
+    id: number;
+    name: string;
+    slug: string;
+    posts_count?: number;
+}
 
 interface Category {
     id: number;
     name: string;
     slug: string;
+    posts_count?: number;
+    subcategories?: SubCategory[];
 }
 
 interface Post {
@@ -16,6 +27,7 @@ interface Post {
     title: string;
     slug: string;
     image: string;
+    video_url?: string;
     excerpt: string;
     category: Category;
     author: { id: number; name: string };
@@ -41,6 +53,17 @@ export default function CategoryShow({
     posts: PaginatedPosts;
     categories: Category[];
 }>) {
+    const [activeCategory, setActiveCategory] = useState<string | null>(null);
+    
+    // Auto-open the current category's dropdown on mount
+    useEffect(() => {
+        setActiveCategory(category.name.toUpperCase());
+    }, [category.name]);
+
+    // Find current category with subcategories
+    const currentCategoryWithSubs = categories.find(cat => cat.id === category.id);
+    const subcategories = currentCategoryWithSubs?.subcategories || [];
+
     return (
         <>
             <Head title={`${category.name} - Pantami Times`} />
@@ -58,6 +81,33 @@ export default function CategoryShow({
                         </p>
                     </div>
 
+                    {/* Subcategories Section */}
+                    {subcategories.length > 0 && (
+                        <div className="mb-8">
+                            <h2 className="text-xl font-bold mb-4">Browse by Subcategory</h2>
+                            <div className="flex flex-wrap gap-3">
+                                <Link
+                                    href={`/category/${category.slug}`}
+                                    className="px-4 py-2 bg-[#f0a500] text-white rounded-lg hover:bg-[#d99200] transition-colors font-medium"
+                                >
+                                    All {category.name}
+                                </Link>
+                                {subcategories.map((sub) => (
+                                    <Link
+                                        key={sub.id}
+                                        href={`/category/${category.slug}/${sub.slug}`}
+                                        className="px-4 py-2 bg-muted hover:bg-[#f0a500] hover:text-white rounded-lg transition-colors font-medium"
+                                    >
+                                        {sub.name}
+                                        {sub.posts_count !== undefined && (
+                                            <span className="ml-2 text-xs opacity-75">({sub.posts_count})</span>
+                                        )}
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
                     {/* Posts Grid */}
                     {posts.data.length > 0 ? (
                         <>
@@ -69,13 +119,14 @@ export default function CategoryShow({
                                         className="group"
                                     >
                                         <article className="border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all">
-                                            {/* Post Image */}
+                                            {/* Post Image/Video */}
                                             <div className="aspect-video overflow-hidden bg-muted">
-                                                <img
-                                                    src={post.image}
-                                                    alt={post.title}
-                                                    loading="lazy"
+                                                <MediaDisplay
+                                                    image={post.image}
+                                                    videoUrl={post.video_url}
+                                                    title={post.title}
                                                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                                    loading="lazy"
                                                 />
                                             </div>
 
