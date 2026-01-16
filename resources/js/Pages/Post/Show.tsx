@@ -80,6 +80,8 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
       fetchPost();
     }
   }, [postData]);
+  document.documentElement.setAttribute('data-color-mode', 'dark')
+  document.documentElement.setAttribute('data-color-mode', 'light')
 
   if (isLoading) {
     return (
@@ -339,11 +341,13 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                   </div>
                 ) : null}
               </header>
+              <div data-color-mode="dark" className="p-3">
+                <MDEditor.Markdown 
+                  source={post.content} 
+                  className="prose dark:prose-invert max-w-none text-foreground" 
+                />
+              </div>
               
-              <MDEditor.Markdown 
-                source={post.content} 
-                className="prose dark:prose-invert max-w-none text-foreground" 
-              />
               
               <footer className="mt-12 pt-6 border-t border-border">
                 <div className="flex flex-wrap gap-2 mb-6">
