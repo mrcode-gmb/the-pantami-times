@@ -349,10 +349,12 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                 data-color-mode="dark"
               /> */}
               
-<MarkdownPreview
-  source={post.content}
-  data-color-mode="dark" // or dark
-/>
+              <div className='p-3 bg-white rounded-lg'>
+                <MarkdownPreview
+                  source={post.content}
+                  data-color-mode="dark" // or dark
+                />
+              </div>
               
               <footer className="mt-12 pt-6 border-t border-border">
                 <div className="flex flex-wrap gap-2 mb-6">
