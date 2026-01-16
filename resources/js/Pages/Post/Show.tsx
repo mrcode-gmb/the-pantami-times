@@ -11,8 +11,9 @@ import {
   DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu';
 import { format } from 'date-fns';
-import MDEditor from '@uiw/react-md-editor';// Add this import at the top of your Show.tsx file
+import MDEditor from '@uiw/react-md-editor';
 import { formatDistanceToNow } from 'date-fns';
+import MarkdownPreview from "@uiw/react-markdown-preview";
 
 interface Post {
   id: number;
@@ -341,13 +342,17 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                   </div>
                 ) : null}
               </header>
-              <div data-color-mode="dark" className="p-3 bg-white text-dark">
-                <MDEditor.Markdown 
-                  source={post.content} 
-                  className="prose dark:prose-invert text-dark max-w-none text-foreground" 
-                />
-              </div>
+             
+              {/* <MDEditor.Markdown 
+                source={post.content} 
+                className="prose dark:prose-invert text-dark max-w-none text-foreground" 
+                data-color-mode="dark"
+              /> */}
               
+<MarkdownPreview
+  source={post.content}
+  data-color-mode="dark" // or dark
+/>
               
               <footer className="mt-12 pt-6 border-t border-border">
                 <div className="flex flex-wrap gap-2 mb-6">
