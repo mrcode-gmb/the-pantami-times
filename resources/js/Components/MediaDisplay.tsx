@@ -14,7 +14,7 @@ export const MediaDisplay = ({
     videoUrl, 
     title, 
     className = '',
-    showVideo = false,
+    showVideo = true,
     loading = 'lazy'
 }: MediaDisplayProps) => {
     // Priority: 
@@ -24,8 +24,8 @@ export const MediaDisplay = ({
     // 4. Show placeholder
     
     // If video URL exists and we want to show the video (not just thumbnail)
-    if (videoUrl && showVideo) {
-        const videoId = videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/)?.[1];
+    if (videoUrl || showVideo) {
+        const videoId = videoUrl?.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/)?.[1];
         if (videoId) {
             return (
                 <div className={`relative ${className}`}>
