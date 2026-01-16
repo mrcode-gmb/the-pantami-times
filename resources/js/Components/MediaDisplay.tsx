@@ -17,7 +17,11 @@ export const MediaDisplay = ({
     showVideo = false,
     loading = 'lazy'
 }: MediaDisplayProps) => {
-    // Priority: video_url > image > placeholder
+    // Priority: 
+    // 1. If showVideo=true and videoUrl exists -> show embedded video
+    // 2. If videoUrl exists -> show video thumbnail (video takes priority over image)
+    // 3. If image exists -> show image
+    // 4. Show placeholder
     
     // If video URL exists and we want to show the video (not just thumbnail)
     if (videoUrl && showVideo) {
@@ -37,16 +41,36 @@ export const MediaDisplay = ({
         }
     }
     
-    // If video URL exists, show thumbnail
+    // If video URL exists, show thumbnail (takes priority over image)
     if (videoUrl) {
-        const thumbnail = getYouTubeThumbnail(videoUrl, 'maxres');
+        const thumbnail = getYouTubeThumbnail(videoUrl, 'hq'); // Use 'hq' for better compatibility
+        console.log('Video URL:', videoUrl);
+        console.log('Thumbnail URL:', thumbnail);
         if (thumbnail) {
             return (
                 <img 
                     src={thumbnail} 
                     alt={title}
                     loading={loading}
-                    className={className}
+                    className={className || 'w-full h-full object-cover'}
+                    onError={(e) => {
+                        console.error('Thumbnail failed to load:', thumbnail);
+                        // Fallback to medium quality, then default quality if high quality fails
+                        const target = e.target as HTMLImageElement;
+                        if (target.src.includes('hqdefault')) {
+                            const mqThumbnail = getYouTubeThumbnail(videoUrl, 'mq');
+                            console.log('Trying MQ thumbnail:', mqThumbnail);
+                            if (mqThumbnail) {
+                                target.src = mqThumbnail;
+                                return;
+                            }
+                        }
+                        const fallbackThumbnail = getYouTubeThumbnail(videoUrl, 'default');
+                        console.log('Trying default thumbnail:', fallbackThumbnail);
+                        if (fallbackThumbnail && target.src !== fallbackThumbnail) {
+                            target.src = fallbackThumbnail;
+                        }
+                    }}
                 />
             );
         }
@@ -59,7 +83,7 @@ export const MediaDisplay = ({
                 src={image} 
                 alt={title}
                 loading={loading}
-                className={className}
+                className={className || 'w-full h-full object-cover'}
             />
         );
     }
