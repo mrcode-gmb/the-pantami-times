@@ -2,6 +2,7 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link } from '@inertiajs/react';
 import { Header } from '@/Components/Header';
 import { Footer } from '@/Components/Footer';
+import { MediaDisplay } from '@/Components/MediaDisplay';
 import { Clock, Eye, User, ArrowRight } from 'lucide-react';
 
 interface Category {
@@ -26,6 +27,7 @@ interface Post {
     slug: string;
     excerpt: string;
     image: string | null;
+    video_url?: string;
     published_at: string;
     views: number;
     author: {
@@ -73,7 +75,7 @@ export default function Show({ category, subcategory, posts, categories }: Props
         <>
             <Head title={`${subcategory.name} - ${category.name}`} />
             <div className="min-h-screen bg-background">
-                <Header categories={categories} />
+                <Header categories={categories} activeCategory={category.slug} />
                 <main className="min-h-screen bg-background">
                     <div className="container py-8">
                         {/* Breadcrumb */}
@@ -120,14 +122,17 @@ export default function Show({ category, subcategory, posts, categories }: Props
                                             key={post.id}
                                             className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-border"
                                         >
-                                            {post.image && (
-                                                <Link href={`/posts/full/${post.uuid}`}>
-                                                    <img
-                                                        src={post.image}
-                                                        alt={post.title}
-                                                        className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-                                                        loading="lazy"
-                                                    />
+                                            {(post.image || post.video_url) && (
+                                                <Link href={`/posts/full/${post.uuid}`} className="block">
+                                                    <div className="w-full h-48 overflow-hidden">
+                                                        <MediaDisplay
+                                                            image={post.image}
+                                                            videoUrl={post.video_url}
+                                                            title={post.title}
+                                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                                                            loading="lazy"
+                                                        />
+                                                    </div>
                                                 </Link>
                                             )}
                                             <div className="p-4">

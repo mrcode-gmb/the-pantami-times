@@ -35,9 +35,10 @@ const staticNavItems: NavItem[] = [
 
 interface HeaderProps {
   categories?: Category[];
+  activeCategory?: string | null; // Category slug to keep dropdown open
 }
 
-export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
+export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory = null }) => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showScrollShadow, setShowScrollShadow] = useState(false);
@@ -45,6 +46,16 @@ export const Header: React.FC<HeaderProps> = ({ categories = [] }) => {
   const navRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { theme, setTheme } = useTheme();
+
+  // Auto-open dropdown for active category
+  useEffect(() => {
+    if (activeCategory) {
+      const category = categories.find(cat => cat.slug === activeCategory);
+      if (category) {
+        setOpenDropdown(category.name.toUpperCase());
+      }
+    }
+  }, [activeCategory, categories]);
 
   // Close dropdown when clicking outside
   useEffect(() => {

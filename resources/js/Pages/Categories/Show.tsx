@@ -4,7 +4,6 @@ import { Header } from '@/Components/Header';
 import { Footer } from '@/Components/Footer';
 import { MediaDisplay } from '@/Components/MediaDisplay';
 import { Calendar, Eye, User } from 'lucide-react';
-import { useState, useEffect } from 'react';
 
 interface SubCategory {
     id: number;
@@ -53,13 +52,6 @@ export default function CategoryShow({
     posts: PaginatedPosts;
     categories: Category[];
 }>) {
-    const [activeCategory, setActiveCategory] = useState<string | null>(null);
-    
-    // Auto-open the current category's dropdown on mount
-    useEffect(() => {
-        setActiveCategory(category.name.toUpperCase());
-    }, [category.name]);
-
     // Find current category with subcategories
     const currentCategoryWithSubs = categories.find(cat => cat.id === category.id);
     const subcategories = currentCategoryWithSubs?.subcategories || [];
@@ -68,7 +60,7 @@ export default function CategoryShow({
         <>
             <Head title={`${category.name} - Pantami Times`} />
             <div className="min-h-screen bg-background">
-                <Header categories={categories} />
+                <Header categories={categories} activeCategory={category.slug} />
                 
                 <main className="container py-8">
                     {/* Category Header */}
