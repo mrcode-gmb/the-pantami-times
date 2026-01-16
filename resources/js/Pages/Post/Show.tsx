@@ -341,10 +341,10 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                   </div>
                 ) : null}
               </header>
-              <div data-color-mode="dark" className="p-3">
+              <div data-color-mode="dark" className="p-3 bg-white text-dark">
                 <MDEditor.Markdown 
                   source={post.content} 
-                  className="prose dark:prose-invert max-w-none text-foreground" 
+                  className="prose dark:prose-invert text-dark max-w-none text-foreground" 
                 />
               </div>
               
