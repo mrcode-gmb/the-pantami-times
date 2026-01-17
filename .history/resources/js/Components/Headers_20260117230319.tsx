@@ -236,7 +236,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                   <div key={item.label} className="relative border-r ">
                     <button
                       onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
-                      className={`px-4 py-3 text-sm text-black hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${isActive ? 'bg-[#9c6c0d]' : ''
+                      className={`px-4 py-3 text-sm font-bold text-black hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${isActive ? 'bg-[#9c6c0d]' : ''
                         }`}
                     >
                       {item.label}

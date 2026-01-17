@@ -236,7 +236,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                   <div key={item.label} className="relative border-r ">
                     <button
                       onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
-                      className={`px-4 py-3 text-sm text-black hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${isActive ? 'bg-[#9c6c0d]' : ''
+                      className={`px-4 py-3 text-sm font-bold text-black hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${isActive ? 'bg-[#9c6c0d]' : ''
                         }`}
                     >
                       {item.label}
@@ -258,7 +258,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
             </div>
             <Link
               href="/e-paper"
-              className="px-6 py-2 bg-[#1a1f2e] text-white rounded text-sm hover:bg-[#2d3748] transition-colors whitespace-nowrap ml-2"
+              className="px-6 py-2 bg-[#1a1f2e] text-white rounded font-semibold text-sm hover:bg-[#2d3748] transition-colors whitespace-nowrap ml-2"
             >
               e-Paper
             </Link>
@@ -283,7 +283,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                     href={activeItem.href}
                     className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
                   >
-                    <div className="text-foreground group-hover:text-[#f0a500] transition-colors">
+                    <div className="font-semibold text-foreground group-hover:text-[#f0a500] transition-colors">
                       {activeItem.label}
                     </div>
                   </Link>
@@ -299,7 +299,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                         href={`/category/${activeItem.slug}/${sub.slug}`}
                         className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
                       >
-                        <div className="text-foreground group-hover:text-[#f0a500] transition-colors">
+                        <div className="font-semibold text-foreground group-hover:text-[#f0a500] transition-colors">
                           {sub.name}
                         </div>
                       </Link>
@@ -393,7 +393,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                         href={`/category/${activeItem.slug}/${sub.slug}`}
                         className="p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
                       >
-                        <div className="text-sm text-nowrap text-foreground group-hover:text-[#f0a500]">
+                        <div className="font-semibold text-sm text-nowrap text-foreground group-hover:text-[#f0a500]">
                           {sub.name}
                         </div>
                       </Link>
