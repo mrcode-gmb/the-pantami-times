@@ -1,4 +1,4 @@
-import { Facebook, Twitter, Instagram, Linkedin, Search, Sun, Moon, ChevronDown, Home } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Search, Sun, Moon, ChevronDown, Menu } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useTheme } from "@/Components/ThemeProvider";
 import { PantamiLogoCompact } from "@/Components/PantamiLogo";
@@ -175,9 +175,9 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
       {/* Logo Bar */}
       <div className="container py-3 md:py-4">
         <div className="flex items-center justify-between">
-          <Link href="/">
-            <Home/>
-          </Link>
+          <div>
+            <Menu/>
+          </div>
           {/* Logo */}
           <div className="flex-1 md:flex-none flex justify-center">
             <Link href="/">
@@ -265,54 +265,52 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
           </div>
         </div>
 
-        {/* Dropdown Panel - Below Navigation - Always Visible */}
-        <div className="absolute hidden lg:block top-full left-0 right-0 bg-white dark:bg-[#1a1f2e] shadow-lg border-t-2 border-[#f0a500] z-50">
-          <div className="container overflow-x-auto scrollbar-hide">
-            {(() => {
-              // Get the active category or first category with subcategories
-              const activeItem = navItems.find(item => item.label === openDropdown) || 
-                                navItems.find(item => item.subcategories && item.subcategories.length > 0) ||
-                                navItems[0];
-              
-              if (!activeItem) return null;
+        {/* Dropdown Panel - Below Navigation */}
+        {(
+          <div className="absolute hidden lg:block top-full left-0 right-0 bg-white dark:bg-[#1a1f2e] shadow-lg border-t-2 border-[#f0a500] z-50 animate-in slide-in-from-top duration-200">
+            <div className="container scrollbar-hide">
+              {navItems
+                .filter(item => item.label === openDropdown)
+                .map((item) => (
+                  <div key={item.label}>
+                    {item.subcategories && item.subcategories.length > 0 && (
+                      <div className="gap-4 flex flex-row">
+                        <Link
+                          key={item.label}
+                          href={`/category/${item.slug}`}
+                          className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors"
+                        >
+                          <div className="font-semibold text-foreground group-hover:text-[#f0a500] transition-colors">
+                            {item.label}
+                          </div>
+                        </Link>
+                        {item.subcategories.map((sub) => (
+                          <>
 
-              return (
-                <div className="gap-4 flex flex-row min-w-max">
-                  {/* Main Category Link */}
-                  <Link
-                    href={activeItem.href}
-                    className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
-                  >
-                    <div className="font-semibold text-foreground group-hover:text-[#f0a500] transition-colors">
-                      {activeItem.label}
-                    </div>
-                  </Link>
-                  
-                  {/* Subcategories */}
-                  {activeItem.subcategories && activeItem.subcategories.length > 0 ? (
-                    activeItem.subcategories.map((sub) => (
-                      <Link
-                        key={sub.id}
-                        href={`/category/${activeItem.slug}/${sub.slug}`}
-                        className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
-                      >
-                        <div className="font-semibold text-foreground group-hover:text-[#f0a500] transition-colors">
-                          {sub.name}
-                        </div>
-                      </Link>
-                    ))
-                  ) : (
-                    <div className="p-3 text-sm text-muted-foreground italic">
-                      No subcategories available
-                    </div>
-                  )}
-                </div>
-              );
-            })()}
+                            <Link
+                              key={sub.id}
+                              href={`/category/${item.slug}/${sub.slug}`}
+                              className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors"
+                              onClick={() => setOpenDropdown(null)}
+                            >
+                              <div className="font-semibold text-foreground group-hover:text-[#f0a500] transition-colors">
+                                {sub.name}
+                              </div>
+                              {/* {sub.posts_count !== undefined && (
+                                <div className="text-xs text-muted-foreground mt-1">
+                                  {sub.posts_count} {sub.posts_count === 1 ? 'post' : 'posts'}
+                                </div>
+                              )} */}
+                            </Link>
+                          </>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+            </div>
           </div>
-          {/* Right shadow indicator */}
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white dark:from-[#1a1f2e] to-transparent" />
-        </div>
+        )}
 
         <div className="container relative">
           {/* Mobile Navigation - Horizontal Scrollable */}
@@ -353,57 +351,51 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
             <div className="pointer-events-none absolute right-0 bottom-0 h-full w-10 bg-gray-400 opacity-50" />
         </div>
 
-        {/* Mobile Dropdown Panel - Always Visible */}
-        <div className="md:hidden relative bg-white dark:bg-[#1a1f2e] border-t-2 border-[#d99200]">
-          <div className="container overflow-x-auto scrollbar-hide">
-            {(() => {
-              // Get the active category or first category with subcategories
-              const activeItem = navItems.find(item => item.label === openDropdown) || 
-                                navItems.find(item => item.subcategories && item.subcategories.length > 0) ||
-                                navItems[0];
-              
-              if (!activeItem) return null;
-
-              return (
-                <div className="gap-3 flex flex-row min-w-max">
-                  {/* Main Category Link */}
-                  <Link
-                    href={activeItem.href}
-                    className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
-                  >
-                    <div className="font-semibold text-sm capitalize text-foreground group-hover:text-[#f0a500] transition-colors">
-                      {activeItem.label}
-                    </div>
-                    {/* <div className="text-[10px] text-muted-foreground mt-0.5">
-                      Main
-                    </div> */}
-                  </Link>
-                  
-                  {/* Subcategories */}
-                  {activeItem.subcategories && activeItem.subcategories.length > 0 ? (
-                    activeItem.subcategories.map((sub) => (
-                      <Link
-                        key={sub.id}
-                        href={`/category/${activeItem.slug}/${sub.slug}`}
-                        className="p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
-                      >
-                        <div className="font-semibold text-sm text-nowrap text-foreground group-hover:text-[#f0a500]">
-                          {sub.name}
-                        </div>
-                      </Link>
-                    ))
-                  ) : (
-                    <div className="p-3 text-xs text-muted-foreground italic">
-                      No subcategories
-                    </div>
-                  )}
-                </div>
-              );
-            })()}
+        {/* Mobile Dropdown Panel - Outside container to prevent duplication */}
+        {(
+          <div className="md:hidden relative bg-white dark:bg-[#1a1f2e] border-t-2 border-[#d99200] animate-in slide-in-from-top duration-200">
+            <div className="container overflow-x-auto scrollbar-hide">
+              {navItems
+                .filter(item => item.label === openDropdown)
+                .map((item) => (
+                  <div key={item.label}>
+                    {item.subcategories && item.subcategories.length > 0 && (
+                      <div className="gap-4 flex flex-row">
+                        <Link
+                          key={item.label}
+                          href={`/category/${item.slug}`}
+                          className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors"
+                        >
+                          <div className="font-semibold capitalize text-foreground group-hover:text-[#f0a500] transition-colors">
+                            {item.label}
+                          </div>
+                        </Link>
+                        {item.subcategories.map((sub) => (
+                          <Link
+                            key={sub.id}
+                            href={`/category/${item.slug}/${sub.slug}`}
+                            className="p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors"
+                            onClick={() => setOpenDropdown(null)}
+                          >
+                            <div className="font-semibold text-nowrap text-foreground">
+                              {sub.name}
+                            </div>
+                            {/* {sub.posts_count !== undefined && (
+                              <div className="text-[10px] text-muted-foreground mt-0.5">
+                                {sub.posts_count} {sub.posts_count === 1 ? 'post' : 'posts'}
+                              </div>
+                            )} */}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+            </div>
+            <div className="pointer-events-none absolute right-0 bottom-0 h-full w-10 bg-gray-600 opacity-50" />
+            {/* Right shadow */}
           </div>
-          {/* Right shadow indicator */}
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white dark:from-[#1a1f2e] to-transparent" />
-        </div>
+        )}
       </nav>
     </header>
   );
