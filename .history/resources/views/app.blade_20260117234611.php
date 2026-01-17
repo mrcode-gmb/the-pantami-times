@@ -10,7 +10,7 @@
   <meta name="description"
     content="Pantami Times - Your trusted source for breaking news, analysis, and in-depth reporting. Stay informed with the latest news from around the world.">
   <meta name="keywords"
-    content="news, breaking news, world news, politics, business, technology, sports, entertainment, Pantami Times, https://pantamitimes.com.ng, gombe, gombe news, pantami gombe, gombe state news, pantamitimes.com.ng">
+    content="news, breaking news, world news, politics, business, technology, sports, entertainment, Pantami Times, pantamitimes.com.ng">
   <meta name="author" content="Pantami Times">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <meta name="googlebot" content="index, follow">
