@@ -113,7 +113,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
   };
 
   return (
-    <header className="bg-background sticky top-0 z-50 shadow-sm">
+    <header className="bg-background border-b-2 border-[#f0a500] sticky top-0 z-50 shadow-sm">
       {/* Top Bar - Guardian Style */}
       <div className="bg-[#1a1f2e] text-white">
         <div className="container">
@@ -358,7 +358,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
 
         {/* Mobile Dropdown Panel - Always Visible */}
         <div className="md:hidden relative bg-muted text-muted-foreground">
-          <div className="container overflow-x-auto scrollbar-hide">
+          <div className="container  overflow-x-auto scrollbar-hide">
             {(() => {
               // Get the active category or first category with subcategories
               const activeItem = navItems.find(item => item.label === openDropdown) || 

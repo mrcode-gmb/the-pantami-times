@@ -113,7 +113,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
   };
 
   return (
-    <header className="bg-background sticky top-0 z-50 shadow-sm">
+    <header className="bg-background border-b-2 border-[#f0a500] sticky top-0 z-50 shadow-sm">
       {/* Top Bar - Guardian Style */}
       <div className="bg-[#1a1f2e] text-white">
         <div className="container">
@@ -357,59 +357,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
         </div>
 
         {/* Mobile Dropdown Panel - Always Visible */}
-        <div className="md:hidden relative bg-muted text-muted-foreground">
-          <div className="container overflow-x-auto scrollbar-hide">
-            {(() => {
-              // Get the active category or first category with subcategories
-              const activeItem = navItems.find(item => item.label === openDropdown) || 
-                                navItems.find(item => item.subcategories && item.subcategories.length > 0) ||
-                                navItems[0];
-              
-              if (!activeItem) return null;
-
-              return (
-                <div className="gap-3 flex flex-row min-w-max">
-                  {/* Main Category Link */}
-                  <Link
-                    href={activeItem.href}
-                    className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
-                  >
-                    <div className="font-semibold text-sm capitalize text-foreground group-hover:text-[#f0a500] transition-colors">
-                      {activeItem.label}
-                    </div>
-                    {/* <div className="text-[10px] text-muted-foreground mt-0.5">
-                      Main
-                    </div> */}
-                  </Link>
-                  
-                  {/* Divider */}
-                  <div className="w-px bg-border self-stretch my-2"></div>
-                  
-                  {/* Subcategories */}
-                  {activeItem.subcategories && activeItem.subcategories.length > 0 ? (
-                    activeItem.subcategories.map((sub) => (
-                      <Link
-                        key={sub.id}
-                        href={`/category/${activeItem.slug}/${sub.slug}`}
-                        className="p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
-                      >
-                        <div className="font-semibold text-sm text-nowrap text-foreground group-hover:text-[#f0a500]">
-                          {sub.name}
-                        </div>
-                      </Link>
-                    ))
-                  ) : (
-                    <div className="p-3 text-xs text-muted-foreground italic">
-                      No subcategories
-                    </div>
-                  )}
-                </div>
-              );
-            })()}
-          </div>
-          {/* Right shadow indicator */}
-          <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white dark:from-[#1a1f2e] to-transparent" />
-        </div>
+        
       </nav>
     </header>
   );

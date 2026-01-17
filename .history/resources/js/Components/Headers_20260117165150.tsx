@@ -113,7 +113,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
   };
 
   return (
-    <header className="bg-background sticky top-0 z-50 shadow-sm">
+    <header className="bg-background border-b-2 border-[#f0a500] sticky top-0 z-50 shadow-sm">
       {/* Top Bar - Guardian Style */}
       <div className="bg-[#1a1f2e] text-white">
         <div className="container">
