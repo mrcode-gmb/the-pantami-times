@@ -88,7 +88,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
-        <Header categories={categories} />
+        {/* <Header /> */}
         <main className="container py-12">
           <div className="animate-pulse space-y-6">
             <div className="h-10 bg-muted rounded w-3/4"></div>
@@ -177,7 +177,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
       </Head>
       
       <div className="min-h-screen bg-background">
-        <Header categories={categories}/>
+        <Header />
         
         <main className="container py-6">
           {/* Breadcrumb */}

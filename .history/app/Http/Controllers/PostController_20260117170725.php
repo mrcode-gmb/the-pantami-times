@@ -113,7 +113,7 @@ class PostController extends Controller
         if ($post->author && $post->author->profile_photo_path) {
             $post->author->profile_photo_url = asset('storage/' . $post->author->profile_photo_path);
         }
-
+        return 'categories' => Category::with("subcategories")->get();
         return Inertia::render('Post/Show', [
             'post' => $post,
             'relatedPosts' => $relatedPosts,

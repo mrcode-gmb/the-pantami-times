@@ -177,7 +177,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
       </Head>
       
       <div className="min-h-screen bg-background">
-        <Header categories={categories}/>
+        <Header categories={}/>
         
         <main className="container py-6">
           {/* Breadcrumb */}

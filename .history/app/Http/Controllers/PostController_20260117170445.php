@@ -118,7 +118,7 @@ class PostController extends Controller
             'post' => $post,
             'relatedPosts' => $relatedPosts,
             'trendingPosts' => $trendingPosts,
-            'categories' => Category::with("subcategories")->get(),
+            'categories' => Category::with()->all(),
         ]);
     }
 

@@ -299,7 +299,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                         href={`/category/${activeItem.slug}/${sub.slug}`}
                         className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
                       >
-                        <div className="font-semibold text-foreground group-hover:text-[#f0a500] transition-colors">
+                        <div className="font-semibold text-black group-hover:text-[#f0a500] transition-colors">
                           {sub.name}
                         </div>
                       </Link>
@@ -317,7 +317,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
           <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white dark:from-[#1a1f2e] to-transparent" />
         </div>
 
-        <div className="containers py-0 relative">
+        <div className="container py-0 relative">
           {/* Mobile Navigation - Horizontal Scrollable */}
           <div className="md:hidden overflow-x-auto scrollbar-hide">
             <div className="flex items-center gap-1 min-w-max py-1">
@@ -329,7 +329,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                   <button
                     key={item.label}
                     onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
-                    className={`px-3 py-2 text-xs font-bold border-r border-black text-black hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${isActive ? 'bg-[#d99200]' : ''
+                    className={`px-3 py-2 text-xs font-bold border-r border-black text-white hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${isActive ? 'bg-[#d99200]' : ''
                       }`}
                   >
                     {item.label}

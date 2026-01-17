@@ -88,7 +88,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
-        <Header categories={categories} />
+        <Header />
         <main className="container py-12">
           <div className="animate-pulse space-y-6">
             <div className="h-10 bg-muted rounded w-3/4"></div>
@@ -109,7 +109,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
   if (error || !post) {
     return (
       <div className="min-h-screen bg-background">
-        <Header categories={categories}/>
+        <Header categories={/>
         <main className="container py-12 text-center">
           <div className="bg-destructive/10 text-destructive p-6 rounded-lg inline-block">
             <h1 className="text-2xl font-bold mb-2">Post Not Found</h1>
@@ -177,7 +177,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
       </Head>
       
       <div className="min-h-screen bg-background">
-        <Header categories={categories}/>
+        <Header />
         
         <main className="container py-6">
           {/* Breadcrumb */}

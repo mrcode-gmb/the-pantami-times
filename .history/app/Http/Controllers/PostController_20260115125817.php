@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Inertia\Inertia;
-use App\Models\Category;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PostController extends Controller
 {
@@ -118,7 +117,6 @@ class PostController extends Controller
             'post' => $post,
             'relatedPosts' => $relatedPosts,
             'trendingPosts' => $trendingPosts,
-            'categories' => Category::with("subcategories")->get(),
         ]);
     }
 
