@@ -20,7 +20,7 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Sidebar */}
         
-        <div className="lg:col-span-3 grid grid-cols-1 w-full max-md:grid-cols-2 gap-3">
+        <div className="lg:col-span-3  space-y-6">
           {sidebarPosts.map((post) => (
             <>
             <Link href={route('posts.show.full', post.slug)} key={post.id} className="group cursor-pointer">
@@ -43,25 +43,28 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
         {/* Main Featured Story */}
         <div className="lg:col-span-6">
           {featuredPost && (
-            <Link href={route('posts.show.full', featuredPost.slug)} className="cursor-pointer group">
+            <Link href={route('posts.show.full', featured.slug)} className="cursor-pointer group">
             <article>
-              {(featuredPost.image || featuredPost.video_url) && (
-                <div className="aspect-video relative overflow-hidden rounded">
+              {(featured.image || featured.video_url) && (
+                <div className="aspect-video overflow-hidden rounded">
                   <MediaDisplay
-                    image={featuredPost.image}
-                    videoUrl={featuredPost.video_url}
-                    title={featuredPost.title}
+                    image={featured.image}
+                    videoUrl={featured.video_url}
+                    title={featured.title}
                     className="w-full h-full object-cover transition-transform"
                     loading="lazy"
                     showVideo={false}
                   />
-                  <div className="absolute top-4 left-4">
-                    <span className="top-news-badge">TOP NEWS</span>
-                  </div>
                 </div>
               )}
-              <div className="mt-4 text-center">
-                <h3 className="news-title-lg mt-2">{featuredPost.title}</h3>
+              <div className="mt-4">
+                <span className="category-tag">{featured.category?.name || 'News'}</span>
+                <h3 className="news-title-lg mt-2">{featured.title}</h3>
+                {featured.content && (
+                  <div className="text-muted-foreground mt-3 line-clamp-3">
+                    <MDEditor.Markdown source={featured.excerpt || featured.content.substring(0, 150) + '...'} />
+                  </div>
+                )}
               </div>
             </article>
           </Link>

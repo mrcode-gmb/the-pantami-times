@@ -20,7 +20,7 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Sidebar */}
         
-        <div className="lg:col-span-3 grid grid-cols-1 w-full max-md:grid-cols-2 gap-3">
+        <div className="lg:col-span-3  space-y-6">
           {sidebarPosts.map((post) => (
             <>
             <Link href={route('posts.show.full', post.slug)} key={post.id} className="group cursor-pointer">
@@ -42,32 +42,31 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
 
         {/* Main Featured Story */}
         <div className="lg:col-span-6">
-          {featuredPost && (
-            <Link href={route('posts.show.full', featuredPost.slug)} className="cursor-pointer group">
-            <article>
-              {(featuredPost.image || featuredPost.video_url) && (
-                <div className="aspect-video relative overflow-hidden rounded">
-                  <MediaDisplay
-                    image={featuredPost.image}
-                    videoUrl={featuredPost.video_url}
-                    title={featuredPost.title}
-                    className="w-full h-full object-cover transition-transform"
-                    loading="lazy"
-                    showVideo={false}
-                  />
-                  <div className="absolute top-4 left-4">
-                    <span className="top-news-badge">TOP NEWS</span>
+        <Link href={route('posts.show.full', featuredPost.slug)} className="cursor-pointer group">
+              <article>
+                {(featuredPost.image || featuredPost.video_url) && (
+                  <div className="aspect-video overflow-hidden rounded">
+                    <MediaDisplay
+                      image={featuredPost.image}
+                      videoUrl={featuredPost.video_url}
+                      title={featuredPost.title}
+                      className="w-full h-full object-cover transition-transform"
+                      loading="lazy"
+                      showVideo={false}
+                    />
                   </div>
+                )}
+                <div className="mt-4">
+                  <span className="category-tag">{featuredPost.category?.name || 'News'}</span>
+                  <h3 className="news-title-lg mt-2">{featuredPost.title}</h3>
                 </div>
-              )}
-              <div className="mt-4 text-center">
-                <h3 className="news-title-lg mt-2">{featuredPost.title}</h3>
-              </div>
-            </article>
-          </Link>
-          )}
+              </article>
+            </Link>
         </div>
 
+        <div className="absolute top-4 left-4">
+          <span className="top-news-badge">TOP NEWS</span>
+        </div>
         {/* Right Sidebar - Latest News */}
         <div className="lg:col-span-3">
           <h2 className="section-heading mb-4">LATEST NEWS</h2>

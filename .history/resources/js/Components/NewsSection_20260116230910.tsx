@@ -58,7 +58,7 @@ export const NewsSection = ({ title, articles, layout = "grid" }: NewsSectionPro
                         image={featured.image}
                         videoUrl={featured.video_url}
                         title={featured.title}
-                        className="w-full h-full object-cover transition-transform"
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         loading="lazy"
                         showVideo={false}
                       />

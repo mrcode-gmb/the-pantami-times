@@ -20,7 +20,7 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Sidebar */}
         
-        <div className="lg:col-span-3 grid grid-cols-1 w-full max-md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-1 gap-3">
           {sidebarPosts.map((post) => (
             <>
             <Link href={route('posts.show.full', post.slug)} key={post.id} className="group cursor-pointer">

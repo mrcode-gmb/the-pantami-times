@@ -317,7 +317,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
           <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white dark:from-[#1a1f2e] to-transparent" />
         </div>
 
-        <div className="container py-0 relative">
+        <div className="container relative">
           {/* Mobile Navigation - Horizontal Scrollable */}
           <div className="md:hidden overflow-x-auto scrollbar-hide">
             <div className="flex items-center gap-1 min-w-max py-1">
@@ -329,7 +329,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                   <button
                     key={item.label}
                     onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
-                    className={`px-3 py-2 text-xs font-bold border-r border-black text-white hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${isActive ? 'bg-[#d99200]' : ''
+                    className={`px-3 py-2 text-xs font-bold border border-black text-white hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide rounded flex items-center gap-1 ${isActive ? 'bg-[#d99200]' : ''
                       }`}
                   >
                     {item.label}

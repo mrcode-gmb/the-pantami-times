@@ -317,7 +317,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
           <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white dark:from-[#1a1f2e] to-transparent" />
         </div>
 
-        <div className="container py-0 relative">
+        <div className="container relative">
           {/* Mobile Navigation - Horizontal Scrollable */}
           <div className="md:hidden overflow-x-auto scrollbar-hide">
             <div className="flex items-center gap-1 min-w-max py-1">

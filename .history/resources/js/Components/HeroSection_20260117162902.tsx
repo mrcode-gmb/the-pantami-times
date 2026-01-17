@@ -20,7 +20,7 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Sidebar */}
         
-        <div className="lg:col-span-3 grid grid-cols-1 w-full max-md:grid-cols-2 gap-3">
+        <div className="lg:col-span-3  space-y-6">
           {sidebarPosts.map((post) => (
             <>
             <Link href={route('posts.show.full', post.slug)} key={post.id} className="group cursor-pointer">
@@ -43,28 +43,27 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
         {/* Main Featured Story */}
         <div className="lg:col-span-6">
           {featuredPost && (
-            <Link href={route('posts.show.full', featuredPost.slug)} className="cursor-pointer group">
-            <article>
-              {(featuredPost.image || featuredPost.video_url) && (
-                <div className="aspect-video relative overflow-hidden rounded">
-                  <MediaDisplay
-                    image={featuredPost.image}
-                    videoUrl={featuredPost.video_url}
-                    title={featuredPost.title}
-                    className="w-full h-full object-cover transition-transform"
-                    loading="lazy"
-                    showVideo={false}
-                  />
-                  <div className="absolute top-4 left-4">
-                    <span className="top-news-badge">TOP NEWS</span>
-                  </div>
-                </div>
-              )}
-              <div className="mt-4 text-center">
-                <h3 className="news-title-lg mt-2">{featuredPost.title}</h3>
+            <div href={route('posts.show.full', featuredPost.slug)} className="relative h-[400px] lg:h-[500px] rounded overflow-hidden group cursor-pointer bg-muted">
+              <MediaDisplay
+                image={featuredPost.image}
+                videoUrl={featuredPost.video_url}
+                title={featuredPost.title}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="eager"
+                showVideo={false}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+              <div className="absolute top-4 left-4">
+                <span className="top-news-badge">TOP NEWS</span>
               </div>
-            </article>
-          </Link>
+              <div href={route('posts.show.full', featuredPost.slug)} className="absolute bottom-0 left-0 right-0 p-6">
+              <div className="bottom-0 left-0 right-0 p-6">
+                <h2 className="news-title-hero mb-4">
+                  {featuredPost.title}
+                </h2>
+              </div>
+              <
+            </div>
           )}
         </div>
 
