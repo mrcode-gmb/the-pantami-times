@@ -325,7 +325,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                     )}
                   </div>
                 ) : post?.image ? (
-                  <div className="w-full h-[500px] max-md:h-full rounded-lg overflow-hidden mb-6">
+                  <div className="w-full h-[500px] max-md:h rounded-lg overflow-hidden mb-6">
                     <img 
                       src={post.image} 
                       alt={post.title}

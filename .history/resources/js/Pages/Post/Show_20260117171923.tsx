@@ -325,11 +325,11 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                     )}
                   </div>
                 ) : post?.image ? (
-                  <div className="w-full h-[500px] max-md:h-full rounded-lg overflow-hidden mb-6">
+                  <div className="w-400 h-[500px] rounded-lg overflow-hidden mb-6">
                     <img 
                       src={post.image} 
                       alt={post.title}
-                      className="w-full h-full max-md:h-[300px] object-cover"
+                      className="w-full h-full object-cover"
                       onError={(e) => {
                         // Fallback to a placeholder image if the image fails to load
                         const target = e.target as HTMLImageElement;
