@@ -1,6 +1,6 @@
 import { PageProps } from '@/types';
 import { Head, Link } from '@inertiajs/react';
-import { Header } from '@/Components/Header';
+import { Header } from '@/Components/Headers';
 import { Footer } from '@/Components/Footer';
 
 interface Category {

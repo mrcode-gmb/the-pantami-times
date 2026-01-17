@@ -1,6 +1,6 @@
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link } from '@inertiajs/react';
-import { Header } from '@/Components/Header';
+import { Header } from '@/Components/Headers';
 import { Footer } from '@/Components/Footer';
 import { MediaDisplay } from '@/Components/MediaDisplay';
 import { Clock, Eye, User, ArrowRight } from 'lucide-react';

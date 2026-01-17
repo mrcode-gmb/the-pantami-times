@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import { PageProps } from '@/types';
-import { Header } from '@/Components/Header';
+import { Header } from '@/Components/Headers';
 import { Footer } from '@/Components/Footer';
 import { getYouTubeVideoId } from '@/utils/youtube';
 import {
