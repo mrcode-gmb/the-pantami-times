@@ -344,7 +344,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
               })}
               <Link
                 href="/e-paper"
-                className="px-4 py-2 bg-[#1a1f2e] news-title-sm text-white rounded font-semibold text-xs hover:bg-[#2d3748] transition-colors whitespace-nowrap ml-2"
+                className="px-4 py-2 bg-[#1a1f2e] text-white rounded font-semibold text-xs hover:bg-[#2d3748] transition-colors whitespace-nowrap ml-2"
               >
                 e-Paper
               </Link>
@@ -374,7 +374,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                     href={activeItem.href}
                     className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
                   >
-                    <div className="text-sm news-title-sm capitalize text-foreground group-hover:text-[#f0a500] transition-colors">
+                    <div className="text-sm capitalize text-foreground group-hover:text-[#f0a500] transition-colors">
                       {activeItem.label}
                     </div>
                     {/* <div className="text-[10px] text-muted-foreground mt-0.5">
@@ -393,13 +393,13 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                         href={`/category/${activeItem.slug}/${sub.slug}`}
                         className="p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
                       >
-                        <div className="text-sm news-title-sm text-nowrap text-foreground group-hover:text-[#f0a500]">
+                        <div className="text-sm text-nowrap text-foreground group-hover:text-[#f0a500]">
                           {sub.name}
                         </div>
                       </Link>
                     ))
                   ) : (
-                    <div className="p-3 news-title-sm text-xs text-muted-foreground italic">
+                    <div className="p-3 text-xs text-muted-foreground italic">
                       No subcategories
                     </div>
                   )}

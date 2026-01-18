@@ -393,13 +393,13 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                         href={`/category/${activeItem.slug}/${sub.slug}`}
                         className="p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
                       >
-                        <div className="text-sm news-title-sm text-nowrap text-foreground group-hover:text-[#f0a500]">
+                        <div className="text-sm text-nowrap text-foreground group-hover:text-[#f0a500]">
                           {sub.name}
                         </div>
                       </Link>
                     ))
                   ) : (
-                    <div className="p-3 news-title-sm text-xs text-muted-foreground italic">
+                    <div className="p-3 text-xs text-muted-foreground italic">
                       No subcategories
                     </div>
                   )}

@@ -399,7 +399,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                       </Link>
                     ))
                   ) : (
-                    <div className="p-3 news-title-sm text-xs text-muted-foreground italic">
+                    <div className="p-3 text-xs text-muted-foreground italic">
                       No subcategories
                     </div>
                   )}
