@@ -123,7 +123,7 @@ class PostController extends Controller
             'metaTitle' => $post->title,
             'metaDescription' => $post->excerpt,
             'metaImage' => asset($post->image),
-        ]);
+        ]);;
     }
 
     /**

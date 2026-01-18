@@ -50,23 +50,7 @@
   <meta name="theme-color" content="#f0a500">
   <title>{{ $metaTitle ?? config('app.name') }}</title>
 
-  <title>{{ $metaTitle ?? config('app.name') }}</title>
 
-  <meta name="description" content="{{ $metaDescription ?? config('app.name') }}">
-  
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="{{ $metaTitle ?? config('app.name') }}">
-  <meta property="og:description" content="{{ $metaDescription ?? '' }}">
-  <meta property="og:image" content="{{ $metaImage ?? asset('images/logo.jpg') }}">
-  <meta property="og:url" content="{{ url()->current() }}">
-  <meta property="og:site_name" content="{{ config('app.name') }}">
-  <meta property="og:locale" content="{{ str_replace('_', '-', app()->getLocale()) }}">
-  
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{{ $metaTitle ?? config('app.name') }}">
-  <meta name="twitter:description" content="{{ $metaDescription ?? '' }}">
-  <meta name="twitter:image" content="{{ $metaImage ?? asset('images/logo.jpg') }}">
-  
 
   <meta name="msapplication-TileColor" content="#f0a500">
 
