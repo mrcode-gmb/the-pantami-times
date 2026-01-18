@@ -87,7 +87,7 @@
       "url": "{{ config('app.url') }}",
       "logo": {
         "@type": "ImageObject",
-        "url": "{{ $metaImage ?? asset('images/logo.jpg') }}",
+        "url": "{{ asset('images/logo.jpg') }}",
         "width": 600,
         "height": 60
       },

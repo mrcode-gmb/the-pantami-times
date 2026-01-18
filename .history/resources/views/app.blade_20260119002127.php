@@ -27,7 +27,7 @@
   <meta property="og:description"
     content="Your trusted source for breaking news, analysis, and in-depth reporting. Stay informed with the latest news from around the world.">
   <meta property="og:url" content="{{ url()->current() }}">
-  <meta property="og:image" content="{{ $metaImage ?? asset('images/logo.jpg') }}">
+  <meta property="og:image" content="{{ asset('images/logo.jpg') }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -38,7 +38,7 @@
   <meta name="twitter:creator" content="@PantamiTimes">
   <meta name="twitter:title" content="{{ config('app.name') }} - Breaking News & Latest Updates">
   <meta name="twitter:description" content="Your trusted source for breaking news, analysis, and in-depth reporting.">
-  <meta name="twitter:image" content="{{ $metaImage ?? asset('images/logo.jpg') }}">
+  <meta name="twitter:image" content="{{ $metaImageasset('images/logo.jpg') }}">
 
   {{-- Favicon and App Icons --}}
   <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
@@ -87,7 +87,7 @@
       "url": "{{ config('app.url') }}",
       "logo": {
         "@type": "ImageObject",
-        "url": "{{ $metaImage ?? asset('images/logo.jpg') }}",
+        "url": "{{ asset('images/logo.jpg') }}",
         "width": 600,
         "height": 60
       },
