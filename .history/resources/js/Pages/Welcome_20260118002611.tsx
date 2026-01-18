@@ -22,7 +22,7 @@ export default function Welcome({
             <Head title='Pantami Times - Truth, Humanity, & Progress'/>
             <div className="min-h-screen bg-background">
                 <Header categories={categories} />
-                <main className='mt-'>
+                <main className="container py-8">
                     <HeroSection posts={posts} />
                     <MainContent posts={posts} />
                 </main>

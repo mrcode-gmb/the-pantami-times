@@ -113,7 +113,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
   };
 
   return (
-    <header className="bg-background sticky top-0 z-50 shadow-sm lg:mb-12">
+    <header className="bg-background sticky top-0 z-50 shadow-sm mb-10">
       {/* Top Bar - Guardian Style */}
       <div className="bg-[#1a1f2e] text-white">
         <div className="container">
@@ -230,8 +230,8 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
             >
               {navItems.map((item) => {
                 const hasSubcategories = item.subcategories && item.subcategories.length > 0;
-                const isActive = openDropdown === item.label || item.label === "NEWS" && !openDropdown;
-                // Get the active category or first category with subcategories
+                const isActive = openDropdown === item.label;
+
                 return (
                   <div key={item.label} className="relative border-r ">
                     <button
@@ -320,16 +320,16 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
         <div className="containers py-0 relative">
           {/* Mobile Navigation - Horizontal Scrollable */}
           <div className="md:hidden overflow-x-auto scrollbar-hide">
-            <div className="flex items-center gap-1 min-w-max">
+            <div className="flex items-center gap-1 min-w-max py-1">
               {navItems.map((item) => {
                 const hasSubcategories = item.subcategories && item.subcategories.length > 0;
-                const isActive = openDropdown === item.label || item.label === "HOME" && !openDropdown;
+                const isActive = openDropdown === item.label;
 
                 return (
                   <button
                     key={item.label}
                     onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
-                    className={`px-3 py-3 text-xs border-r border-black text-black hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${isActive ? 'bg-[#9c6c0d]' : ''
+                    className={`px-3 py-2 text-xs border-r border-black text-black hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${isActive ? 'bg-[#d99200]' : ''
                       }`}
                   >
                     {item.label}

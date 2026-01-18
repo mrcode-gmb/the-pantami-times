@@ -62,7 +62,7 @@ export default function CategoryShow({
             <div className="min-h-screen bg-background">
                 <Header categories={categories} activeCategory={category.slug} />
                 
-                <main className="container py-8 ">
+                <main className="container py-12 ">
                     {/* Category Header */}
                     <div className="mb-8 pb-6 border-b-4 border-[#f0a500]">
                         <h1 className="text-4xl md:text-5xl font-bold font-serif mb-2">

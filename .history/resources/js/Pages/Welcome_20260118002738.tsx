@@ -21,8 +21,8 @@ export default function Welcome({
         <>
             <Head title='Pantami Times - Truth, Humanity, & Progress'/>
             <div className="min-h-screen bg-background">
-                <Header categories={categories} />
-                <main className='mt-'>
+                {/* <Header categories={categories} /> */}
+                <main className='mt-16'>
                     <HeroSection posts={posts} />
                     <MainContent posts={posts} />
                 </main>

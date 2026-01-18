@@ -230,8 +230,9 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
             >
               {navItems.map((item) => {
                 const hasSubcategories = item.subcategories && item.subcategories.length > 0;
-                const isActive = openDropdown === item.label || item.label === "NEWS" && !openDropdown;
+                // const isActive = openDropdown === item.label || item.label === "HOME" && !openDropdown;
                 // Get the active category or first category with subcategories
+              const isActive = navItems[0] == ;
                 return (
                   <div key={item.label} className="relative border-r ">
                     <button
