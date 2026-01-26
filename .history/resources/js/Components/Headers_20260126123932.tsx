@@ -229,7 +229,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
           <div className="hidden md:flex items-center justify-between">
             <div
               ref={navRef}
-              className="flex items-center  overflow-x-auto scrollbar-hide relative"
+              className="flex items-center gap-1 overflow-x-auto scrollbar-hide relative"
             >
               {navItems.sort((a:any, b:any) => a.priority - b.priority).map((item) => {
                 const hasSubcategories:any = item.subcategories && item.subcategories.length > 0;
@@ -239,7 +239,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                   <div key={item.label} className="relative">
                     <button
                       onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
-                      className={`px-4 py-3 text-sm news-title-sm  border-r-2 border-muted text-black hover:bg-[#d99200] hover:text-black transition-colors whitespace-nowrap uppercase tracking-wide flex items-center ${isActive ? 'bg-white' : ''
+                      className={`px-4 py-3 text-sm news-title-sm   text-black hover:bg-[#d99200] hover:text-black transition-colors whitespace-nowrap uppercase tracking-wide flex items-center ${isActive ? 'bg-white' : ''
                         }`}
                     >
                       {item.label}
@@ -323,7 +323,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
         <div className="containers py-0 border-0 relative">
           {/* Mobile Navigation - Horizontal Scrollable */}
           <div className="md:hidden overflow-x-auto scrollbar-hide">
-            <div className="flex items-center min-w-max">
+            <div className="flex items-center gap-1 min-w-max">
               {navItems.map((item) => {
                 const hasSubcategories:any = item.subcategories && item.subcategories.length > 0;
                 const isActive = openDropdown === item.label || item.label === "NEWS" && !openDropdown;

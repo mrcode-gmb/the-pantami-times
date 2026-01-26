@@ -229,17 +229,17 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
           <div className="hidden md:flex items-center justify-between">
             <div
               ref={navRef}
-              className="flex items-center  overflow-x-auto scrollbar-hide relative"
+              className="flex items-center gap-1 overflow-x-auto scrollbar-hide relative"
             >
               {navItems.sort((a:any, b:any) => a.priority - b.priority).map((item) => {
                 const hasSubcategories:any = item.subcategories && item.subcategories.length > 0;
                 const isActive = openDropdown === item.label || item.label === "NEWS" && !openDropdown;
                 // Get the active category or first category with subcategories
                 return (
-                  <div key={item.label} className="relative">
+                  <div key={item.label} className="relative border-r ">
                     <button
                       onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
-                      className={`px-4 py-3 text-sm news-title-sm  border-r-2 border-muted text-black hover:bg-[#d99200] hover:text-black transition-colors whitespace-nowrap uppercase tracking-wide flex items-center ${isActive ? 'bg-white' : ''
+                      className={`px-4 py-3 text-sm news-title-sm  text-black hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${isActive ? 'bg-white' : ''
                         }`}
                     >
                       {item.label}
@@ -320,19 +320,19 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
           <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white dark:from-[#1a1f2e] to-transparent" />
         </div>
 
-        <div className="containers py-0 border-0 relative">
+        <div className="containers py-0 relative">
           {/* Mobile Navigation - Horizontal Scrollable */}
           <div className="md:hidden overflow-x-auto scrollbar-hide">
-            <div className="flex items-center min-w-max">
+            <div className="flex items-center gap-1 min-w-max">
               {navItems.map((item) => {
-                const hasSubcategories:any = item.subcategories && item.subcategories.length > 0;
+                const hasSubcategories = item.subcategories && item.subcategories.length > 0;
                 const isActive = openDropdown === item.label || item.label === "NEWS" && !openDropdown;
 
                 return (
                   <button
                     key={item.label}
                     onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
-                    className={`px-3 py-3 text-xs news-title-sm border-r border-muted text-black hover:bg-[#d99200] hover:text-black transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${isActive ? 'bg-white' : ''
+                    className={`px-3 py-3 text-xs news-title-sm border-r border-black text-black hover:bg-[#d99200] transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${isActive ? 'bg-[#9c6c0d]' : ''
                       }`}
                   >
                     {item.label}

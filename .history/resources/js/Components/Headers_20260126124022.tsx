@@ -323,7 +323,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
         <div className="containers py-0 border-0 relative">
           {/* Mobile Navigation - Horizontal Scrollable */}
           <div className="md:hidden overflow-x-auto scrollbar-hide">
-            <div className="flex items-center min-w-max">
+            <div className="flex items-center gap-1 min-w-max">
               {navItems.map((item) => {
                 const hasSubcategories:any = item.subcategories && item.subcategories.length > 0;
                 const isActive = openDropdown === item.label || item.label === "NEWS" && !openDropdown;
