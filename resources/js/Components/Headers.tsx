@@ -250,12 +250,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                       }`}
                     >
                       {item.label}
-                      {hasSubcategories && (
-                        <ChevronDown
-                          size={14}
-                          className={`ml-1 transition-transform ${isActive ? 'rotate-180' : ''}`}
-                        />
-                      )}
+                      
                     </button>
                   </div>
                 );
@@ -341,16 +336,11 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                     key={item.label}
                     onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
                     className={`px-3 py-3 text-xs hover:text-black news-title-sm border-r border-muted text-black whitespace-nowrap uppercase tracking-wide flex items-center gap-1 relative ${
-                      isActive ? 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-[#1a1f2e] after:content-[""]' : ''
+                      (isActive || item.label == "FULL") ? 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-[#1a1f2e] after:content-[""]' : ''
                     }`}
                   >
                     {item.label}
-                    {hasSubcategories && (
-                      <ChevronDown
-                        size={12}
-                        className={`transition-transform ${isActive ? 'rotate-180' : ''}`}
-                      />
-                    )}
+                 
                   </button>
                 );
               })}
