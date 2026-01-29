@@ -89,7 +89,6 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
     ...staticNavItems,
     ...categories
       .sort((a:any, b:any) => parseInt(a.priority) - parseInt(b.priority))
-      .slice(0, 8)
       .map(cat => ({
         label: cat.name.toUpperCase(),
         href: `/category/${cat.slug}`,

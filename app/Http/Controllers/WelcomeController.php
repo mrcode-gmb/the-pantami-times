@@ -13,16 +13,13 @@ class WelcomeController extends Controller
     {
         // Cache categories with subcategories for 1 hour (they don't change often)
         $categories = Cache::remember('nav_categories', 3600, function () {
-            return Category::select('id', 'name', 'slug')
-                ->with(['subcategories' => function($query) {
-                    $query->select('id', 'category_id', 'name', 'slug')
-                        ->withCount('posts')
-                        ->orderBy('name');
-                }])
+            return Category::with(['subcategories'])
                 ->withCount('posts')
                 ->orderBy('priority', 'asc')
                 ->get();
         });
+
+        // return $categories;
 
         // Optimize post query - only select needed fields
         $posts = Post::select([
