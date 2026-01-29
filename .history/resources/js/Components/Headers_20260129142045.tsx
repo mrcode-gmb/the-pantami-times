@@ -243,7 +243,8 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                 return (
                   <div key={item.label} className="relative">
                     <Link
-                        href={item.href}
+                        href={activeItem.href}
+                        onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
                         className={`px-4 py-3 hover:text-black text-sm news-title-sm border-r-2 border-muted text-black whitespace-nowrap uppercase tracking-wide flex items-center relative ${
                           isActive ? 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-[#1a1f2e] after:content-[""]' : ''
                         }`}
@@ -324,17 +325,16 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                 const isActive = item.slug === activeCategory || activeNews == item.label;
 
                 return (
-                  <div key={item.label} className="relative">
-                    <Link
-                        href={item.href}
-                        className={`px-4 py-3 hover:text-black text-sm news-title-sm border-r-2 border-muted text-black whitespace-nowrap uppercase tracking-wide flex items-center relative ${
-                          isActive ? 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-[#1a1f2e] after:content-[""]' : ''
-                        }`}
-                    >
-                      {item.label}
-                      
-                    </Link>
-                  </div>
+                  <button
+                    key={item.label}
+                    onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
+                    className={`px-3 py-3 text-xs hover:text-black news-title-sm border-r border-muted text-black whitespace-nowrap uppercase tracking-wide flex items-center gap-1 relative ${
+                      isActive ? 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-[#1a1f2e] after:content-[""]' : ''
+                    }`}
+                  >
+                    {item.label}
+                 
+                  </button>
                 );
               })}
               <Link
@@ -364,7 +364,21 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
 
               return (
                 <div className="gap-3 flex flex-row min-w-max">
-          
+                  {/* Main Category Link */}
+                  <Link
+                    href={activeItem.href}
+                    className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
+                  >
+                    <div className="text-sm news-title-sm capitalize text-foreground group-hover:text-[#f0a500] transition-colors">
+                      {activeItem.label}
+                    </div>
+                    {/* <div className="text-[10px] text-muted-foreground mt-0.5">
+                      Main
+                    </div> */}
+                  </Link>
+                  
+                  {/* Divider */}
+                  <div className="w-px bg-border self-stretch my-2"></div>
                   
                   {/* Subcategories */}
                   {activeItem.subcategories && activeItem.subcategories.length > 0 ? (

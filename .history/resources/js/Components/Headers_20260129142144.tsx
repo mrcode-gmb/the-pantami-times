@@ -364,7 +364,21 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
 
               return (
                 <div className="gap-3 flex flex-row min-w-max">
-          
+                  {/* Main Category Link */}
+                  <Link
+                    href={activeItem.href}
+                    className="group p-3 rounded-lg hover:bg-[#f0a500]/10 transition-colors flex-shrink-0"
+                  >
+                    <div className="text-sm news-title-sm capitalize text-foreground group-hover:text-[#f0a500] transition-colors">
+                      {activeItem.label}
+                    </div>
+                    {/* <div className="text-[10px] text-muted-foreground mt-0.5">
+                      Main
+                    </div> */}
+                  </Link>
+                  
+                  {/* Divider */}
+                  <div className="w-px bg-border self-stretch my-2"></div>
                   
                   {/* Subcategories */}
                   {activeItem.subcategories && activeItem.subcategories.length > 0 ? (
