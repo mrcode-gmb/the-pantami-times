@@ -38,7 +38,7 @@ const staticNavItems: NavItem[] = [
 interface HeaderProps {
   categories?: Category[];
   activeCategory?: string | null; // Category slug to keep dropdown open
-  activeNews?: string;
+  
 }
 
 export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory = null, activeNews = '' }) => {
@@ -239,7 +239,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
               {navItems.map((item) => {
                 const hasSubcategories:any = item.subcategories && item.subcategories.length > 0;
                 // Check if this item is active based on the activeCategory prop
-                const isActive = item.slug === activeCategory || activeNews === "NEWS";
+                const isActive = item.slug === activeCategory || item.label === "NEWS" && !openDropdown;
                 return (
                   <div key={item.label} className="relative">
                     <button
@@ -328,7 +328,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
               {navItems.map((item) => {
                 const hasSubcategories:any = item.subcategories && item.subcategories.length > 0;
                 // Check if this item is active based on the activeCategory prop
-                const isActive = item.slug === activeCategory || activeNews === "NEWS";
+                const isActive = item.slug === activeCategory || item.label === "NEWS" && !openDropdown;
 
                 return (
                   <button
