@@ -69,7 +69,7 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
         </div>
 
         {/* Right Sidebar - Latest News */}
-        <div className="order-3 lg:order-3 lg:col-span-3 gap-3">
+        <div className="lg:col-span-3">
           <h2 className="section-heading mb-4">LATEST NEWS</h2>
           <div className="space-y-4">
             {latestPosts.map((post) => (

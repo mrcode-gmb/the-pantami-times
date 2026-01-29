@@ -363,7 +363,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
               if (!activeItem) return null;
 
               return (
-                <div className="flex flex-row min-w-max">
+                <div className="gap-3 flex flex-row min-w-max">
           
                   
                   {/* Subcategories */}
