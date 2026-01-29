@@ -123,7 +123,7 @@ export default function Show({ category, subcategory, posts, categories }: Props
                                             className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-border"
                                         >
                                             {(post.image || post.video_url) && (
-                                                <Link href={`/posts/full/${post.uuid}`} className="block">
+                                                <Link href={`/posts/full/${post.slug}`} className="block">
                                                     <div className="w-full h-48 overflow-hidden">
                                                         <MediaDisplay
                                                             image={post.image}
@@ -148,7 +148,7 @@ export default function Show({ category, subcategory, posts, categories }: Props
                                                     </div>
                                                 </div>
 
-                                                <Link href={`/posts/full/${post.uuid}`}>
+                                                <Link href={`/posts/full/${post.slug}`}>
                                                     <h2 className="text-xl font-bold text-foreground hover:text-[#f0a500] transition-colors mb-2 line-clamp-2">
                                                         {post.title}
                                                     </h2>
@@ -170,7 +170,7 @@ export default function Show({ category, subcategory, posts, categories }: Props
                                                 </div>
 
                                                 <Link 
-                                                    href={`/posts/full/${post.uuid}`}
+                                                    href={`/posts/full/${post.slug}`}
                                                     className="mt-4 inline-flex items-center gap-2 text-[#f0a500] hover:text-[#d99200] transition-colors text-sm font-semibold"
                                                 >
                                                     Read More

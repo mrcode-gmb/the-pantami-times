@@ -240,7 +240,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
               {navItems.map((item) => {
                 const hasSubcategories:any = item.subcategories && item.subcategories.length > 0;
                 // Check if this item is active based on the activeCategory prop
-                const isActive = item.slug === activeCategory || openDropdown === item.label;
+                const isActive = item.slug === activeCategory || item.label === "FULL" && !openDropdown;;
                 return (
                   <div key={item.label} className="relative">
                     <button
@@ -336,7 +336,7 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
                     key={item.label}
                     onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
                     className={`px-3 py-3 text-xs hover:text-black news-title-sm border-r border-muted text-black whitespace-nowrap uppercase tracking-wide flex items-center gap-1 relative ${
-                      (isActive || item.label == "FULL") ? 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-[#1a1f2e] after:content-[""]' : ''
+                      isActive ? 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-[#1a1f2e] after:content-[""]' : ''
                     }`}
                   >
                     {item.label}
