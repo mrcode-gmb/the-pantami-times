@@ -63,13 +63,16 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setOpenDropdown(null);
+        // Only close if there's no active category, otherwise keep the active category's dropdown open
+        if (!activeCategory) {
+          setOpenDropdown(null);
+        }
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [activeCategory]);
 
   // Toggle dropdown on click
   const toggleDropdown = (label: string, hasSubcategories: boolean, href: string) => {
@@ -81,16 +84,19 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
     }
   };
 
-  // Create navigation items from categories
+  // Create navigation items from categories - sorted by priority ascending
   const navItems: NavItem[] = [
     ...staticNavItems,
-    ...categories.slice(0, 8).sort((a:any, b:any) => a.priority - b.priority).map(cat => ({
-      label: cat.name.toUpperCase(),
-      href: `/category/${cat.slug}`,
-      slug: cat.slug,
-      priority: cat.priority,
-      subcategories: cat.subcategories || []
-    }))
+    ...categories
+      .sort((a:any, b:any) => parseInt(a.priority) - parseInt(b.priority))
+      .slice(0, 8)
+      .map(cat => ({
+        label: cat.name.toUpperCase(),
+        href: `/category/${cat.slug}`,
+        slug: cat.slug,
+        priority: cat.priority,
+        subcategories: cat.subcategories || []
+      }))
   ];
 
   // Check if navigation is scrollable and show shadow
@@ -231,22 +237,23 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
               ref={navRef}
               className="flex items-center  overflow-x-auto scrollbar-hide relative"
             >
-              {navItems.sort((a:any, b:any) => a.priority - b.priority).map((item) => {
+              {navItems.map((item) => {
                 const hasSubcategories:any = item.subcategories && item.subcategories.length > 0;
-                const isActive = openDropdown === item.label || item.label === "NEWS" && !openDropdown;
-                // Get the active category or first category with subcategories
+                // Check if this item is active based on the activeCategory prop
+                const isActive = item.slug === activeCategory || openDropdown === item.label;
                 return (
                   <div key={item.label} className="relative">
                     <button
                       onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
-                      className={`px-4 py-3 text-sm news-title-sm  border-r-2 border-muted text-black hover:bg-[#d99200] hover:text-black transition-colors whitespace-nowrap uppercase tracking-wide flex items-center ${isActive ? 'bg-white' : ''
-                        }`}
+                      className={`px-4 py-3 hover:text-black text-sm news-title-sm border-r-2 border-muted text-black whitespace-nowrap uppercase tracking-wide flex items-center relative ${
+                        isActive ? 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-[#1a1f2e] after:content-[""]' : ''
+                      }`}
                     >
                       {item.label}
                       {hasSubcategories && (
                         <ChevronDown
                           size={14}
-                          className={`transition-transform ${isActive ? 'rotate-180' : ''}`}
+                          className={`ml-1 transition-transform ${isActive ? 'rotate-180' : ''}`}
                         />
                       )}
                     </button>
@@ -326,14 +333,16 @@ export const Header: React.FC<HeaderProps> = ({ categories = [], activeCategory 
             <div className="flex items-center min-w-max">
               {navItems.map((item) => {
                 const hasSubcategories:any = item.subcategories && item.subcategories.length > 0;
-                const isActive = openDropdown === item.label || item.label === "NEWS" && !openDropdown;
+                // Check if this item is active based on the activeCategory prop
+                const isActive = item.slug === activeCategory || openDropdown === item.label;
 
                 return (
                   <button
                     key={item.label}
                     onClick={() => toggleDropdown(item.label, hasSubcategories, item.href)}
-                    className={`px-3 py-3 text-xs news-title-sm border-r border-muted text-black hover:bg-[#d99200] hover:text-black transition-colors whitespace-nowrap uppercase tracking-wide flex items-center gap-1 ${isActive ? 'bg-white' : ''
-                      }`}
+                    className={`px-3 py-3 text-xs hover:text-black news-title-sm border-r border-muted text-black whitespace-nowrap uppercase tracking-wide flex items-center gap-1 relative ${
+                      isActive ? 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-1 after:bg-[#1a1f2e] after:content-[""]' : ''
+                    }`}
                   >
                     {item.label}
                     {hasSubcategories && (
