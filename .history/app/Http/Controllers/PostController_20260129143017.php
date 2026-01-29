@@ -118,7 +118,7 @@ class PostController extends Controller
             'post' => $post,
             'relatedPosts' => $relatedPosts,
             'trendingPosts' => $trendingPosts,
-            'categories' => Category::with("subcategories")->orderBy('priority')->get(),
+            'categories' => Category::with("subcategories")->orderBy->get(),
         ])->withViewData([
             'metaTitle' => $post->title,
             'metaDescription' => $post->excerpt,
