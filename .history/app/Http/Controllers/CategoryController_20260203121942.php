@@ -70,7 +70,7 @@ class CategoryController extends Controller
                         ->orderBy('name');
                 }])
                 ->withCount('posts')
-                ->orderBy('priority', 'asc')
+                ->orderBy('')
                 ->get();
         });
         
