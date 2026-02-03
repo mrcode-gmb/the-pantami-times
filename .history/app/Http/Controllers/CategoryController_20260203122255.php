@@ -134,7 +134,7 @@ class CategoryController extends Controller
                 ->orderBy('name');
         }])
         ->withCount('posts')
-        ->orderBy('priority', 'asc')
+        ->orderBy('p')
         ->get();
 
         return Inertia::render('SubCategories/Show', [

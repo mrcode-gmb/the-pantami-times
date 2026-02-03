@@ -128,14 +128,17 @@ class CategoryController extends Controller
         });
 
         // Get all categories with subcategories for navigation
-        $categories = Category::with(['subcategories' => function($query) {
-            $query->select('id', 'category_id', 'name', 'slug')
+        $categories = \Illuminate\Support\Facades\Cache::remember('nav_categories', 3600, function () {
+            return Category::select('id', 'name', 'slug')
+                ->with(['subcategories' => function($query) {
+                    $query->select('id', 'category_id', 'name', 'slug')
+                        ->withCount('posts')
+                        ->orderBy('name');
+                }])
                 ->withCount('posts')
-                ->orderBy('name');
-        }])
-        ->withCount('posts')
-        ->orderBy('priority', 'asc')
-        ->get();
+                ->orderBy('name')
+                ->get();
+        });
 
         return Inertia::render('SubCategories/Show', [
             'category' => $category,
