@@ -62,7 +62,8 @@ class CategoryController extends Controller
         });
         
         // Get all categories with subcategories for navigation
-        $categories = Category::with(['subcategories' => function($query) {
+        $categories = Category::select('id', 'name', 'slug')
+        ->with(['subcategories' => function($query) {
             $query->select('id', 'category_id', 'name', 'slug')
                 ->withCount('posts')
                 ->orderBy('name');
