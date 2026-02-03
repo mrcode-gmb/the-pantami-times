@@ -29,7 +29,7 @@ class CategoryController extends Controller
     {
         $category = Category::select('id', 'name', 'slug')
             ->where('slug', $slug)
-            ->orderBy("priority", "asc")
+            orderBy("priority", "asc")
             ->firstOrFail();
         
         $posts = Post::select([
