@@ -60,7 +60,7 @@ class PostController extends Controller
         
         // Generate unique slug by combining title slug with timestamp
         $baseSlug = Str::slug($request->title);
-        $data['slug'] = $baseSlug . '-' . time();
+        $data['slug'] = $baseSlug;
         $data['uuid'] = Str::uuid();
 
         if ($request->hasFile('image')) {
