@@ -82,9 +82,8 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
       fetchPost();
     }
   }, [postData]);
-
-  // document.documentElement.setAttribute('data-color-mode', 'light')
-  // document.documentElement.setAttribute('data-color-mode', 'dark')
+  document.documentElement.setAttribute('data-color-mode', 'dark')
+  document.documentElement.setAttribute('data-color-mode', 'light')
 
   if (isLoading) {
     return (
@@ -167,8 +166,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
   };
 
   const parsedContent = { __html: processContent(post.content) };
-  const isDark = document.documentElement.classList.contains("dark"); // or from your theme store
-  console.log(isDark);
+  
   return (
     <>
       <Head title={post.title}>
@@ -343,9 +341,12 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                 ) : null}
               </header>
              
-              <div className='rounded-lg' data-color-mode={isDark ? "dark" : "light"}>
+              
+              <div className='p-3 bg-white rounded-lg'>
+              <div className="wmde-markdown-var"> </div>
                 <MarkdownPreview
                   source={post.content}
+                  data-color-mode="dark" // or dark
                 />
               </div>
               

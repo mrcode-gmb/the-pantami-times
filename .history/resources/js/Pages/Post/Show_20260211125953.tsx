@@ -14,6 +14,8 @@ import { format } from 'date-fns';
 import MDEditor from '@uiw/react-md-editor';
 import { formatDistanceToNow } from 'date-fns';
 import MarkdownPreview from "@uiw/react-markdown-preview";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm'; // for GitHub Flavored Markdown
 
 interface Post {
   id: number;
@@ -82,9 +84,8 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
       fetchPost();
     }
   }, [postData]);
-
-  // document.documentElement.setAttribute('data-color-mode', 'light')
-  // document.documentElement.setAttribute('data-color-mode', 'dark')
+  document.documentElement.setAttribute('data-color-mode', 'dark')
+  document.documentElement.setAttribute('data-color-mode', 'light')
 
   if (isLoading) {
     return (
@@ -167,8 +168,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
   };
 
   const parsedContent = { __html: processContent(post.content) };
-  const isDark = document.documentElement.classList.contains("dark"); // or from your theme store
-  console.log(isDark);
+  
   return (
     <>
       <Head title={post.title}>
@@ -343,10 +343,19 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                 ) : null}
               </header>
              
-              <div className='rounded-lg' data-color-mode={isDark ? "dark" : "light"}>
+              {/* <MDEditor.Markdown 
+                source={post.content} 
+                className="prose dark:prose-invert text-dark max-w-none text-foreground" 
+                data-color-mode="dark"
+              /> */}
+              
+              <div className='p-3 bg-white rounded-lg'>
                 <MarkdownPreview
                   source={post.content}
+                  // data-color-mode="dark" // or dark
+                  className='text-red-400'
                 />
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
               </div>
               
               <footer className="mt-12 pt-6 border-t border-border">

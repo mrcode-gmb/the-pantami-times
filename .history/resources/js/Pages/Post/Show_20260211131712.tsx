@@ -82,9 +82,8 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
       fetchPost();
     }
   }, [postData]);
-
-  // document.documentElement.setAttribute('data-color-mode', 'light')
-  // document.documentElement.setAttribute('data-color-mode', 'dark')
+  document.documentElement.setAttribute('data-color-mode', 'dark')
+  document.documentElement.setAttribute('data-color-mode', 'light')
 
   if (isLoading) {
     return (
@@ -167,8 +166,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
   };
 
   const parsedContent = { __html: processContent(post.content) };
-  const isDark = document.documentElement.classList.contains("dark"); // or from your theme store
-  console.log(isDark);
+  
   return (
     <>
       <Head title={post.title}>
@@ -343,10 +341,17 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                 ) : null}
               </header>
              
-              <div className='rounded-lg' data-color-mode={isDark ? "dark" : "light"}>
+              {/* <MDEditor.Markdown 
+                source={post.content} 
+                className="prose dark:prose-invert text-dark max-w-none text-foreground" 
+                data-color-mode="dark"
+              /> */}
+              
+              <div className='p-3 bg-white rounded-lg'>
                 <MarkdownPreview
-                  source={post.content}
-                />
+                  
+                  data-color-mode="dark" // or dark
+                >{post.}</MarkdownPreview>
               </div>
               
               <footer className="mt-12 pt-6 border-t border-border">

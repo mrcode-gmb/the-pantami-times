@@ -1,5 +1,6 @@
 import React from 'react';
 import { Head, Link } from '@inertiajs/react';
+import { useState, useEffect } from 'react';
 import { PageProps } from '@/types';
 import { Header } from '@/Components/Headers';
 import { Footer } from '@/Components/Footer';
@@ -82,9 +83,8 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
       fetchPost();
     }
   }, [postData]);
-
-  // document.documentElement.setAttribute('data-color-mode', 'light')
-  // document.documentElement.setAttribute('data-color-mode', 'dark')
+  document.documentElement.setAttribute('data-color-mode', 'dark')
+  document.documentElement.setAttribute('data-color-mode', 'light')
 
   if (isLoading) {
     return (
@@ -167,8 +167,16 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
   };
 
   const parsedContent = { __html: processContent(post.content) };
-  const isDark = document.documentElement.classList.contains("dark"); // or from your theme store
-  console.log(isDark);
+  const [theme, setTheme] = useState('light'); // 'light' or 'dark'
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-color-mode', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+  };
+
   return (
     <>
       <Head title={post.title}>
@@ -343,10 +351,21 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                 ) : null}
               </header>
              
-              <div className='rounded-lg' data-color-mode={isDark ? "dark" : "light"}>
-                <MarkdownPreview
+              {/* <MDEditor.Markdown 
+                source={post.content} 
+                className="prose dark:prose-invert text-dark max-w-none text-foreground" 
+                data-color-mode="dark"
+              /> */}
+              
+              <div className='p-3 bg-white rounded-lg'>
+                {/* <MarkdownPreview
                   source={post.content}
-                />
+                  // data-color-mode="light"
+                /> */}
+                <button onClick={toggleTheme}>
+        Switch to {theme === 'light' ? 'Dark' : 'Light'} Mode
+      </button>
+      <MDEditor.Markdown source="**Hello world!**" />
               </div>
               
               <footer className="mt-12 pt-6 border-t border-border">

@@ -343,6 +343,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                 ) : null}
               </header>
              
+            
               <div className='rounded-lg' data-color-mode={isDark ? "dark" : "light"}>
                 <MarkdownPreview
                   source={post.content}
