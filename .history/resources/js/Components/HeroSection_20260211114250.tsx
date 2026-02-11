@@ -31,7 +31,7 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
                   title={post.title}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   loading="lazy"
-                  showVideo
+                  showVideo={true}
                 />
               </div>
               <h3 className="news-title-sm mt-3">{post.title}</h3>
@@ -53,7 +53,7 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
                     title={featuredPost.title}
                     className="w-full h-full object-cover transition-transform"
                     loading="lazy"
-                    showVideo={true}
+                    showVideo={false}
                   />
                   <div className="absolute top-4 left-4">
                     <span className="top-news-badge">TOP NEWS</span>

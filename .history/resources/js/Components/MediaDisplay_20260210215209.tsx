@@ -64,31 +64,21 @@ export const MediaDisplay = ({
     showVideo = true,
     loading = 'lazy'
 }: MediaDisplayProps) => {
-    const wrapperRef = useRef<HTMLDivElement | null>(null);
     const playerContainerRef = useRef<HTMLDivElement | null>(null);
     const playerRef = useRef<any>(null);
     const [isReady, setIsReady] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
-    const [volume, setVolume] = useState(100);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [isFullscreen, setIsFullscreen] = useState(false);
 
     // Priority: 
     // 1. If showVideo=true and videoUrl exists -> show embedded video
     // 2. If videoUrl exists -> show video thumbnail (video takes priority over image)
     // 3. If image exists -> show image
     // 4. Show placeholder
-
+    
     const videoId = videoUrl?.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/)?.[1];
-
-    useEffect(() => {
-        if (typeof document === 'undefined') return;
-        const handleFullscreenChange = () => setIsFullscreen(Boolean(document.fullscreenElement));
-        document.addEventListener('fullscreenchange', handleFullscreenChange);
-        return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
-    }, []);
 
     useEffect(() => {
         if (!showVideo || !videoId) return;
@@ -106,16 +96,11 @@ export const MediaDisplay = ({
             playerRef.current = new window.YT.Player(playerContainerRef.current, {
                 videoId,
                 playerVars: {
-                    autoplay: 1,
-                    controls: 0, // Hide YouTube native controls (we use custom controls)
+                    controls: 0,
                     modestbranding: 1,
                     rel: 0,
                     playsinline: 1,
                     iv_load_policy: 3,
-                    disablekb: 1,
-                    fs: 0,
-                    cc_load_policy: 0,
-                    mute: 1,
                     enablejsapi: 1,
                     origin: window.location.origin
                 },
@@ -123,14 +108,8 @@ export const MediaDisplay = ({
                     onReady: (event: any) => {
                         if (!active) return;
                         setIsReady(true);
-                        const nextDuration = event.target.getDuration?.() ?? 0;
-                        setDuration(nextDuration);
-                        const nextVolume = event.target.getVolume?.() ?? 100;
-                        setVolume(nextVolume);
+                        setDuration(event.target.getDuration?.() ?? 0);
                         setIsMuted(event.target.isMuted?.() ?? false);
-                        event.target.mute?.();
-                        setIsMuted(true);
-                        event.target.playVideo?.();
                     },
                     onStateChange: (event: any) => {
                         if (!active) return;
@@ -193,22 +172,6 @@ export const MediaDisplay = ({
         }
     };
 
-    const handleVolumeChange = (value: number) => {
-        const player = playerRef.current;
-        if (!player?.setVolume) return;
-        const nextVolume = Math.max(0, Math.min(100, value));
-        player.setVolume(nextVolume);
-        setVolume(nextVolume);
-        if (nextVolume === 0) {
-            setIsMuted(true);
-        } else {
-            if (player.isMuted?.()) {
-                player.unMute?.();
-            }
-            setIsMuted(false);
-        }
-    };
-
     const handleSeek = (value: number) => {
         const player = playerRef.current;
         if (!player?.seekTo || !duration) return;
@@ -217,52 +180,16 @@ export const MediaDisplay = ({
         setCurrentTime(nextTime);
     };
 
-    const handleSkip = (deltaSeconds: number) => {
-        const player = playerRef.current;
-        if (!player?.getCurrentTime || !player?.seekTo) return;
-        const baseTime = player.getCurrentTime();
-        const maxTime = player.getDuration?.() ?? duration;
-        const nextTime = Math.min(Math.max(0, baseTime + deltaSeconds), maxTime || 0);
-        player.seekTo(nextTime, true);
-        setCurrentTime(nextTime);
-    };
-
-    const handleFullscreen = () => {
-        const wrapper = wrapperRef.current;
-        if (!wrapper || typeof document === 'undefined') return;
-        if (!document.fullscreenElement) {
-            wrapper.requestFullscreen?.();
-        } else {
-            document.exitFullscreen?.();
-        }
-    };
-
     // If video URL exists and we want to show the video (not just thumbnail)
     if (videoUrl && showVideo) {
         if (videoId) {
             const progressValue = duration ? Math.min(100, Math.max(0, (currentTime / duration) * 100)) : 0;
-            const showMuted = isMuted || volume === 0;
             return (
-                <div ref={wrapperRef} className={`relative ${className}`}>
+                <div className={`relative ${className}`}>
                     <div ref={playerContainerRef} className="w-full h-full absolute inset-0" />
-                    <div className="absolute inset-0 flex flex-col justify-end">
-                        {!isPlaying && (
-                            <div className="flex-1 flex items-center justify-center">
-                                <button
-                                    type="button"
-                                    onClick={handlePlayPause}
-                                    className="w-16 h-16 rounded-full bg-black/60 hover:bg-black/70 transition flex items-center justify-center"
-                                    aria-label="Play video"
-                                    disabled={!isReady}
-                                >
-                                    <svg viewBox="0 0 24 24" className="w-7 h-7 text-white" fill="currentColor">
-                                        <path d="M8 5v14l11-7z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        )}
-                        <div className="bg-gradient-to-t from-black/70 via-black/30 to-transparent p-3">
-                            <div className="flex items-center gap-2 text-white">
+                    <div className="absolute inset-0 flex flex-col justify-end pointer-events-none">
+                        <div className="bg-gradient-to-t from-black/70 via-black/30 to-transparent p-3 pointer-events-auto">
+                            <div className="flex items-center gap-3 text-white">
                                 <button
                                     type="button"
                                     onClick={handlePlayPause}
@@ -283,34 +210,12 @@ export const MediaDisplay = ({
                                 </button>
                                 <button
                                     type="button"
-                                    onClick={() => handleSkip(-10)}
-                                    className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 transition flex items-center justify-center"
-                                    aria-label="Rewind 10 seconds"
-                                    disabled={!isReady}
-                                >
-                                    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-                                        <path d="M11 5v14L2 12l9-7zM22 5v14l-9-7 9-7z" />
-                                    </svg>
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => handleSkip(10)}
-                                    className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 transition flex items-center justify-center"
-                                    aria-label="Forward 10 seconds"
-                                    disabled={!isReady}
-                                >
-                                    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-                                        <path d="M13 5v14l9-7-9-7zM2 5v14l9-7-9-7z" />
-                                    </svg>
-                                </button>
-                                <button
-                                    type="button"
                                     onClick={handleMuteToggle}
                                     className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 transition flex items-center justify-center"
-                                    aria-label={showMuted ? 'Unmute video' : 'Mute video'}
+                                    aria-label={isMuted ? 'Unmute video' : 'Mute video'}
                                     disabled={!isReady}
                                 >
-                                    {showMuted ? (
+                                    {isMuted ? (
                                         <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
                                             <path d="M4 9v6h4l5 5V4L8 9H4z" />
                                             <path d="M16 9l4 4m0-4l-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -323,51 +228,21 @@ export const MediaDisplay = ({
                                         </svg>
                                     )}
                                 </button>
-                                <div className="hidden sm:flex items-center gap-2 w-28">
+                                <div className="flex-1">
                                     <input
                                         type="range"
                                         min={0}
                                         max={100}
-                                        value={volume}
-                                        onChange={(e) => handleVolumeChange(Number(e.target.value))}
+                                        value={progressValue}
+                                        onChange={(e) => handleSeek(Number(e.target.value))}
                                         className="w-full h-1 accent-[#f0a500]"
-                                        aria-label="Volume"
-                                        disabled={!isReady}
+                                        aria-label="Seek video"
+                                        disabled={!isReady || !duration}
                                     />
                                 </div>
-                                <div className="ml-auto flex items-center gap-2">
-                                    <div className="text-xs tabular-nums text-white/80">
-                                        {formatTime(currentTime)} / {formatTime(duration)}
-                                    </div>
-                                    <button
-                                        type="button"
-                                        onClick={handleFullscreen}
-                                        className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 transition flex items-center justify-center"
-                                        aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-                                    >
-                                        {isFullscreen ? (
-                                            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-                                                <path d="M9 9H5V5h4V3H3v6h6V9zm6-6v2h4v4h2V3h-6zm4 12v4h-4v2h6v-6h-2zM9 19H5v-4H3v6h6v-2z" />
-                                            </svg>
-                                        ) : (
-                                            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-                                                <path d="M7 14H5v5h5v-2H7v-3zm0-4h2V7h3V5H5v5zm10 9h-3v2h5v-5h-2v3zm0-14V5h-5v2h3v3h2V5z" />
-                                            </svg>
-                                        )}
-                                    </button>
+                                <div className="text-xs tabular-nums text-white/80 w-20 text-right">
+                                    {formatTime(currentTime)} / {formatTime(duration)}
                                 </div>
-                            </div>
-                            <div className="mt-2">
-                                <input
-                                    type="range"
-                                    min={0}
-                                    max={100}
-                                    value={progressValue}
-                                    onChange={(e) => handleSeek(Number(e.target.value))}
-                                    className="w-full h-1 accent-[#f0a500]"
-                                    aria-label="Seek video"
-                                    disabled={!isReady || !duration}
-                                />
                             </div>
                         </div>
                     </div>

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Head, Link } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import { Header } from '@/Components/Headers';
 import { Footer } from '@/Components/Footer';
-import { getYouTubeVideoId } from '@/utils/youtube';
+import { MediaDisplay } from '@/Components/MediaDisplay';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -309,15 +309,12 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                 {/* Video or Image Display */}
                 {post?.video_url ? (
                   <div className="w-full rounded-lg overflow-hidden mb-6">
-                    <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-                      <iframe
-                        src={`https://www.youtube.com/embed/${getYouTubeVideoId(post.video_url)}`}
-                        title={post.title}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                        className="absolute top-0 left-0 w-full h-full rounded-lg"
-                      />
-                    </div>
+                    <MediaDisplay
+                      videoUrl={post.video_url}
+                      title={post.title}
+                      showVideo
+                      className="w-full pb-[56.25%] h-0 rounded-lg overflow-hidden"
+                    />
                     {post.image_caption && (
                       <p className="text-sm text-muted-foreground mt-2">
                         {post.image_caption}

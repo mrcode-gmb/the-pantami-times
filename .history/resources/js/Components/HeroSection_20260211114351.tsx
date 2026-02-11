@@ -26,7 +26,7 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
             <Link href={route('posts.show.full', post.slug)} key={post.id} className="group cursor-pointer">
               <div className="aspect-video overflow-hidden rounded bg-muted">
                 <MediaDisplay
-                  image={post.image}
+                  // image={post.image}
                   videoUrl={post.video_url}
                   title={post.title}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
@@ -53,7 +53,7 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
                     title={featuredPost.title}
                     className="w-full h-full object-cover transition-transform"
                     loading="lazy"
-                    showVideo={true}
+                    showVideo={false}
                   />
                   <div className="absolute top-4 left-4">
                     <span className="top-news-badge">TOP NEWS</span>
