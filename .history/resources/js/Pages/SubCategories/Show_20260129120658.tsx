@@ -131,7 +131,7 @@ export default function Show({ category, subcategory, posts, categories }: Props
                                                             title={post.title}
                                                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                                                             loading="lazy"
-                                                            showVideo={true}
+                                                            showVideo={false}
                                                         />
                                                     </div>
                                                 </Link>
