@@ -115,23 +115,29 @@ export const MediaDisplay = ({
                     disablekb: 1,
                     fs: 0,
                     cc_load_policy: 0,
-                    mute: 1,
+                    mute: 0,
                     enablejsapi: 1,
                     origin: window.location.origin
                 },
                 events: {
                     onReady: (event: any) => {
-                        if (!active) return;
                         setIsReady(true);
-                        const nextDuration = event.target.getDuration?.() ?? 0;
-                        setDuration(nextDuration);
-                        const nextVolume = event.target.getVolume?.() ?? 100;
-                        setVolume(nextVolume);
-                        setIsMuted(event.target.isMuted?.() ?? false);
+                      
+                        // try sound autoplay (may fail)
                         event.target.unMute?.();
-                        setIsMuted(true);
+                        setIsMuted(false);
                         event.target.playVideo?.();
-                    },
+                      
+                        // if browser blocks it, fallback to muted autoplay
+                        setTimeout(() => {
+                          const s = event.target.getPlayerState?.();
+                          if (s !== window.YT.PlayerState.PLAYING) {
+                            event.target.mute?.();
+                            setIsMuted(tr);
+                            event.target.playVideo?.();
+                          }
+                        }, 300);
+                      },
                     onStateChange: (event: any) => {
                         if (!active) return;
                         const state = event.data;

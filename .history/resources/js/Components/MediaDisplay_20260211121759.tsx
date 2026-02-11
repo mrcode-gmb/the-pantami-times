@@ -125,10 +125,11 @@ export const MediaDisplay = ({
                         setIsReady(true);
                         const nextDuration = event.target.getDuration?.() ?? 0;
                         setDuration(nextDuration);
+                        console.log(event.target.getVolume);
                         const nextVolume = event.target.getVolume?.() ?? 100;
                         setVolume(nextVolume);
                         setIsMuted(event.target.isMuted?.() ?? false);
-                        event.target.unMute?.();
+                        event.target.mute?.();
                         setIsMuted(true);
                         event.target.playVideo?.();
                     },

@@ -69,7 +69,7 @@ export const MediaDisplay = ({
     const playerRef = useRef<any>(null);
     const [isReady, setIsReady] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [isMuted, setIsMuted] = useState(false);
+    const [isMuted, setIsMuted] = useState(true);
     const [volume, setVolume] = useState(100);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
@@ -128,7 +128,7 @@ export const MediaDisplay = ({
                         const nextVolume = event.target.getVolume?.() ?? 100;
                         setVolume(nextVolume);
                         setIsMuted(event.target.isMuted?.() ?? false);
-                        event.target.unMute?.();
+                        event.target.mute?.();
                         setIsMuted(true);
                         event.target.playVideo?.();
                     },

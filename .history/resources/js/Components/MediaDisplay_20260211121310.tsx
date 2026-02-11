@@ -110,7 +110,7 @@ export const MediaDisplay = ({
                     controls: 0, // Hide YouTube native controls (we use custom controls)
                     modestbranding: 1,
                     rel: 0,
-                    playsinline: 1,
+                    playsinline: 0,
                     iv_load_policy: 3,
                     disablekb: 1,
                     fs: 0,
@@ -128,7 +128,7 @@ export const MediaDisplay = ({
                         const nextVolume = event.target.getVolume?.() ?? 100;
                         setVolume(nextVolume);
                         setIsMuted(event.target.isMuted?.() ?? false);
-                        event.target.unMute?.();
+                        event.target.mute?.();
                         setIsMuted(true);
                         event.target.playVideo?.();
                     },

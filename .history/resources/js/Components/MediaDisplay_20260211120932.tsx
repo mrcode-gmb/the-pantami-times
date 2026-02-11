@@ -127,8 +127,8 @@ export const MediaDisplay = ({
                         setDuration(nextDuration);
                         const nextVolume = event.target.getVolume?.() ?? 100;
                         setVolume(nextVolume);
-                        setIsMuted(event.target.isMuted?.() ?? false);
-                        event.target.unMute?.();
+                        setIsMuted(event.target.isMuted?.() ?? true);
+                        event.target.mute?.();
                         setIsMuted(true);
                         event.target.playVideo?.();
                     },

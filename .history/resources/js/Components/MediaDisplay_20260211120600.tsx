@@ -56,10 +56,10 @@ interface MediaDisplayProps {
     loading?: 'lazy' | 'eager';
 }
 
-export const MediaDisplay = ({ 
-    image, 
-    videoUrl, 
-    title, 
+export const MediaDisplay = ({
+    image,
+    videoUrl,
+    title,
     className = '',
     showVideo = true,
     loading = 'lazy'
@@ -80,7 +80,25 @@ export const MediaDisplay = ({
     // 2. If videoUrl exists -> show video thumbnail (video takes priority over image)
     // 3. If image exists -> show image
     // 4. Show placeholder
-
+    onReady: (event) => {
+        setIsReady(true);
+      
+        // try sound autoplay (may fail)
+        event.target.unMute?.();
+        setIsMuted(false);
+        event.target.playVideo?.();
+      
+        // if browser blocks it, fallback to muted autoplay
+        setTimeout(() => {
+          const s = event.target.getPlayerState?.();
+          if (s !== window.YT.PlayerState.PLAYING) {
+            event.target.mute?.();
+            setIsMuted(true);
+            event.target.playVideo?.();
+          }
+        }, 300);
+      }
+      
     const videoId = videoUrl?.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/)?.[1];
 
     useEffect(() => {
@@ -128,7 +146,7 @@ export const MediaDisplay = ({
                         const nextVolume = event.target.getVolume?.() ?? 100;
                         setVolume(nextVolume);
                         setIsMuted(event.target.isMuted?.() ?? false);
-                        event.target.unMute?.();
+                        event.target.mute?.();
                         setIsMuted(true);
                         event.target.playVideo?.();
                     },
@@ -179,6 +197,14 @@ export const MediaDisplay = ({
         } else {
             player.playVideo?.();
         }
+
+        // When user initiates play, allow sound
+        if (player.isMuted?.()) {
+            player.unMute?.();
+            setIsMuted(false);
+        }
+
+        player.playVideo?.();
     };
 
     const handleMuteToggle = () => {
@@ -375,14 +401,14 @@ export const MediaDisplay = ({
             );
         }
     }
-    
+
     // If video URL exists, show thumbnail (takes priority over image)
     if (videoUrl) {
         const thumbnail = getYouTubeThumbnail(videoUrl, 'hq'); // Use 'hq' for better compatibility
         if (thumbnail) {
             return (
-                <img 
-                    src={thumbnail} 
+                <img
+                    src={thumbnail}
                     alt={title}
                     loading={loading}
                     className={className || 'w-full h-full object-cover'}
@@ -405,33 +431,33 @@ export const MediaDisplay = ({
             );
         }
     }
-    
+
     // If image exists
     if (image) {
         return (
-            <img 
-                src={image} 
+            <img
+                src={image}
                 alt={title}
                 loading={loading}
                 className={className || 'w-full h-full object-cover'}
             />
         );
     }
-    
+
     // Placeholder
     return (
         <div className={`bg-gradient-to-br from-[#f0a500]/20 to-[#d99200]/20 flex items-center justify-center ${className}`}>
-            <svg 
-                className="w-12 h-12 text-[#f0a500] opacity-40" 
-                fill="none" 
-                stroke="currentColor" 
+            <svg
+                className="w-12 h-12 text-[#f0a500] opacity-40"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
             >
-                <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={1.5} 
-                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" 
+                <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
             </svg>
         </div>

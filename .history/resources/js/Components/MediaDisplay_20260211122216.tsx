@@ -128,8 +128,8 @@ export const MediaDisplay = ({
                         const nextVolume = event.target.getVolume?.() ?? 100;
                         setVolume(nextVolume);
                         setIsMuted(event.target.isMuted?.() ?? false);
-                        event.target.unMute?.();
-                        setIsMuted(true);
+                        event.target.mute?.();
+                        setIsMuted(false);
                         event.target.playVideo?.();
                     },
                     onStateChange: (event: any) => {

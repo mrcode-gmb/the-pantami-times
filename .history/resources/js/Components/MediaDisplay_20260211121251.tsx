@@ -115,7 +115,7 @@ export const MediaDisplay = ({
                     disablekb: 1,
                     fs: 0,
                     cc_load_policy: 0,
-                    mute: 1,
+                    mute: ,
                     enablejsapi: 1,
                     origin: window.location.origin
                 },
@@ -128,7 +128,7 @@ export const MediaDisplay = ({
                         const nextVolume = event.target.getVolume?.() ?? 100;
                         setVolume(nextVolume);
                         setIsMuted(event.target.isMuted?.() ?? false);
-                        event.target.unMute?.();
+                        event.target.mute?.();
                         setIsMuted(true);
                         event.target.playVideo?.();
                     },
