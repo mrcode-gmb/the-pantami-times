@@ -43,7 +43,7 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
         {/* Main Featured Story */}
         <div className="order-1 lg:order-2 lg:col-span-6">
           {featuredPost && (
-            <Link href={route('posts.show.full', featuredPost.slug)} className="cursor-pointer group">
+            <Link href={route('posts.show.full', featuredPost.public_id)} className="cursor-pointer group">
             <article>
               {(featuredPost.image || featuredPost.video_url) && (
                 <div className="aspect-video relative overflow-hidden rounded">
