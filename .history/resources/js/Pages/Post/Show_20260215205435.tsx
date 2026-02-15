@@ -181,7 +181,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={post.excerpt} />
         <meta name="twitter:image" content={post.image} />
-        <meta name="twitter:image:src" content={post.image} />
+        <meta />
       </Head>
 
       <div className="min-h-screen bg-background">

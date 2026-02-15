@@ -68,7 +68,7 @@
   <meta name="twitter:image" content="{{ $metaImage ? url($metaImage) : asset('images/logo.jpg') }}">
   
   <meta property="og:image" content="{{ $metaImage ? url($metaImage) : asset('images/logo.jpg') }}">
-  <meta name="twitter:image:src" content="{{ $metaImage ? url($metaImage) : asset('images/logo.jpg') }}" />
+  <meta name="twitter:image:src" content={post.image} />
 
   <meta name="msapplication-TileColor" content="#f0a500">
 
