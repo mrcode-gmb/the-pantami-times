@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
 use App\Models\Post;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Admin\DashboardController;
@@ -35,7 +34,7 @@ Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
-Route::get('/n/{post:uuid}', [PostController::class, 'show'])->name('posts.show.full');
+Route::get('/{post:uuid}', [PostController::class, 'show'])->name('posts.show.full');
 
 Route::get('/dashboard', function () {
     if (auth()->user()->role === 'admin') {
