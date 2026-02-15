@@ -33,7 +33,7 @@ Route::get('/categories', [OutCategoryController::class, 'index'])->name('catego
 // Search Route
 Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 
-Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+Route::get('/pt-news', [WelcomeController::class, 'index'])->name('welcome');
 
 Route::get('/n/{post:uuid}', [PostController::class, 'show'])->name('posts.show.full');
 Route::get('/posts/full/{post:uuid}', [PostController::class, 'show'])->name('posts.show.fulls');

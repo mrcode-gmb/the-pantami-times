@@ -36,8 +36,8 @@ Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 Route::get('/n/{post:uuid}', [PostController::class, 'show'])->name('posts.show.full');
-Route::get('/posts/full/{post:uuid}', [PostController::class, 'show'])->name('posts.show.fulls');
-Route::get('/posts/{post:uuid}', [PostController::class, 'show'])->name('posts.show.post');
+Route::get('/posts/full//{post:uuid}', [PostController::class, 'show'])->name('posts.show.full');
+Route::get('/n/{post:uuid}', [PostController::class, 'show'])->name('posts.show.full');
 
 Route::get('/dashboard', function () {
     if (auth()->user()->role === 'admin') {
