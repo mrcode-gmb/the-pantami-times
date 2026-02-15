@@ -65,9 +65,10 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{ $metaTitle ?? config('app.name') }}">
   <meta name="twitter:description" content="{{ $metaDescription ?? '' }}">
-  <meta name="twitter:image" content="{{ $metaImage ? url($metaImage) : asset('images/logo.jpg') }}">
-  
+  <meta name="twitter:image" content="{{ $metaImage ?? asset('images/logo.jpg') }}">
   <meta property="og:image" content="{{ $metaImage ? url($metaImage) : asset('images/logo.jpg') }}">
+<meta name="twitter:image" content="{{ $metaImage ? url($metaImage) : asset('images/logo.jpg') }}">
+
 
   <meta name="msapplication-TileColor" content="#f0a500">
 

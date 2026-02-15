@@ -176,7 +176,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
         <meta name="description" content={post.excerpt} />
         <meta property="og:title" content={post.title} />
         <meta property="og:description" content={post.excerpt} />
-        <meta property="og:image" content={new URL(post.image, window.location.origin).toString()} />
+        <meta property="og:image" content={post.image} />
 
         <meta name="twitter:title" content={post.title} />
         <meta name="twitter:description" content={post.excerpt} />
