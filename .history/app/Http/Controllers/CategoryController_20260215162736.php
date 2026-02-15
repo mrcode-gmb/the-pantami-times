@@ -139,7 +139,7 @@ class CategoryController extends Controller
         ->orderBy('priority', 'asc')
         ->get();
 
-        // return to all sub category here 
+        
         return Inertia::render('SubCategories/Show', [
             'category' => $category,
             'subcategory' => $subcategory,
