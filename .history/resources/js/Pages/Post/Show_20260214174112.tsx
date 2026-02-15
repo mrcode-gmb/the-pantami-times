@@ -344,7 +344,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                 ) : null}
 
                 {post.credit ? (
-                  <div className="absolute bottom-0 right-0 bg-primary text-black p-2 py-1 text-sm">
+                  <div className="absolute bottom-0 right-0 bg-black text-black p-2 py-1 text-sm">
                     {post.credit}
                   </div>
                 ): null}

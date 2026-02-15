@@ -38,7 +38,7 @@ class PostController extends Controller
      */
     public function show($post)
     {
-        $post = Post::where('public_id', $post)->orWhere("slug", $post)->firstOrFail()->slug;
+        $post = Post::where('public_id', $post)->or->firstOrFail()->slug;
         // return $post;
         // Find post by slug or ID, only if published - optimized query
         $post = Post::select([
