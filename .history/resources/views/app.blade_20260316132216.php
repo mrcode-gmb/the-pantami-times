@@ -16,7 +16,6 @@
   <meta name="googlebot" content="index, follow">
   <meta name="bingbot" content="index, follow">
   <meta name="google-site-verification" content="-D2lYJKGLw4_wJGRP8pwAGLUhU4qM7IivlUKntHPx_Q" />
-  <meta name="google-adsense-account" content="ca-pub-3454126744747191">
 
   {{-- Canonical URL --}}
   <link rel="canonical" href="{{ url()->current() }}">
