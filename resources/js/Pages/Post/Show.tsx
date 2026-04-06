@@ -1,9 +1,9 @@
 import React from 'react';
 import { Head, Link } from '@inertiajs/react';
-import { PageProps } from '@/types';
 import { Header } from '@/Components/Headers';
 import { Footer } from '@/Components/Footer';
 import { MediaDisplay } from '@/Components/MediaDisplay';
+import { postHref } from '@/lib/posts';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,11 +21,13 @@ interface Post {
   image_caption: string;
   title: string;
   slug: string;
+  public_id: string;
   content: string;
   excerpt: string;
   image: string;
   credit: string;
   video_url?: string;
+  published_at?: string;
   category: {
     id: number;
     name: string;
@@ -36,6 +38,9 @@ interface Post {
     name: string;
     avatar?: string;
     bio: string;
+    role_label?: string;
+    articles_count?: number;
+    contact_email?: string;
   };
   created_at: string;
   updated_at: string;
@@ -48,6 +53,7 @@ interface ShowProps {
     id: number;
     title: string;
     slug: string;
+    public_id: string;
     image: string | null;
     published_at: string;
     views: number;
@@ -134,55 +140,17 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
     );
   }
 
-  // Process content to fix image paths
-  const processContent = (html: string) => {
-    if (!html) return '';
+  const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains("dark");
+  const publishedAt = post.published_at || post.created_at;
+  const hasUpdatedAt = Boolean(
+    post.updated_at &&
+    publishedAt &&
+    new Date(post.updated_at).getTime() - new Date(publishedAt).getTime() > 60000
+  );
 
-    // Create a temporary div to parse the HTML
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = html;
-
-    // Update image sources
-    const images = tempDiv.getElementsByTagName('img');
-    for (let img of Array.from(images)) {
-      const src = img.getAttribute('src') || '';
-
-      // Only modify relative paths (not external URLs)
-      if (src && !src.startsWith('http') && !src.startsWith('data:')) {
-        // Remove any leading slashes to prevent double slashes
-        const cleanPath = src.replace(/^\/+/, '');
-        img.src = `/storage/${cleanPath}`;
-      }
-
-      // Add error handling
-      img.onerror = function () {
-        this.src = 'https://placehold.co/800x400?text=Image+Not+Found';
-        this.onerror = null; // Prevent infinite loop
-      };
-
-      // Add responsive classes
-      img.classList.add('max-w-full', 'h-auto', 'rounded-lg', 'my-4');
-    }
-
-    return tempDiv.innerHTML;
-  };
-
-  const parsedContent = { __html: processContent(post.content) };
-  const isDark = document.documentElement.classList.contains("dark"); // or from your theme store
-  console.log(isDark);
   return (
     <>
-      <Head title={post.title}>
-        <meta name="description" content={post.excerpt} />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.excerpt} />
-        <meta property="og:image" content={new URL(post.image, window.location.origin).toString()} />
-
-        <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={post.excerpt} />
-        <meta name="twitter:image" content={post.image} />
-        <meta name="twitter:image:src" content={post.image} />
-      </Head>
+      <Head title={`${post.title} - Pantami Times`} />
 
       <div className="min-h-screen bg-background">
         <Header categories={categories} />
@@ -235,7 +203,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                     <div>
                       <div className="font-medium">{post.author?.name || 'Admin'}</div>
                       <div className="text-sm text-muted-foreground">
-                        {format(new Date(post.created_at), 'MMMM d, yyyy')} • {Math.ceil(post.content.split(' ').length / 200)} min read
+                        Published {format(new Date(publishedAt), 'MMMM d, yyyy')} • {Math.ceil(post.content.split(' ').length / 200)} min read
                       </div>
                     </div>
                   </div>
@@ -306,11 +274,42 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
-                    <button className="p-2 rounded-full hover:bg-muted">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                      </svg>
-                    </button>
+                    <Link
+                      href="/corrections"
+                      className="rounded-full border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary hover:text-foreground"
+                    >
+                      Corrections
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="mb-6 grid gap-3 rounded-2xl border border-border bg-muted/30 p-4 md:grid-cols-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Published</p>
+                    <p className="mt-2 text-sm font-medium text-foreground">
+                      {format(new Date(publishedAt), 'MMMM d, yyyy')}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Updated</p>
+                    <p className="mt-2 text-sm font-medium text-foreground">
+                      {hasUpdatedAt ? format(new Date(post.updated_at), 'MMMM d, yyyy') : 'No major update noted'}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Byline</p>
+                    <p className="mt-2 text-sm font-medium text-foreground">
+                      {post.author?.role_label || 'Pantami Times Newsroom'}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Standards</p>
+                    <Link
+                      href="/corrections"
+                      className="mt-2 inline-flex text-sm font-medium text-primary hover:underline"
+                    >
+                      Read corrections policy
+                    </Link>
                   </div>
                 </div>
 
@@ -336,10 +335,9 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                       alt={post.title}
                       className="w-full h-full max-md:h-[270px] object-cover "
                       onError={(e) => {
-                        // Fallback to a placeholder image if the image fails to load
                         const target = e.target as HTMLImageElement;
-                        target.src = 'https://placehold.co/800x500?text=Image+Not+Found';
-                        target.onerror = null; // Prevent infinite loop if placeholder also fails
+                        target.src = '/favicon.ico';
+                        target.onerror = null;
                       }}
                     />
                     {/* <p className="text-sm text-muted-foreground mt-2">
@@ -362,6 +360,33 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                 />
               </div>
 
+              <section className="mt-8 rounded-2xl border border-border bg-card p-6">
+                <h2 className="text-2xl font-bold">Story Standards</h2>
+                <p className="mt-3 text-muted-foreground">
+                  Pantami Times stories are reviewed for accuracy, clarity, and fairness before publication. If you believe this article needs a correction or clarification, contact the newsroom and include the specific line or claim you want reviewed.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <Link
+                    href="/guidelines"
+                    className="rounded-full bg-[#1a1f2e] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#2a3247]"
+                  >
+                    Editorial Guidelines
+                  </Link>
+                  <Link
+                    href="/corrections"
+                    className="rounded-full border border-border px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
+                  >
+                    Corrections Policy
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="rounded-full border border-border px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
+                  >
+                    Contact Newsroom
+                  </Link>
+                </div>
+              </section>
+
               <footer className="mt-12 pt-6 border-t border-border">
                 <div className="flex flex-wrap gap-2 mb-6">
                   {post.category && post.category.name && (
@@ -372,26 +397,31 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                   {/* Add more tags if needed */}
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <button className="flex items-center space-x-2 text-muted-foreground hover:text-foreground">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-                      </svg>
-                      <span>Like</span>
-                    </button>
-                    <button className="flex items-center space-x-2 text-muted-foreground hover:text-foreground">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                      </svg>
-                      <span>Comment</span>
-                    </button>
+                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                    {post.updated_at && (
+                      <span>Updated {format(new Date(post.updated_at), 'MMMM d, yyyy')}</span>
+                    )}
+                    {post.category?.slug && (
+                      <Link href={`/category/${post.category.slug}`} className="hover:text-foreground hover:underline">
+                        More in {post.category.name}
+                      </Link>
+                    )}
                   </div>
 
-                  <div className="flex items-center space-x-4">
-                    <span className="text-sm text-muted-foreground">
-                      {post.updated_at && format(new Date(post.updated_at), 'MMMM d, yyyy')}
-                    </span>
+                  <div className="flex flex-wrap gap-3">
+                    <Link
+                      href="/corrections"
+                      className="rounded-full border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary hover:text-foreground"
+                    >
+                      Report a Correction
+                    </Link>
+                    <Link
+                      href="/about"
+                      className="rounded-full border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary hover:text-foreground"
+                    >
+                      About Pantami Times
+                    </Link>
                   </div>
                 </div>
               </footer>
@@ -401,7 +431,12 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
             <aside className="lg:col-span-4 space-y-8">
               {/* About Author */}
               <div className="bg-muted/30 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold mb-4">About the Author</h3>
+                <div className="mb-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#f0a500]">
+                    {post.author?.role_label || 'Pantami Times Newsroom'}
+                  </p>
+                  <h3 className="mt-2 text-lg font-semibold">About the Author</h3>
+                </div>
                 <div className="flex items-start space-x-4">
                   {post.author?.avatar ? (
                     <img
@@ -419,41 +454,49 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                     <p className="text-sm text-muted-foreground mt-1">
                       {post.author?.bio || 'Contributing writer at Pantami Times'}
                     </p>
-                    <div className="flex items-center space-x-3 mt-2">
-                      <a href="#" className="text-muted-foreground hover:text-primary">
-                        <span className="sr-only">Twitter</span>
-                        <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                        </svg>
-                      </a>
+                    <div className="mt-3 text-xs text-muted-foreground">
+                      {post.author?.articles_count
+                        ? `${post.author.articles_count} published ${post.author.articles_count === 1 ? 'story' : 'stories'} on Pantami Times`
+                        : 'Published through the Pantami Times editorial process'}
                     </div>
+                    <Link href="/contact" className="mt-3 inline-flex text-sm font-medium text-primary hover:underline">
+                      Contact the editorial desk
+                    </Link>
                   </div>
                 </div>
               </div>
 
-              {/* Newsletter */}
               <div className="bg-primary/5 border border-primary/10 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold mb-2">Stay updated</h3>
+                <h3 className="text-lg font-semibold mb-2">Stay Connected</h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Get the latest news and articles in your inbox weekly.
+                  Learn how the newsroom works, browse our public standards, or reach us directly if you notice an issue.
                 </p>
-                <form className="space-y-3">
-                  <div>
-                    <label htmlFor="email" className="sr-only">Email address</label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="w-full px-4 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
-                      placeholder="Enter your email"
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full bg-primary text-primary-foreground py-2 px-4 rounded-md hover:bg-primary/90 transition-colors"
+                <div className="space-y-3">
+                  <Link
+                    href="/about"
+                    className="block rounded-md bg-primary text-primary-foreground py-2 px-4 text-center font-medium hover:bg-primary/90 transition-colors"
                   >
-                    Subscribe
-                  </button>
-                </form>
+                    About Pantami Times
+                  </Link>
+                  <Link
+                    href="/guidelines"
+                    className="block rounded-md border border-border py-2 px-4 text-center font-medium text-foreground hover:border-primary hover:text-primary transition-colors"
+                  >
+                    Editorial Guidelines
+                  </Link>
+                  <Link
+                    href="/corrections"
+                    className="block rounded-md border border-border py-2 px-4 text-center font-medium text-foreground hover:border-primary hover:text-primary transition-colors"
+                  >
+                    Corrections Policy
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="block rounded-md border border-border py-2 px-4 text-center font-medium text-foreground hover:border-primary hover:text-primary transition-colors"
+                  >
+                    Contact the Newsroom
+                  </Link>
+                </div>
               </div>
 
               {/* Trending Now */}
@@ -478,7 +521,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                         <div>
                           <h4 className="font-medium group-hover:text-primary transition-colors line-clamp-2">
                             <Link
-                              href={route('posts.show.full', post.slug)}
+                              href={postHref(post)}
                               className="hover:underline"
                             >
                               {post.title}
@@ -525,7 +568,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                     )}
                     <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
                       <Link
-                        href={route('posts.show.full', relatedPost.slug)}
+                        href={postHref(relatedPost)}
                         className="hover:underline"
                       >
                         {relatedPost.title}
@@ -546,26 +589,30 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
             </div>
           </section>
 
-          {/* Comments Section */}
+          {/* Reader Feedback */}
           <section className="mt-16">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold">Comments</h2>
-              <button className="text-sm text-primary hover:underline">
-                Sign in to comment
-              </button>
-            </div>
-
-            <div className="space-y-6">
-              {/* Comment form placeholder */}
-              <div className="bg-muted/30 p-4 rounded-lg">
-                <p className="text-muted-foreground text-sm">
-                  <Link href="/login" className="text-primary hover:underline">Sign in</Link> to leave a comment
-                </p>
-              </div>
-
-              {/* Comments list placeholder */}
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">No comments yet. Be the first to share your thoughts!</p>
+            <div className="rounded-2xl border border-border bg-card p-6">
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold">Corrections and Feedback</h2>
+                  <p className="mt-2 text-muted-foreground">
+                    If you spotted an error, need clarification, or want to reach the editorial team about this story, send us a note directly.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  <Link
+                    href="/contact"
+                    className="rounded-full bg-[#1a1f2e] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#2a3247]"
+                  >
+                    Contact Newsroom
+                  </Link>
+                  <Link
+                    href="/guidelines"
+                    className="rounded-full border border-border px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
+                  >
+                    Editorial Guidelines
+                  </Link>
+                </div>
               </div>
             </div>
           </section>

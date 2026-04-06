@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Post;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class SeoService
@@ -23,7 +24,7 @@ class SeoService
             'og:title' => $post->title,
             'og:description' => $description,
             'og:image' => $image,
-            'og:url' => route('posts.show.full', $post->slug),
+            'og:url' => $post->publicUrl(),
             'article:published_time' => $post->published_at?->toIso8601String(),
             'article:modified_time' => $post->updated_at->toIso8601String(),
             'article:author' => $post->author->name ?? 'The Pantami Times',
@@ -62,7 +63,7 @@ class SeoService
             ],
             'mainEntityOfPage' => [
                 '@type' => 'WebPage',
-                '@id' => route('posts.show.full', $post->slug),
+                '@id' => $post->publicUrl(),
             ],
         ];
     }
@@ -92,7 +93,7 @@ class SeoService
                     '@type' => 'ListItem',
                     'position' => 3,
                     'name' => $post->title,
-                    'item' => route('posts.show.full', $post->slug),
+                    'item' => $post->publicUrl(),
                 ],
             ],
         ];

@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import { Header } from '@/Components/Headers';
 import { Footer } from '@/Components/Footer';
 import { MediaDisplay } from '@/Components/MediaDisplay';
+import { postHref } from '@/lib/posts';
 import { Calendar, Eye, User } from 'lucide-react';
 
 interface SubCategory {
@@ -108,7 +109,7 @@ export default function CategoryShow({
                                 {posts.data.map((post) => (
                                     <Link
                                         key={post.id}
-                                        href={route('posts.show.full', post.public_id)}
+                                        href={postHref(post)}
                                         className="group"
                                     >
                                         <article className="border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all">

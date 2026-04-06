@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
-use App\Models\Post;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,6 +15,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Editor\DashboardController as EditorDashboardController;
 use App\Http\Controllers\Editor\PostController as EditorPostController;
+use App\Http\Controllers\PublicPageController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\CategoryController as OutCategoryController;
 use App\Http\Controllers\WelcomeController;
@@ -24,6 +24,20 @@ use App\Http\Controllers\SearchController;
 // SEO Routes
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.index');
 Route::get('/sitemap-posts.xml', [SitemapController::class, 'posts'])->name('sitemap.posts');
+
+// Public Trust Pages
+Route::get('/about', [PublicPageController::class, 'show'])->defaults('page', 'about')->name('pages.about');
+Route::get('/contact', [PublicPageController::class, 'show'])->defaults('page', 'contact')->name('pages.contact');
+Route::get('/advertise', [PublicPageController::class, 'show'])->defaults('page', 'advertise')->name('pages.advertise');
+Route::get('/careers', [PublicPageController::class, 'show'])->defaults('page', 'careers')->name('pages.careers');
+Route::get('/corrections', [PublicPageController::class, 'show'])->defaults('page', 'corrections')->name('pages.corrections');
+Route::get('/privacy', [PublicPageController::class, 'show'])->defaults('page', 'privacy')->name('pages.privacy');
+Route::get('/terms', [PublicPageController::class, 'show'])->defaults('page', 'terms')->name('pages.terms');
+Route::get('/cookie-policy', [PublicPageController::class, 'show'])->defaults('page', 'cookie-policy')->name('pages.cookie');
+Route::get('/help', [PublicPageController::class, 'show'])->defaults('page', 'help')->name('pages.help');
+Route::get('/guidelines', [PublicPageController::class, 'show'])->defaults('page', 'guidelines')->name('pages.guidelines');
+Route::get('/writing-tips', [PublicPageController::class, 'show'])->defaults('page', 'writing-tips')->name('pages.writing-tips');
+Route::get('/e-paper', [PublicPageController::class, 'show'])->defaults('page', 'e-paper')->name('pages.e-paper');
 
 // Category Routes
 Route::get('/category/{categorySlug}/{subcategorySlug}', [OutCategoryController::class, 'showSubcategory'])->name('subcategory.show');
@@ -35,9 +49,7 @@ Route::get('/search', [SearchController::class, 'index'])->name('search.index');
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
-Route::get('/{post:uuid}/pt/', [PostController::class, 'show'])->name('posts.show.full');
-Route::get('/posts/full/{post:uuid}', [PostController::class, 'show'])->name('posts.show.fulls');
-Route::get('/posts/{post:uuid}', [PostController::class, 'show'])->name('posts.show.post');
+Route::get('/{post}/pt/', [PostController::class, 'show'])->name('posts.show.full');
 
 Route::get('/dashboard', function () {
     if (auth()->user()->role === 'admin') {

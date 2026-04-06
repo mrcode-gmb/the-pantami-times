@@ -24,7 +24,7 @@
     {{-- Posts --}}
     @foreach($posts as $post)
     <url>
-        <loc>{{ route('posts.show.full', $post->slug) }}</loc>
+        <loc>{{ $post->publicUrl() }}</loc>
         <lastmod>{{ $post->updated_at->toAtomString() }}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>

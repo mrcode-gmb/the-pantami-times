@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import { postHref } from '@/lib/posts';
 import MDEditor from '@uiw/react-md-editor';
 import { MediaDisplay } from './MediaDisplay';
 
@@ -55,9 +56,9 @@ export const NewsCard = ({
 
   const articleClasses = `card-news group cursor-pointer ${variant === 'horizontal' ? 'flex gap-4' : ''} ${variant === 'compact' ? 'border-b border-border pb-3 last:border-b-0' : ''} ${className || ''}`;
 
-  if (publicId) {
+  if (publicId || slug) {
     return (
-      <Link href={route('posts.show.full', publicId)} className={articleClasses}>
+      <Link href={postHref({ public_id: publicId, slug })} className={articleClasses}>
         {CardInnerContent}
       </Link>
     );

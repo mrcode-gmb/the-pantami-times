@@ -37,7 +37,7 @@ class PostApproved extends Notification
      */
     public function toMail(object $notifiable)
     {
-        $url = route('posts.show.full', $this->post->slug);
+        $url = $this->post->publicUrl();
         
         return (new MailMessage)
             ->subject('Your Post Has Been Approved: ' . $this->post->title)

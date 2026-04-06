@@ -47,6 +47,24 @@ class User extends Authenticatable
         return $this->hasMany(Post::class, 'author_id');
     }
 
+    public function newsroomRoleLabel(): string
+    {
+        return match ($this->role) {
+            'admin' => 'Editorial Desk',
+            'editor' => 'Staff Reporter',
+            default => 'Pantami Times Contributor',
+        };
+    }
+
+    public function newsroomBio(): string
+    {
+        return match ($this->role) {
+            'admin' => 'Member of the Pantami Times editorial desk responsible for review, publication standards, and newsroom oversight.',
+            'editor' => 'Reporter at Pantami Times working through the publication\'s editorial review process and newsroom standards.',
+            default => 'Contributor published by Pantami Times under the newsroom\'s editorial process.',
+        };
+    }
+
     protected function casts(): array
     {
         return [

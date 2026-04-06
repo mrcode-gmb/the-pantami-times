@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -72,8 +73,29 @@ class Post extends Model
         return $id;
     }
 
-    public function getRouteKeyName(): string
+    public function scopePublished(Builder $query): Builder
     {
-        return 'slug';
+        return $query
+            ->where('status', 'published')
+            ->whereNotNull('published_at');
+    }
+
+    public function publicRouteParameters(): array
+    {
+        return [
+            'post' => $this->public_id ?: $this->slug,
+        ];
+    }
+
+    public function publicUrl(): string
+    {
+        return route('posts.show.full', $this->publicRouteParameters());
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'published_at' => 'datetime',
+        ];
     }
 }

@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import { postHref } from '@/lib/posts';
 import { NewsCard } from "./NewsCard";
 import MDEditor from '@uiw/react-md-editor';
 import { MediaDisplay } from './MediaDisplay';
@@ -51,7 +52,7 @@ export const NewsSection = ({ title, articles, layout = "grid" }: NewsSectionPro
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-7">
             {featured && featured.slug && (
-              <Link href={route('posts.show.full', featured.public_id)} className="cursor-pointer group">
+              <Link href={postHref(featured)} className="cursor-pointer group">
                 <article>
                   {(featured.image || featured.video_url) && (
                     <div className="aspect-video overflow-hidden rounded">
@@ -106,6 +107,7 @@ export const NewsSection = ({ title, articles, layout = "grid" }: NewsSectionPro
           <NewsCard 
             key={article.id} 
             slug={article.slug}
+            publicId={article.public_id}
             category={article.category?.name || 'News'}
             title={article.title}
             image={article.image}

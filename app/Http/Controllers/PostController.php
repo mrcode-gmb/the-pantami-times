@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Inertia\Inertia;
 use App\Models\Category;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Schema;
 
 class PostController extends Controller
 {
@@ -36,39 +39,21 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($post)
+    public function show(Request $request, string $postIdentifier)
     {
-        $post = Post::where('public_id', $post)->orWhere("slug", $post)->firstOrFail()->slug;
-        // return $post;
-        // Find post by slug or ID, only if published - optimized query
-        $post = Post::select([
-            'id',
-            'uuid',
-            'title',
-            'slug',
-            "public_id",
-            'content',
-            'image',
-            'video_url',
-            'excerpt',
-            'category_id',
-            'author_id',
-            'created_at',
-            'credit',
-            'updated_at',
-            'published_at',
-            'views',
-            'status'
-        ])
-            ->where('slug', $post)
-            ->orWhere('id', $post)
-            ->where('status', 'published')
-            ->whereNotNull('published_at')
-            ->with([
-                'category:id,name,slug',
-                'author:id,name'
-            ])
+        $post = $this->buildPostShowQuery()
+            ->where(function (Builder $query) use ($postIdentifier) {
+                $query
+                    ->where('public_id', $postIdentifier)
+                    ->orWhere('slug', $postIdentifier)
+                    ->orWhere('uuid', $postIdentifier);
+            })
             ->firstOrFail();
+
+        $canonicalIdentifier = $post->public_id ?: $post->slug;
+        if ($postIdentifier !== $canonicalIdentifier) {
+            return redirect()->to($post->publicUrl(), 301);
+        }
 
         // Increment view count only once per IP address (forever)
         $ipAddress = request()->ip();
@@ -83,8 +68,7 @@ class PostController extends Controller
 
         // Get trending posts with full image URLs - optimized
         $trendingPosts = Post::select(['id', 'uuid', 'title', 'slug', 'public_id', 'image', 'credit', 'video_url', 'published_at', 'views', 'category_id'])
-            ->where('status', 'published')
-            ->whereNotNull('published_at')
+            ->published()
             ->where('id', '!=', $post->id)
             ->with('category:id,name,slug')
             ->orderBy('views', 'desc')
@@ -99,8 +83,7 @@ class PostController extends Controller
         $relatedPosts = Post::select(['id', 'uuid', 'title', 'slug', 'public_id', 'image', 'video_url', 'credit', 'excerpt', 'published_at', 'category_id'])
             ->where('category_id', $post->category_id)
             ->where('id', '!=', $post->id)
-            ->where('status', 'published')
-            ->whereNotNull('published_at')
+            ->published()
             ->with('category:id,name,slug')
             ->latest('published_at')
             ->limit(3)
@@ -114,8 +97,15 @@ class PostController extends Controller
         $post->image = $post->image ? asset($post->image) : null;
 
         // If author has a profile photo, ensure it has full URL
-        if ($post->author && $post->author->profile_photo_path) {
-            $post->author->profile_photo_url = asset('storage/' . $post->author->profile_photo_path);
+        if ($post->author) {
+            if ($this->usersHaveProfilePhotos() && $post->author->profile_photo_path) {
+                $post->author->avatar = asset('storage/' . $post->author->profile_photo_path);
+            }
+
+            $post->author->role_label = $post->author->newsroomRoleLabel();
+            $post->author->bio = $post->author->newsroomBio();
+            $post->author->articles_count = $post->author->posts_count ?? 0;
+            $post->author->contact_email = 'editorial@pantamitimes.com';
         }
         return Inertia::render('Post/Show', [
             'post' => $post,
@@ -123,10 +113,70 @@ class PostController extends Controller
             'trendingPosts' => $trendingPosts,
             'categories' => Category::with("subcategories")->orderBy('priority')->get(),
         ])->withViewData([
-            'metaTitle' => $post->title,
-            'metaDescription' => $post->excerpt,
-            'metaImage' => asset($post->image),
+            'metaTitle' => $post->title . ' - ' . config('app.name'),
+            'metaDescription' => $post->excerpt ?: Str::limit(strip_tags($post->content), 160),
+            'metaImage' => $post->image ?: asset('images/logo.jpg'),
+            'metaType' => 'article',
+            'metaUrl' => $post->publicUrl(),
+            'metaAuthor' => $post->author?->name ?: config('app.name'),
+            'metaPublishedTime' => $post->published_at?->toIso8601String(),
+            'metaUpdatedTime' => $post->updated_at?->toIso8601String(),
         ]);
+    }
+
+    private function buildPostShowQuery(): Builder
+    {
+        return Post::query()
+            ->select([
+                'id',
+                'uuid',
+                'title',
+                'slug',
+                'public_id',
+                'content',
+                'image',
+                'video_url',
+                'excerpt',
+                'category_id',
+                'author_id',
+                'created_at',
+                'credit',
+                'updated_at',
+                'published_at',
+                'views',
+                'status',
+            ])
+            ->published()
+            ->with([
+                'category:id,name,slug',
+                'author' => function ($query) {
+                    $query
+                        ->select($this->authorSelectColumns())
+                        ->withCount('posts');
+                },
+            ]);
+    }
+
+    private function authorSelectColumns(): array
+    {
+        $columns = ['id', 'name', 'role'];
+
+        if ($this->usersHaveProfilePhotos()) {
+            $columns[] = 'profile_photo_path';
+        }
+
+        return $columns;
+    }
+
+    private function usersHaveProfilePhotos(): bool
+    {
+        static $hasProfilePhotoColumn;
+
+        if ($hasProfilePhotoColumn === null) {
+            $hasProfilePhotoColumn = Schema::hasColumn('users', 'profile_photo_path');
+        }
+
+        return $hasProfilePhotoColumn;
     }
     
 

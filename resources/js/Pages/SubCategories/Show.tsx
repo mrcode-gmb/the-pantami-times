@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import { Header } from '@/Components/Headers';
 import { Footer } from '@/Components/Footer';
 import { MediaDisplay } from '@/Components/MediaDisplay';
+import { postHref } from '@/lib/posts';
 import { Clock, Eye, User, ArrowRight } from 'lucide-react';
 
 interface Category {
@@ -125,7 +126,7 @@ export default function Show({ category, subcategory, posts, categories }: Props
                                             className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow border border-border"
                                         >
                                             {(post.image || post.video_url) && (
-                                                <Link href={route("posts.show.full", post.public_id)} className="block">
+                                                <Link href={postHref(post)} className="block">
                                                     <div className="w-full h-48 overflow-hidden">
                                                         <MediaDisplay
                                                             image={post.image}
@@ -150,7 +151,7 @@ export default function Show({ category, subcategory, posts, categories }: Props
                                                     </div>
                                                 </div>
 
-                                                <Link href={route("posts.show.full", post.public_id)}>
+                                                <Link href={postHref(post)}>
                                                     <h2 className="text-xl font-bold text-foreground hover:text-[#f0a500] transition-colors mb-2 line-clamp-2">
                                                         {post.title}
                                                     </h2>
@@ -172,7 +173,7 @@ export default function Show({ category, subcategory, posts, categories }: Props
                                                 </div>
 
                                                 <Link 
-                                                    href={route("posts.show.full", post.public_id)}
+                                                    href={postHref(post)}
                                                     className="mt-4 inline-flex items-center gap-2 text-[#f0a500] hover:text-[#d99200] transition-colors text-sm font-semibold"
                                                 >
                                                     Read More

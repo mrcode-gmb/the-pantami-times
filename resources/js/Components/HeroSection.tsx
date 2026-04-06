@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import { postHref } from '@/lib/posts';
 import { MediaDisplay } from './MediaDisplay';
 
 export const HeroSection = ({ posts }: { posts: any[] }) => {
@@ -12,18 +13,12 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
 
   return (
     <section className="container py-6">
-      {/* Advertisement placeholder */}
-      <div className="w-full h-20 bg-muted flex items-center justify-center text-muted-foreground text-xs uppercase tracking-widest mb-6">
-        advertisement
-      </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Sidebar */}
         
         <div className="order-2 lg:order-1 lg:col-span-3 grid grid-cols-1 w-full max-md:grid-cols-2 gap-3">
           {sidebarPosts.map((post) => (
-            <>
-            <Link href={route('posts.show.full', post.public_id)} key={post.id} className="group cursor-pointer">
+            <Link href={postHref(post)} key={post.id} className="group cursor-pointer">
               <div className="aspect-video overflow-hidden rounded bg-muted">
                 <MediaDisplay
                   image={post.image}
@@ -36,14 +31,13 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
               </div>
               <h3 className="news-title-sm mt-3">{post.title}</h3>
             </Link>
-            </>
           ))}
         </div>
 
         {/* Main Featured Story */}
         <div className="order-1 lg:order-2 lg:col-span-6">
           {featuredPost && (
-            <Link href={route('posts.show.full', featuredPost.public_id)} className="cursor-pointer group">
+            <Link href={postHref(featuredPost)} className="cursor-pointer group">
             <article>
               {(featuredPost.image || featuredPost.video_url) && (
                 <div className="aspect-video relative overflow-hidden rounded">
@@ -73,7 +67,7 @@ export const HeroSection = ({ posts }: { posts: any[] }) => {
           <h2 className="section-heading mb-4">LATEST NEWS</h2>
           <div className="space-y-4">
             {latestPosts.map((post) => (
-              <Link href={route('posts.show.full', post.public_id)} key={post.id} className="border-b border-border pb-4 last:border-b-0 cursor-pointer group">
+              <Link href={postHref(post)} key={post.id} className="border-b border-border pb-4 last:border-b-0 cursor-pointer group">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="category-tag">{post.category?.name || 'News'}</span>
                   <span className="text-muted-foreground">•</span>

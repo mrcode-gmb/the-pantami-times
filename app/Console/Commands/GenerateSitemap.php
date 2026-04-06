@@ -32,7 +32,7 @@ class GenerateSitemap extends Command
 
         Sitemap::create()
             ->add(Post::where('status', 'published')->get()->map(function (Post $post) {
-                return Url::create(route('posts.show.full', $post))
+                return Url::create($post->publicUrl())
                     ->setLastModificationDate($post->updated_at)
                     ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
                     ->setPriority(0.8);

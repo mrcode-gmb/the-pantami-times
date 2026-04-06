@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import { Header } from '@/Components/Headers';
 import { Footer } from '@/Components/Footer';
 import { MediaDisplay } from '@/Components/MediaDisplay';
+import { postHref } from '@/lib/posts';
 import { Calendar, Eye, User, Search as SearchIcon } from 'lucide-react';
 
 interface SubCategory {
@@ -25,6 +26,7 @@ interface Post {
     uuid: string;
     title: string;
     slug: string;
+    public_id: string;
     image: string;
     video_url?: string;
     excerpt: string;
@@ -82,7 +84,7 @@ export default function SearchIndex({
                                 {posts.data.map((post) => (
                                     <Link
                                         key={post.id}
-                                        href={route('posts.show.full', post.slug)}
+                                        href={postHref(post)}
                                         className="group"
                                     >
                                         <article className="border border-border rounded-lg overflow-hidden hover:shadow-lg transition-all">

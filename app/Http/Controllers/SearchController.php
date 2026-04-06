@@ -24,6 +24,7 @@ class SearchController extends Controller
                 'uuid',
                 'title',
                 'slug',
+                'public_id',
                 'image',
                 'video_url',
                 'excerpt',
