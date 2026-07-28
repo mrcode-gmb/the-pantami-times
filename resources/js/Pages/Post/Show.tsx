@@ -230,7 +230,7 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                           <span>Share on Facebook</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(post.title)}`)}
+                          onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(post.title + (post.image ? '\n\n' + post.image : ''))}`)}
                           className="cursor-pointer flex items-center space-x-2"
                         >
                           <svg className="h-4 w-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
