@@ -14,6 +14,7 @@ import { format } from 'date-fns';
 import MDEditor from '@uiw/react-md-editor';
 import { formatDistanceToNow } from 'date-fns';
 import MarkdownPreview from "@uiw/react-markdown-preview";
+import { VtuSidebarBanner, VtuInArticleBanner } from '@/Components/AqtrisVtuPromo';
 
 interface Post {
   id: number;
@@ -360,6 +361,9 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                 />
               </div>
 
+              {/* In-Article Turnkey VTU Promo Banner */}
+              <VtuInArticleBanner />
+
               <section className="mt-8 rounded-2xl border border-border bg-card p-6">
                 <h2 className="text-2xl font-bold">Story Standards</h2>
                 <p className="mt-3 text-muted-foreground">
@@ -465,6 +469,9 @@ export default function Show({ post: postData, relatedPosts = [], trendingPosts 
                   </div>
                 </div>
               </div>
+
+              {/* Small-size Sidebar Promo Banner */}
+              <VtuSidebarBanner />
 
               <div className="bg-primary/5 border border-primary/10 p-6 rounded-lg">
                 <h3 className="text-lg font-semibold mb-2">Stay Connected</h3>
