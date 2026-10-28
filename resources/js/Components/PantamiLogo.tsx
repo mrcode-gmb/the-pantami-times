@@ -25,7 +25,6 @@ export const PantamiLogo: React.FC<PantamiLogoProps> = ({ className = '', showTe
           <h1 className="text-center font-serif text-2xl md:text-4xl lg:text-5xl font-bold tracking-wide text-foreground transition-colors">
             Pantami Times
           </h1>
-          <div className="w-full h-[3px] bg-[#f0a500]">ww</div>
           <hr className="w-full h-[3px] bg-[#f0a500]" />
           <p className="text-center text-xs md:text-sm lg:text-base mt-1 text-foreground/80 transition-colors">
             Truth, Humanity, & Progress

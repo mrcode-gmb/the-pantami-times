@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Services\SeoService;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -19,12 +20,7 @@ class PublicPageController extends Controller
         return Inertia::render('Public/Show', [
             'page' => $pageData,
             'categories' => $this->navigationCategories(),
-        ])->withViewData([
-            'metaTitle' => $pageData['title'] . ' - ' . config('app.name'),
-            'metaDescription' => $pageData['description'],
-            'metaType' => 'website',
-            'metaUrl' => request()->url(),
-        ]);
+        ])->withViewData(SeoService::publicPageViewData($pageData));
     }
 
     private function navigationCategories()

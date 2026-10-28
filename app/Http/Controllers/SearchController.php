@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Category;
+use App\Services\SeoService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -71,6 +72,6 @@ class SearchController extends Controller
             'query' => $query,
             'posts' => $posts,
             'categories' => $categories,
-        ]);
+        ])->withViewData(SeoService::searchViewData($query));
     }
 }

@@ -84,7 +84,10 @@ export default function Welcome({
 
     return (
         <>
-            <Head title='Pantami Times - Truth, Humanity, & Progress'>
+            <Head>
+                <title>Pantami Times | Latest Breaking News, Technology &amp; Governance | pantamitimes.com</title>
+                <meta name="description" content="Pantami Times (pantamitimes.com) is Nigeria's authoritative digital newspaper delivering credible reporting, breaking news, digital economy insights, governance analysis, and human-interest stories." />
+                <meta name="keywords" content="Pantami Times, The Pantami Times, pantamitimes, pantamitimes.com, Pantami News, Prof Isa Ali Pantami, Gombe News, Pantami Gombe, Nigerian News Today, Breaking News Nigeria, Digital Economy Nigeria, NITDA News, TPT News" />
                 <script type="application/ld+json">
                     {JSON.stringify(vtuSchema)}
                 </script>
@@ -92,6 +95,9 @@ export default function Welcome({
             <div className="min-h-screen bg-background">
                 <Header categories={categories} activeNews="GOVERNANCE"/>
                 <main>
+                    {/* Primary Semantic H1 for Search Engine Discovery */}
+                    <h1 className="sr-only">Pantami Times (pantamitimes.com) — Nigeria&apos;s Authoritative Digital Newspaper &amp; Media Newsroom</h1>
+
                     {/* Top Hero & Breaking Stories */}
                     <HeroSection posts={posts} />
 

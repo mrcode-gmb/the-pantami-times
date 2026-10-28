@@ -3,30 +3,30 @@ import { Facebook, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
 
 const footerSections = [
   {
-    title: "Company",
+    title: "News Sections",
     links: [
-      { label: "About Us", href: "/about" },
-      { label: "Contact", href: "/contact" },
-      { label: "Advertise", href: "/advertise" },
-      { label: "Careers", href: "/careers" },
+      { label: "News & Politics", href: "/category/news" },
+      { label: "Technology & ICT", href: "/category/technology" },
+      { label: "Metro Reporting", href: "/category/metro" },
+      { label: "Digital Edition (e-Paper)", href: "/e-paper" },
     ],
   },
   {
-    title: "Resources",
+    title: "Newsroom & Trust",
     links: [
-      { label: "Help Center", href: "/help" },
-      { label: "Guidelines", href: "/guidelines" },
+      { label: "About Pantami Times", href: "/about" },
+      { label: "Contact Us", href: "/contact" },
+      { label: "Editorial Guidelines", href: "/guidelines" },
       { label: "Corrections Policy", href: "/corrections" },
-      { label: "Writing Tips", href: "/writing-tips" },
-      { label: "e-Paper", href: "/e-paper" },
     ],
   },
   {
-    title: "Legal",
+    title: "Legal & Support",
     links: [
       { label: "Terms of Service", href: "/terms" },
       { label: "Privacy Policy", href: "/privacy" },
       { label: "Cookie Policy", href: "/cookie-policy" },
+      { label: "Advertise With Us", href: "/advertise" },
     ],
   },
 ];
@@ -45,7 +45,7 @@ export const Footer = () => {
               </h2>
             </Link>
             <p className="text-primary-foreground/60 text-sm mb-6">
-              Conscience, Nurtured by Truth
+              Truth, Humanity, & Progress — pantamitimes.com
             </p>
             <div className="flex items-center gap-4">
               <a 

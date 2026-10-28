@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\SubCategory;
 use App\Models\Post;
+use App\Services\SeoService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -76,7 +77,7 @@ class CategoryController extends Controller
             'category' => $category,
             'posts' => $posts,
             'categories' => $categories,
-        ]);
+        ])->withViewData(SeoService::categoryViewData($category));
     }
 
     /**
@@ -145,7 +146,7 @@ class CategoryController extends Controller
             'subcategory' => $subcategory,
             'posts' => $posts,
             'categories' => $categories,
-        ]);
+        ])->withViewData(SeoService::subcategoryViewData($category, $subcategory));
     }
 
     /**

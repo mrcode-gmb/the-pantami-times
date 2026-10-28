@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Inertia\Inertia;
 use App\Models\Category;
+use App\Services\SeoService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -107,21 +108,16 @@ class PostController extends Controller
             $post->author->articles_count = $post->author->posts_count ?? 0;
             $post->author->contact_email = 'editorial@pantamitimes.com';
         }
+        $seoData = SeoService::postViewData($post);
+        $seoData['metaArticleSchema'] = SeoService::generateArticleSchema($post);
+        $seoData['metaBreadcrumbSchema'] = SeoService::generateBreadcrumbSchema($post);
+
         return Inertia::render('Post/Show', [
             'post' => $post,
             'relatedPosts' => $relatedPosts,
             'trendingPosts' => $trendingPosts,
             'categories' => Category::with("subcategories")->orderBy('priority')->get(),
-        ])->withViewData([
-            'metaTitle' => $post->title . ' - ' . config('app.name'),
-            'metaDescription' => $post->excerpt ?: Str::limit(strip_tags($post->content), 160),
-            'metaImage' => $post->image ?: asset('images/logo.jpg'),
-            'metaType' => 'article',
-            'metaUrl' => $post->publicUrl(),
-            'metaAuthor' => $post->author?->name ?: config('app.name'),
-            'metaPublishedTime' => $post->published_at?->toIso8601String(),
-            'metaUpdatedTime' => $post->updated_at?->toIso8601String(),
-        ]);
+        ])->withViewData($seoData);
     }
 
     private function buildPostShowQuery(): Builder
