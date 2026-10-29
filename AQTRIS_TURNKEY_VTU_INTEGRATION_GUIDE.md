@@ -23,8 +23,8 @@ This feature allows any platform in the Aqtris ecosystem (such as Airplug Pay) t
 | Feature / Detail | VTU Basic Web & Mobile Platform | VTU Premium All-In-One Platform | iOS App Store Add-on |
 | :--- | :--- | :--- | :--- |
 | **Product URL** | [`aqtris.com/pricing/vtu-basic-web-mobile-platform`](https://aqtris.com/pricing/vtu-basic-web-mobile-platform) | [`aqtris.com/pricing/vtu-premium-all-in-one-platform`](https://aqtris.com/pricing/vtu-premium-all-in-one-platform) | WhatsApp Direct Consultation |
-| **Setup Fee** | **₦330,000** | **₦500,000** | **₦100,000** |
-| **Compare Price** | ~~₦450,000~~ (27% OFF) | ~~₦700,000~~ (29% OFF) | Standard Add-on |
+| **Setup Fee** | **₦200,000** | **₦250,000** | **₦100,000** |
+| **Compare Price** | ~~₦300,000~~ (33% OFF) | ~~₦400,000~~ (38% OFF) | Standard Add-on |
 | **Billing Model** | One-time lifetime setup (₦0 monthly) | One-time lifetime setup (₦0 monthly) | One-time add-on |
 | **Delivery Time** | **5 – 7 Business Days** | **7 – 10 Business Days** | **3 – 5 Business Days** |
 | **Badge** | `Web + Android Mobile` | `🔥 Most Popular · Complete Turnkey` | `iOS Native App` |
@@ -77,8 +77,8 @@ export const vtuPackages: VtuPackage[] = [
         badge: 'Web + Android Mobile',
         badgeColor: 'bg-primary-50 text-primary-700 border-primary-200 dark:bg-primary-950/60 dark:text-primary-300 dark:border-primary-800',
         popular: false,
-        price: '₦330,000',
-        comparePrice: '₦450,000',
+        price: '₦200,000',
+        comparePrice: '₦300,000',
         discountPercent: '27% OFF',
         deliveryTimeline: '5 - 7 Business Days',
         shortDescription: 'Everything you need to launch your own automated VTU business with a high-performance web portal, Android app, and 2 data API providers.',
@@ -104,8 +104,8 @@ export const vtuPackages: VtuPackage[] = [
         badge: 'Most Popular · Complete Turnkey',
         badgeColor: 'bg-gradient-to-r from-amber-500 to-orange-500 text-white border-transparent shadow-sm',
         popular: true,
-        price: '₦500,000',
-        comparePrice: '₦700,000',
+        price: '₦250,000',
+        comparePrice: '₦400,000',
         discountPercent: '29% OFF',
         deliveryTimeline: '7 - 10 Business Days',
         shortDescription: 'A complete enterprise VTU ecosystem with 4 API providers, 2 to 3 payment gateways, electricity bills, cable TV, cashbacks, and airtime to cash.',
@@ -783,8 +783,8 @@ Use these URL-encoded templates for WhatsApp CTAs:
 
 | Intent | Message Template |
 | :--- | :--- |
-| **Basic Package (₦330k)** | `Hello Aqtris Technologies, I would like to inquire about the VTU Basic Web & Mobile Platform (₦330,000) seen on the app.` |
-| **Premium Package (₦500k)** | `Hello Aqtris Technologies, I would like to inquire about the VTU Premium All-In-One Platform (₦500,000) seen on the app.` |
+| **Basic Package (₦200k)** | `Hello Aqtris Technologies, I would like to inquire about the VTU Basic Web & Mobile Platform (₦200,000) seen on the app.` |
+| **Premium Package (₦250k)** | `Hello Aqtris Technologies, I would like to inquire about the VTU Premium All-In-One Platform (₦250,000) seen on the app.` |
 | **Apple iOS Add-on (₦100k)** | `Hello Aqtris Technologies, I am interested in adding the Apple App Store (iOS) deployment (₦100,000) to my VTU platform package.` |
 | **Custom Engineering** | `Hello Aqtris Technologies engineering team, I want to discuss a custom fintech/VTU solution.` |
 

@@ -42,9 +42,9 @@ export const vtuPackages: VtuPackage[] = [
     badge: 'Web + Android Mobile',
     badgeColor: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/70 dark:text-blue-300 dark:border-blue-800',
     popular: false,
-    price: '₦330,000',
-    comparePrice: '₦450,000',
-    discountPercent: '27% OFF',
+    price: '₦200,000',
+    comparePrice: '₦300,000',
+    discountPercent: '33% OFF',
     deliveryTimeline: '5 - 7 Business Days',
     shortDescription: 'Everything you need to launch your own automated VTU business with a high-performance web portal, Android app, and 2 data API providers.',
     productUrl: 'https://aqtris.com/pricing/vtu-basic-web-mobile-platform',
@@ -66,12 +66,12 @@ export const vtuPackages: VtuPackage[] = [
   {
     id: 'premium',
     name: 'VTU Premium All-In-One Platform',
-    badge: 'Most Popular · Complete Turnkey',
+    badge: '🔥 Most Popular · Complete Turnkey',
     badgeColor: 'bg-gradient-to-r from-amber-500 to-orange-500 text-white border-transparent shadow-sm',
     popular: true,
-    price: '₦500,000',
-    comparePrice: '₦700,000',
-    discountPercent: '29% OFF',
+    price: '₦250,000',
+    comparePrice: '₦400,000',
+    discountPercent: '38% OFF',
     deliveryTimeline: '7 - 10 Business Days',
     shortDescription: 'A complete enterprise VTU ecosystem with 4 API providers, 2 to 3 payment gateways, electricity bills, cable TV, cashbacks, and airtime to cash.',
     productUrl: 'https://aqtris.com/pricing/vtu-premium-all-in-one-platform',
@@ -101,7 +101,7 @@ export const bannerItems = [
     alt: 'Aqtris Turnkey VTU & Fintech Platform - Launch Your App',
     url: 'https://aqtris.com/pricing/vtu-premium-all-in-one-platform',
     title: 'VTU Premium All-In-One Platform',
-    subtitle: 'Automated bills, airtime, data & Play Store app · 29% OFF'
+    subtitle: 'Automated bills, airtime, data & Play Store app · Big Package ₦250k'
   },
   {
     id: 2,
@@ -109,7 +109,7 @@ export const bannerItems = [
     alt: 'Aqtris Turnkey Basic VTU Web and Mobile Platform',
     url: 'https://aqtris.com/pricing/vtu-basic-web-mobile-platform',
     title: 'VTU Basic Web & Mobile Platform',
-    subtitle: 'Launch in 5-7 business days with Android APK & Play Store publishing'
+    subtitle: 'Launch in 5-7 business days with Android APK & Play Store · From ₦200k'
   }
 ];
 
@@ -307,11 +307,11 @@ export const VtuSidebarBanner: React.FC<{ className?: string }> = ({ className =
       <div className="mt-2.5 flex items-baseline justify-between bg-muted/60 px-3 py-1.5 rounded-lg border border-border/70">
         <div>
           <span className="text-xs text-muted-foreground">From </span>
-          <span className="text-sm font-extrabold text-foreground">₦330,000</span>
-          <span className="text-[11px] text-muted-foreground line-through ml-1.5">₦450k</span>
+          <span className="text-sm font-extrabold text-foreground">₦200,000</span>
+          <span className="text-[11px] text-muted-foreground line-through ml-1.5">₦300k</span>
         </div>
         <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/15 px-1.5 py-0.5 rounded">
-          27% OFF
+          33% OFF
         </span>
       </div>
 
@@ -391,7 +391,7 @@ export const VtuInArticleBanner: React.FC<{ className?: string }> = ({ className
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 text-xs font-bold shadow transition"
             >
-              <span>Explore Packages (From ₦330k)</span>
+              <span>Explore Packages (From ₦200k)</span>
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
 

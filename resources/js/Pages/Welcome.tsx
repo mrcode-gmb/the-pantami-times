@@ -40,7 +40,7 @@ export default function Welcome({
                     },
                     "offers": {
                         "@type": "Offer",
-                        "price": "0",
+                        "price": "200000",
                         "priceCurrency": "NGN",
                         "priceValidUntil": "2027-12-31",
                         "availability": "https://schema.org/InStock",
@@ -67,7 +67,7 @@ export default function Welcome({
                     },
                     "offers": {
                         "@type": "Offer",
-                        "price": "0",
+                        "price": "250000",
                         "priceCurrency": "NGN",
                         "priceValidUntil": "2027-12-31",
                         "availability": "https://schema.org/InStock",

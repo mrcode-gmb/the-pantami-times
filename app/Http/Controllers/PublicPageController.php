@@ -277,36 +277,75 @@ class PublicPageController extends Controller
             'privacy' => [
                 'eyebrow' => 'Privacy',
                 'title' => 'Privacy Policy',
-                'description' => 'This page explains, in plain language, the kinds of information Pantami Times may receive and how it may be used.',
+                'description' => 'This page explains how Pantami Times collects, uses, and safeguards information, including our compliance with Google AdSense and global privacy standards.',
                 'sections' => [
                     [
-                        'title' => 'Information we may receive',
+                        'title' => 'Information We Collect',
                         'list' => [
-                            'Information you choose to send directly, such as emails, corrections, or enquiries',
-                            'Standard technical information like browser type, device details, referring pages, and server logs',
-                            'Basic security, diagnostics, and performance information used to keep the site running reliably',
+                            'Direct communication information: inquiries, story tips, letters to the editor, and correction requests submitted via email or contact forms',
+                            'Standard web server logs: IP address, browser type, device specifications, operating system, referring URLs, and timestamps',
+                            'Aggregated diagnostic, performance, and security telemetry used to safeguard site infrastructure against malicious traffic',
                         ],
                     ],
                     [
-                        'title' => 'How that information may be used',
+                        'title' => 'How We Use Your Information',
                         'paragraphs' => [
-                            'We use information to respond to readers, maintain the site, improve performance, investigate errors, and support newsroom operations.',
-                            'We do not publish personal information without a valid editorial, legal, or public-interest basis.',
+                            'Information collected is strictly utilized to deliver newsroom services, improve digital reporting quality, respond to reader requests, monitor site stability, and safeguard our technical infrastructure.',
+                            'Pantami Times does not sell, rent, or trade reader personal data to third parties. We uphold strict newsroom integrity and data confidentiality standards.',
                         ],
                     ],
                     [
-                        'title' => 'Third-party tools and services',
+                        'title' => 'Google AdSense, DoubleClick & Third-Party Advertising (Mandatory Disclosure)',
                         'paragraphs' => [
-                            'Embedded media, analytics tools, and advertising services may collect information according to their own policies when active on the site. Those services operate under their own terms in addition to ours.',
+                            'Pantami Times partners with Google AdSense (Publisher ID: pub-3454126744747191) and authorized third-party ad networks to serve advertisements when you visit our website.',
+                            'Third-party vendors, including Google, use cookies, web beacons, and unique advertising identifiers to serve ads based on a user’s prior visits to Pantami Times or other websites across the Internet.',
+                            'Google’s use of advertising cookies enables it and its partners to serve personalized and contextual ads to our visitors based on their browsing behavior and visits to this site and other websites on the Internet.',
+                            'Pantami Times hosts an authorized ads.txt record (google.com, pub-3454126744747191, DIRECT, f08c47fec0942fa0) in accordance with Interactive Advertising Bureau (IAB) standards to prevent counterfeit ad inventory.',
+                        ],
+                    ],
+                    [
+                        'title' => 'How Readers Can Opt Out of Personalized Advertising',
+                        'paragraphs' => [
+                            'Readers have full control over advertising preferences and personalized tracking. You may opt out of personalized advertising by Google at any time by visiting Google Ad Settings: https://www.google.com/settings/ads or https://adssettings.google.com.',
+                            'Alternatively, readers can opt out of a wide range of third-party advertising vendors’ use of cookies for personalized advertising by visiting the Network Advertising Initiative (NAI) opt-out page at https://optout.networkadvertising.org or the Digital Advertising Alliance (DAA) portal at http://www.aboutads.info/choices.',
+                            'European and UK users can also manage consent preferences via Your Online Choices at https://www.youronlinechoices.com.',
+                        ],
+                    ],
+                    [
+                        'title' => 'Cookies and Web Beacons',
+                        'paragraphs' => [
+                            'When ads are served on Pantami Times, third-party ad networks may send cookies directly to your browser, which automatically receive your IP address. Technologies such as cookies, JavaScript, or Web Beacons may also be used by third-party ad networks to measure advertising campaign effectiveness and personalize ad content.',
+                            'Pantami Times has no access to or control over cookies that are utilized by third-party advertisers once authorized.',
+                        ],
+                    ],
+                    [
+                        'title' => 'Children’s Information (COPPA & Global Standards)',
+                        'paragraphs' => [
+                            'Protecting children’s privacy online is paramount. Pantami Times does not knowingly collect any personally identifiable information from children under the age of 13. If a parent or guardian believes that Pantami Times has such information in its database, please contact us immediately and we will promptly remove it.',
+                        ],
+                    ],
+                    [
+                        'title' => 'Data Protection Rights (NDPR, GDPR & CCPA)',
+                        'list' => [
+                            'Right to Access: You have the right to request copies of your personal data held by Pantami Times',
+                            'Right to Rectification: You may request the correction of any information you believe is inaccurate or incomplete',
+                            'Right to Erasure: You may request the erasure of your personal data under certain statutory conditions',
+                            'Right to Restrict Processing: You have the right to request that we restrict or discontinue the processing of your personal data',
                         ],
                     ],
                 ],
                 'cards' => [
                     [
-                        'title' => 'Privacy Questions',
+                        'title' => 'Privacy & Compliance Officer',
                         'value' => 'support@pantamitimes.com',
                         'href' => 'mailto:support@pantamitimes.com',
-                        'description' => 'Contact us if you have questions about privacy or data handling on the site.',
+                        'description' => 'Contact our data protection desk for any questions regarding privacy policies or data handling.',
+                    ],
+                    [
+                        'title' => 'Google Ad Settings',
+                        'value' => 'google.com/settings/ads',
+                        'href' => 'https://www.google.com/settings/ads',
+                        'description' => 'Direct link to customize or opt out of personalized Google AdSense advertising.',
                     ],
                 ],
             ],
@@ -341,22 +380,50 @@ class PublicPageController extends Controller
             ],
             'cookie-policy' => [
                 'eyebrow' => 'Cookies',
-                'title' => 'Cookie Policy',
-                'description' => 'This page explains how cookies and similar technologies may be used on Pantami Times.',
+                'title' => 'Cookie & Advertising Policy',
+                'description' => 'This page details how cookies, tracking pixels, and advertising identifiers are used on Pantami Times to deliver news and compliant digital ads.',
                 'sections' => [
                     [
-                        'title' => 'What cookies may do on this site',
-                        'list' => [
-                            'Remembering basic preferences and keeping sessions working correctly',
-                            'Helping us understand traffic, performance, and reliability',
-                            'Supporting embedded media, analytics, and advertising-related services when enabled',
+                        'title' => 'What Are Cookies?',
+                        'paragraphs' => [
+                            'Cookies are small text files placed on your computer or mobile device when you browse websites. They help the site recognize your device, remember preferences, and ensure seamless navigation and security.',
                         ],
                     ],
                     [
-                        'title' => 'Managing your choices',
-                        'paragraphs' => [
-                            'Most browsers allow you to block, delete, or limit cookies through their settings. Disabling some cookies may affect how parts of the website perform.',
+                        'title' => 'Categories of Cookies We Use',
+                        'list' => [
+                            'Essential & Operational Cookies: Required for core site navigation, security token validation, and account sessions',
+                            'Analytical & Performance Cookies: Used to gather anonymous traffic telemetry to identify trending stories and optimize site responsiveness',
+                            'Google AdSense & Advertising Cookies: Set by Google and third-party advertisers to deliver non-intrusive, relevant advertisements and prevent repetitive ads',
                         ],
+                    ],
+                    [
+                        'title' => 'Google AdSense & DoubleClick Cookies',
+                        'paragraphs' => [
+                            'Google uses cookies (such as DoubleClick cookies) to serve ads on Pantami Times. When visitors access our website, a cookie may be dropped in their browser to allow Google and its certified ad partners to serve advertisements tailored to their prior browsing history.',
+                            'You may manage, disable, or opt out of Google’s ad personalization cookies at any time by visiting https://www.google.com/settings/ads.',
+                        ],
+                    ],
+                    [
+                        'title' => 'How to Control and Delete Cookies',
+                        'paragraphs' => [
+                            'Most internet browsers are set to accept cookies by default. You can adjust your browser settings to alert you when a cookie is placed or to block third-party cookies altogether.',
+                            'Please note that blocking essential cookies may affect some website functionality, but you can freely block advertising tracking cookies without restricting access to our journalism.',
+                        ],
+                    ],
+                ],
+                'cards' => [
+                    [
+                        'title' => 'Browser Cookie Settings',
+                        'value' => 'aboutcookies.org',
+                        'href' => 'https://www.aboutcookies.org',
+                        'description' => 'Step-by-step guides on how to clear and manage cookies in Chrome, Firefox, Safari, and Edge.',
+                    ],
+                    [
+                        'title' => 'AdSense Opt-Out',
+                        'value' => 'google.com/settings/ads',
+                        'href' => 'https://www.google.com/settings/ads',
+                        'description' => 'Direct link to customize your personalized Google Ad preferences.',
                     ],
                 ],
             ],
