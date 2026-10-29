@@ -40,14 +40,14 @@ export default function Welcome({
                     },
                     "offers": {
                         "@type": "Offer",
-                        "price": "330000",
+                        "price": "0",
                         "priceCurrency": "NGN",
                         "priceValidUntil": "2027-12-31",
                         "availability": "https://schema.org/InStock",
                         "url": "https://aqtris.com/pricing/vtu-basic-web-mobile-platform",
                         "seller": {
                             "@type": "Organization",
-                            "name": "AQTRIS TECH"
+                            "name": "AQTRIS TECHNOLOGIES"
                         }
                     }
                 }
@@ -67,14 +67,14 @@ export default function Welcome({
                     },
                     "offers": {
                         "@type": "Offer",
-                        "price": "500000",
+                        "price": "0",
                         "priceCurrency": "NGN",
                         "priceValidUntil": "2027-12-31",
                         "availability": "https://schema.org/InStock",
                         "url": "https://aqtris.com/pricing/vtu-premium-all-in-one-platform",
                         "seller": {
                             "@type": "Organization",
-                            "name": "AQTRIS TECH"
+                            "name": "AQTRIS TECHNOLOGIES"
                         }
                     }
                 }
@@ -109,8 +109,6 @@ export default function Welcome({
                     {/* Main News & Category Sections */}
                     <MainContent posts={posts} />
 
-                    {/* Turnkey VTU Platform Pricing & Comparison Cards */}
-                    <AqtrisVtuPromoSection showSlider={false} />
                 </main>
                 <Footer />
             </div>
