@@ -1,5 +1,6 @@
 import { Link } from "@inertiajs/react";
-import { Facebook, Twitter, Instagram, Linkedin, Youtube } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Youtube, Sliders } from "lucide-react";
+import { CookieConsent } from "@/Components/CookieConsent";
 
 const footerSections = [
   {
@@ -142,15 +143,27 @@ export const Footer = () => {
         <div className="container py-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-primary-foreground/60">
             <p>© 2026 Pantami Times. All rights reserved.</p>
-            <div className="flex items-center gap-6">
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6">
               <Link href="/corrections" className="hover:text-primary transition-colors">Corrections</Link>
               <Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
               <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
               <Link href="/cookie-policy" className="hover:text-primary transition-colors">Cookie Policy</Link>
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent('open-cookie-preferences'))}
+                className="hover:text-primary transition-colors text-xs inline-flex items-center gap-1 opacity-80 hover:opacity-100"
+                title="Change your cookie and advertising consent"
+              >
+                <Sliders className="w-3 h-3" />
+                <span>Cookie Preferences</span>
+              </button>
             </div>
           </div>
         </div>
       </div>
+      
+      {/* Interactive Google-Compliant Cookie Consent Component */}
+      <CookieConsent />
     </footer>
   );
 };
